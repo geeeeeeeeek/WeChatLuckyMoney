@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MI红包</string>
+    <string name="service_status">当前辅助服务状态:</string>
+    <string name="service_name">设置抢红包辅助服务</string>
+</resources>
