@@ -7,11 +7,11 @@ import java.util.List;
 
 
 public class HongbaoService extends AccessibilityService {
-    private List<AccessibilityNodeInfo> mNodeInfoList1 = null;
-    private List<AccessibilityNodeInfo> mNodeInfoList2 = null;
+    private List<AccessibilityNodeInfo> mReiceiveNode = null;
+    private List<AccessibilityNodeInfo> mUnpackNode = null;
 
     private boolean mLuckyMoneyPicked;
-    private boolean mLuckyMoneyRecived;
+    private boolean mLuckyMoneyReceived;
     private boolean mNeedUnpack;
     private boolean mNeedBack = false;
     private int mLuckyMoneyCount = 1;
@@ -22,26 +22,26 @@ public class HongbaoService extends AccessibilityService {
 
         final int eventType = event.getEventType();
 
-        if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || eventType == 2048) {
+        if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
             AccessibilityNodeInfo nodeInfo = event.getSource();
 
             if (null != nodeInfo) {
-                mNodeInfoList1 = null;
-                mNodeInfoList2 = null;
-                checkNodeInfo(nodeInfo);
-                if (mLuckyMoneyRecived && !mLuckyMoneyPicked && (mNodeInfoList1 != null)) {
-                    int size = mNodeInfoList1.size();
+                mReiceiveNode = null;
+                mUnpackNode = null;
+                checkNodeInfo();
+                if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReiceiveNode != null)) {
+                    int size = mReiceiveNode.size();
                     if (size > 0) {
-                        AccessibilityNodeInfo cellNode = mNodeInfoList1.get(size-1);
+                        AccessibilityNodeInfo cellNode = mReiceiveNode.get(size-1);
                         cellNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                        mLuckyMoneyRecived = false;
+                        mLuckyMoneyReceived = false;
                         mLuckyMoneyPicked = true;
                     }
                 }
-                if (mNeedUnpack && (mNodeInfoList2 != null)) {
-                    int size = mNodeInfoList2.size();
+                if (mNeedUnpack && (mUnpackNode != null)) {
+                    int size = mUnpackNode.size();
                     if (size > 0) {
-                        AccessibilityNodeInfo cellNode = mNodeInfoList2.get(size - 1);
+                        AccessibilityNodeInfo cellNode = mUnpackNode.get(size - 1);
                         cellNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                         mNeedUnpack = false;
                     }
@@ -60,38 +60,35 @@ public class HongbaoService extends AccessibilityService {
         }
     }
 
-    private void checkNodeInfo(AccessibilityNodeInfo node) {
+    private void checkNodeInfo() {
         AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
 
         if (nodeInfo != null) {
-            List<AccessibilityNodeInfo> temp1 = nodeInfo.findAccessibilityNodeInfosByText(mNextName);
-            if (!temp1.isEmpty()) {
-                mLuckyMoneyRecived = true;
-                mNodeInfoList1 = temp1;
+            List<AccessibilityNodeInfo> node1 = nodeInfo.findAccessibilityNodeInfosByText(mNextName);
+            if (!node1.isEmpty()) {
+                mLuckyMoneyReceived = true;
+                mReiceiveNode = node1;
                 mLuckyMoneyCount++;
                 mNextName = "红包" + mLuckyMoneyCount;
                 return;
             }
 
-            List<AccessibilityNodeInfo> temp2 = nodeInfo.findAccessibilityNodeInfosByText("拆红包");
-            if (!temp2.isEmpty()) {
-                mNodeInfoList2 = temp2;
+            List<AccessibilityNodeInfo> node2 = nodeInfo.findAccessibilityNodeInfosByText("拆红包");
+            if (!node2.isEmpty()) {
+                mUnpackNode = node2;
                 mNeedUnpack = true;
                 return;
             }
 
             if (mLuckyMoneyPicked) {
-                List<AccessibilityNodeInfo> temp3 = nodeInfo.findAccessibilityNodeInfosByText("红包详情");
-                List<AccessibilityNodeInfo> temp4 = nodeInfo.findAccessibilityNodeInfosByText("手慢了");
-                if (!temp3.isEmpty() || !temp4.isEmpty()) {
+                List<AccessibilityNodeInfo> node3 = nodeInfo.findAccessibilityNodeInfosByText("红包详情");
+                List<AccessibilityNodeInfo> node4 = nodeInfo.findAccessibilityNodeInfosByText("手慢了");
+                if (!node3.isEmpty() || !node4.isEmpty()) {
                     mNeedBack = true;
                     mLuckyMoneyPicked = false;
                 }
             }
-
         }
-
-        return;
 
     }
 
