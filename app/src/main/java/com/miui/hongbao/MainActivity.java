@@ -8,10 +8,14 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
 
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -24,6 +28,29 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mServiceStatusView = (TextView) findViewById(R.id.text_accessible);
+
+
+        Window window = getWindow();
+
+        Class clazz = window.getClass();
+        try {
+            int tranceFlag = 0;
+            int darkModeFlag = 0;
+            Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+
+            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_TRANSPARENT");
+            tranceFlag = field.getInt(layoutParams);
+
+            field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+            darkModeFlag = field.getInt(layoutParams);
+
+            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+            extraFlagField.invoke(window, tranceFlag | darkModeFlag, tranceFlag | darkModeFlag);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         updateServiceStatus();
     }
 
