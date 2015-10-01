@@ -5,6 +5,8 @@
 
 你正在查看的是[**dev分支**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/dev)，这个分支仍在开发中，如果你希望有一个可以立即使用的插件请切换到[**stable分支**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/stable)。
 
+> **注：** stable分支的插件会不断点击最新的红包，对正常的聊天有一点影响，但基本能抢到每个红包。dev分支在stable分支的基础上尝试了大量修改和优化，能使用但无法保证稳定性。
+  
 下面的文档仅针对**dev分支**。
 
 
@@ -57,7 +59,7 @@ public class Stage {
 
 ````
 
-#### 阶段说明
+#### 1.1 阶段说明
 
 |阶段 | 说明|
 |---|---|
@@ -79,6 +81,36 @@ public class Stage {
 	--> [CLICK] --> OPENING_STAGE --> [BACK] --> FETCHED_STAGE -->（没抢到）
 
 3. 不断重复流程1和2
+
+#### 1.2 根据阶段选择不同的入口
+在每次窗体状态发生变化后，根据当前所在的阶段选择入口。
+````java
+switch (Stage.getInstance().getCurrentStage()) {
+    case Stage.OPENING_STAGE:
+        // .......
+        Stage.getInstance().entering(Stage.FETCHED_STAGE);
+        performGlobalAction(GLOBAL_ACTION_BACK);
+        break;
+    case Stage.OPENED_STAGE:
+        Stage.getInstance().entering(Stage.FETCHED_STAGE);
+        performGlobalAction(GLOBAL_ACTION_BACK);
+        break;
+    case Stage.FETCHED_STAGE:
+        if (nodesToFetch.size() > 0) {
+            AccessibilityNodeInfo node = nodesToFetch.remove(nodesToFetch.size() - 1);
+            if (node.getParent() != null) {
+                // .......
+                Stage.getInstance().entering(Stage.OPENING_STAGE);
+                node.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            }
+            return;
+        }
+        Stage.getInstance().entering(Stage.FETCHING_STAGE);
+        fetchHongbao(nodeInfo);
+        Stage.getInstance().entering(Stage.FETCHED_STAGE);
+        break;
+}
+````
 
 
 ### 2. 屏幕内容检测和自动化点击的实现
@@ -135,7 +167,7 @@ nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
 ````
 不过，我们在调试时发现"领取红包"的mClickable属性为false，说明点击的监听加在它父辈的节点上。通过getParent获取父节点，这个节点是可以点击的。
 
-我们还需要全局的返回操作，最方便的办法就是performGlobalAction，不过注意这个方法是API 16时才有的。
+我们还需要全局的返回操作，最方便的办法就是performGlobalAction，不过注意这个方法是API 16后才有的。
 ````java
 performGlobalAction(GLOBAL_ACTION_BACK);
 ````
@@ -151,7 +183,7 @@ android.view.accessibility.AccessibilityNodeInfo@2a5a7c; .......
 ````
 但在测试中，队列中的部分红包没有被戳开。进一步观察发现，新的红包节点和旧的红包节点id出现了重复，且出现概率较大。由于GC日志正常，我推测AccessibilityNode可能有一个实例池的设计。获取当前窗体节点树的时候，从一个可重用的实例池中获取一个辅助节点信息 (AccessibilityNodeInfo)实例。在接下来的获取时，仍然从实例池中获取节点实例，这时可能会重用之前的实例。这样的设计是有好处的，可以防止每次返回都创建大量的实例，影响性能。AccessibilityNodeProvider的源码表明了这样的设计。
 
-也就是说，为了标识一个唯一的红包，只用实例id肯定是不充分的。这个插件插件采用的是红包内容+节点实例id的hash来标记。因为同一屏下，同一个节点树下的红包节点id是一定不会重复的，滑动屏幕后新红包的内容和节点id同时重复的概率已经大大减小。更改标识策略后，实测中几乎没有出现误判。
+也就是说，为了标识一个唯一的红包，只用实例id是不充分的。这个插件插件采用的是红包内容+节点实例id的hash来标记。因为同一屏下，同一个节点树下的节点id是一定不会重复的，滑动屏幕后新红包的内容和节点id同时重复的概率已经大大减小。更改标识策略后，实测中几乎没有出现误判。
 
 #### 3.2 将新出现的红包加入待抢队列
 
@@ -171,6 +203,45 @@ for (AccessibilityNodeInfo cellNode : fetchNodes) {
         nodesToFetch.add(cellNode);
     }
 }
+````
+
+### 4. 打开队列中的红包
+
+通过红包打开后显示的文本判断这个红包是否可以抢，进行接下来的操作。
+
+#### 4.1 判断红包节点是否被重用
+这也是实现时的一个坑。前面提到了实例池的设计，当我们把红包们加入待抢队列，戳完一个红包再回来时，队列中的其他红包节点可能已被回收重用，如果再去点击这个节点，显然没有什么卵用。
+
+为了解决这个问题，我们只能退而求其次，在点开前做一次检查。如果发现被重用了，就舍弃这个节点，在下一轮fetch的阶段重新加入待抢队列。确认没有重用立即打开，并把节点hash加入fetchedIdentifiers队列。这里如果node失效getHongbaoHash会返回null。
+````java
+AccessibilityNodeInfo node = nodesToFetch.remove(nodesToFetch.size() - 1);
+if (node.getParent() != null) {
+    String id = getHongbaoHash(node);
+    if (id == null) return;
+    fetchedIdentifiers.add(id);
+    Stage.getInstance().entering(Stage.OPENING_STAGE);
+    node.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
+}
+````
+可以看出这并不是很有效率的解决方案。在实测中，有时队列中中红包失效后被舍弃，但没有新的AccessibilityEvent发生，接下来的操作都被挂起了。在戳过较多红包之后，这种情况表现得尤为明显，必须要显式地改变窗体内容才能解决。
+
+#### 4.2 根据红包类型选择操作
+红包被戳开前会进行查重。戳开后如果界面上出现了“拆红包”几个字，说明红包还没有被别人抢走，立刻点击“拆红包”并将stage标记为OPENED_STAGE。
+
+此时，另三种情况表明抢红包失败了，直接返回，接下来状态会被标记为FETCHED_STAGE。
+
+1. “过期”，说明红包超过有效时间
+2. “手慢了”，说明红包发完但没抢到
+3. “红包详情”，说明你已经抢到过
+
+#### 4.3 防止加载红包时返回
+戳开红包和红包加载完之间有一个“正在加载”的过渡动画，会触发onAccessibilityEvent回调方法。如果在加载完之前判断，上述文本都找不到，默认被标记为FETCHE_STAGE并触发返回。因此，我们要在返回前特殊判定这种情形。
+
+我们引入了TTL来记录尝试次数，并返回错误值-1。如果到达MAX_TTL时红包还没有加载出来就舍弃这个红包。
+````java
+Stage.getInstance().entering(Stage.OPENING_STAGE);
+ttl += 1;
+return -1;
 ````
 
 

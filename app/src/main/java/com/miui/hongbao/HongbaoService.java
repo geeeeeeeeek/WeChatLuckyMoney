@@ -48,59 +48,54 @@ public class HongbaoService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
-        final int eventType = event.getEventType();
+        AccessibilityNodeInfo nodeInfo = event.getSource();
 
-        if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
-                || eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
-
-            AccessibilityNodeInfo nodeInfo = event.getSource();
-
-            switch (Stage.getInstance().getCurrentStage()) {
-                case Stage.OPENING_STAGE:
-                    Log.d("TTL", String.valueOf(ttl));
+        switch (Stage.getInstance().getCurrentStage()) {
+            case Stage.OPENING_STAGE:
+                Log.d("TTL", String.valueOf(ttl));
                     /* 如果打开红包失败且还没到达最大尝试次数，重试 */
-                    if (openHongbao(nodeInfo) == -1 && ttl < MAX_TTL) return;
+                if (openHongbao(nodeInfo) == -1 && ttl < MAX_TTL) return;
 
-                    if (Stage.getInstance().getCurrentStage() == Stage.OPENED_STAGE) {
-                        List<AccessibilityNodeInfo> successNodes = nodeInfo.findAccessibilityNodeInfosByText("红包详情");
-                        if (successNodes.isEmpty()) return;
-                    }
-                    ttl = 0;
-                    Stage.getInstance().entering(Stage.FETCHED_STAGE);
-                    performGlobalAction(GLOBAL_ACTION_BACK);
-                    break;
-                case Stage.OPENED_STAGE:
+                if (Stage.getInstance().getCurrentStage() == Stage.OPENED_STAGE) {
+                    List<AccessibilityNodeInfo> successNodes = nodeInfo.findAccessibilityNodeInfosByText("红包详情");
+                    if (successNodes.isEmpty()) return;
+                }
+                ttl = 0;
+                Stage.getInstance().entering(Stage.FETCHED_STAGE);
+                performGlobalAction(GLOBAL_ACTION_BACK);
+                break;
+            case Stage.OPENED_STAGE:
 
-                    Stage.getInstance().entering(Stage.FETCHED_STAGE);
-                    performGlobalAction(GLOBAL_ACTION_BACK);
-                    break;
-                case Stage.FETCHED_STAGE:
+                Stage.getInstance().entering(Stage.FETCHED_STAGE);
+                performGlobalAction(GLOBAL_ACTION_BACK);
+                break;
+            case Stage.FETCHED_STAGE:
                     /* 先消灭待抢红包队列中的红包 */
-                    if (nodesToFetch.size() > 0) {
+                if (nodesToFetch.size() > 0) {
                         /* 从最下面的红包开始戳 */
-                        AccessibilityNodeInfo node = nodesToFetch.remove(nodesToFetch.size() - 1);
-                        if (node.getParent() != null) {
-                            String id = getHongbaoHash(node);
+                    AccessibilityNodeInfo node = nodesToFetch.remove(nodesToFetch.size() - 1);
+                    if (node.getParent() != null) {
+                        String id = getHongbaoHash(node);
 
-                            if (id == null) return;
+                        if (id == null) return;
 
-                            fetchedIdentifiers.add(id);
+                        fetchedIdentifiers.add(id);
 
-                            // 调试信息，在每次打开红包后打印出已经获取的红包
-                            // Log.d("fetched", Arrays.toString(fetchedIdentifiers.toArray()));
+                        // 调试信息，在每次打开红包后打印出已经获取的红包
+                        // Log.d("fetched", Arrays.toString(fetchedIdentifiers.toArray()));
 
-                            Stage.getInstance().entering(Stage.OPENING_STAGE);
-                            node.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                        }
-                        return;
+                        Stage.getInstance().entering(Stage.OPENING_STAGE);
+                        node.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
                     }
+                    return;
+                }
 
-                    Stage.getInstance().entering(Stage.FETCHING_STAGE);
-                    fetchHongbao(nodeInfo);
-                    Stage.getInstance().entering(Stage.FETCHED_STAGE);
-                    break;
-            }
+                Stage.getInstance().entering(Stage.FETCHING_STAGE);
+                fetchHongbao(nodeInfo);
+                Stage.getInstance().entering(Stage.FETCHED_STAGE);
+                break;
         }
+
     }
 
 
