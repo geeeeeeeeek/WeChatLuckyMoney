@@ -8,7 +8,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +21,7 @@ public class HongbaoService extends AccessibilityService {
     /**
      * 已获取的红包队列
      */
-    private List<String> fetchIdentifiers = new ArrayList<>();
+    private List<String> fetchedIdentifiers = new ArrayList<>();
     /**
      * 待抢的红包队列
      */
@@ -85,10 +84,10 @@ public class HongbaoService extends AccessibilityService {
 
                             if (id == null) return;
 
-                            fetchIdentifiers.add(id);
+                            fetchedIdentifiers.add(id);
 
                             // 调试信息，在每次打开红包后打印出已经获取的红包
-                            // Log.d("fetched", Arrays.toString(fetchIdentifiers.toArray()));
+                            // Log.d("fetched", Arrays.toString(fetchedIdentifiers.toArray()));
 
                             Stage.getInstance().entering(Stage.OPENING_STAGE);
                             node.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
@@ -118,15 +117,15 @@ public class HongbaoService extends AccessibilityService {
         if (nodeInfo == null) return;
 
         /* 聊天会话窗口，遍历节点匹配“领取红包” */
-        List<AccessibilityNodeInfo> node1 = nodeInfo.findAccessibilityNodeInfosByText("领取红包");
+        List<AccessibilityNodeInfo> fetchNodes = nodeInfo.findAccessibilityNodeInfosByText("领取红包");
 
-        if (node1.isEmpty()) return;
+        if (fetchNodes.isEmpty()) return;
 
-        for (AccessibilityNodeInfo cellNode : node1) {
+        for (AccessibilityNodeInfo cellNode : fetchNodes) {
             String id = getHongbaoHash(cellNode);
 
             /* 如果节点没有被回收且该红包没有抢过 */
-            if (id != null && !fetchIdentifiers.contains(id)) {
+            if (id != null && !fetchedIdentifiers.contains(id)) {
                 nodesToFetch.add(cellNode);
             }
         }
