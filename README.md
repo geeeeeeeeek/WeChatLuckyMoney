@@ -5,7 +5,7 @@
 
 你正在查看的是[**dev分支**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/dev)，这个分支仍在开发中，如果你希望有一个可以立即使用的插件请切换到[**stable分支**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/stable)。
 
-> **注：** stable分支的插件会不断点击最新的红包，对正常的聊天有一点影响，但基本能抢到每个红包。dev分支在stable分支的基础上尝试了大量修改和优化，能使用但无法保证稳定性。
+> **注：** stable分支的插件只点击最新的红包，根据目前测试抢红包成功率100%。dev分支在stable分支的基础上尝试了大量修改和优化，能使用但无法保证稳定性。
   
 下面的文档仅针对**dev分支**。
 
