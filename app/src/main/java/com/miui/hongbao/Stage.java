@@ -22,6 +22,11 @@ public class Stage {
     private int currentStage = FETCHED_STAGE;
 
     /**
+     * 阶段互斥，不允许多次回调进入同一阶段
+     */
+    public boolean mutex = false;
+
+    /**
      * 单例设计，防止通过构造函数创建对象
      */
     private Stage() {
@@ -44,6 +49,7 @@ public class Stage {
      */
     public void entering(int _stage) {
         stageInstance.currentStage = _stage;
+        mutex = false;
     }
 
     /**

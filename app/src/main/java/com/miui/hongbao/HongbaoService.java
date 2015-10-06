@@ -8,6 +8,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +37,6 @@ public class HongbaoService extends AccessibilityService {
      */
     private int ttl = 0;
 
-
     /**
      * AccessibilityEvent的回调方法
      * <p/>
@@ -48,31 +48,47 @@ public class HongbaoService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
-        AccessibilityNodeInfo nodeInfo = event.getSource();
+        if (Stage.getInstance().mutex) return;
 
+        Stage.getInstance().mutex = true;
+
+        try {
+            handleWindowChange(event.getSource());
+        } finally {
+            Stage.getInstance().mutex = false;
+        }
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void handleWindowChange(AccessibilityNodeInfo nodeInfo) {
         switch (Stage.getInstance().getCurrentStage()) {
             case Stage.OPENING_STAGE:
-                Log.d("TTL", String.valueOf(ttl));
-                    /* 如果打开红包失败且还没到达最大尝试次数，重试 */
+                // 调试信息，打印TTL
+                // Log.d("TTL", String.valueOf(ttl));
+
+                /* 如果打开红包失败且还没到达最大尝试次数，重试 */
                 if (openHongbao(nodeInfo) == -1 && ttl < MAX_TTL) return;
 
-                if (Stage.getInstance().getCurrentStage() == Stage.OPENED_STAGE) {
-                    List<AccessibilityNodeInfo> successNodes = nodeInfo.findAccessibilityNodeInfosByText("红包详情");
-                    if (successNodes.isEmpty()) return;
+                ttl = 0;
+                Stage.getInstance().entering(Stage.FETCHED_STAGE);
+                performMyGlobalAction(GLOBAL_ACTION_BACK);
+                if (nodesToFetch.size() == 0) handleWindowChange(nodeInfo);
+                break;
+            case Stage.OPENED_STAGE:
+                List<AccessibilityNodeInfo> successNodes = nodeInfo.findAccessibilityNodeInfosByText("红包详情");
+                if (successNodes.isEmpty() && ttl < MAX_TTL) {
+                    ttl += 1;
+                    return;
                 }
                 ttl = 0;
                 Stage.getInstance().entering(Stage.FETCHED_STAGE);
-                performGlobalAction(GLOBAL_ACTION_BACK);
-                break;
-            case Stage.OPENED_STAGE:
-
-                Stage.getInstance().entering(Stage.FETCHED_STAGE);
-                performGlobalAction(GLOBAL_ACTION_BACK);
+                performMyGlobalAction(GLOBAL_ACTION_BACK);
                 break;
             case Stage.FETCHED_STAGE:
-                    /* 先消灭待抢红包队列中的红包 */
+                /* 先消灭待抢红包队列中的红包 */
                 if (nodesToFetch.size() > 0) {
-                        /* 从最下面的红包开始戳 */
+                    /* 从最下面的红包开始戳 */
                     AccessibilityNodeInfo node = nodesToFetch.remove(nodesToFetch.size() - 1);
                     if (node.getParent() != null) {
                         String id = getHongbaoHash(node);
@@ -95,7 +111,6 @@ public class HongbaoService extends AccessibilityService {
                 Stage.getInstance().entering(Stage.FETCHED_STAGE);
                 break;
         }
-
     }
 
 
@@ -216,5 +231,9 @@ public class HongbaoService extends AccessibilityService {
 
     }
 
-
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void performMyGlobalAction(int action) {
+        Stage.getInstance().mutex = false;
+        performGlobalAction(action);
+    }
 }
