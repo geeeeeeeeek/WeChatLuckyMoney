@@ -9,6 +9,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class HongbaoService extends AccessibilityService {
@@ -20,6 +22,8 @@ public class HongbaoService extends AccessibilityService {
     private boolean mNeedUnpack;
     private boolean mNeedBack = false;
     private List<String> fetchIdentifiers = new ArrayList<>();
+    private String lastFetchedHongbaoId = null;
+    private long lastFetchedtime = System.currentTimeMillis();
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -38,6 +42,16 @@ public class HongbaoService extends AccessibilityService {
                 if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReiceiveNode != null)) {
                     int size = mReiceiveNode.size();
                     if (size > 0) {
+
+                        String id = getHongbaoHash(mReiceiveNode.get(size - 1));
+
+                        long now = System.currentTimeMillis();
+                        if (id == null || (now - lastFetchedtime < 5000) && id.equals(lastFetchedHongbaoId))
+                            return;
+
+                        lastFetchedHongbaoId = id;
+                        lastFetchedtime = now;
+
                         AccessibilityNodeInfo cellNode = mReiceiveNode.get(size - 1);
                         cellNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
                         mLuckyMoneyReceived = false;
@@ -79,8 +93,8 @@ public class HongbaoService extends AccessibilityService {
             List<AccessibilityNodeInfo> node1 = nodeInfo.findAccessibilityNodeInfosByText("领取红包");
             if (!node1.isEmpty()) {
                 String nodeId = Integer.toHexString(System.identityHashCode(nodeInfo));
-                Log.d("233",nodeInfo.toString());
-                if (!checkFetched(nodeId)){
+                Log.d("233", nodeInfo.toString());
+                if (!checkFetched(nodeId)) {
                     mLuckyMoneyReceived = true;
                     mReiceiveNode = node1;
                 }
@@ -115,6 +129,44 @@ public class HongbaoService extends AccessibilityService {
         }
         fetchIdentifiers.add(nodeId);
         return false;
+    }
+
+    /**
+     * 获取节点对象唯一的id，通过正则表达式匹配
+     * AccessibilityNodeInfo@后的十六进制数字
+     *
+     * @param node AccessibilityNodeInfo对象
+     * @return id字符串
+     */
+    private String getNodeId(AccessibilityNodeInfo node) {
+        /* 用正则表达式匹配节点Object */
+        Pattern objHashPattern = Pattern.compile("(?<=@)[0-9|a-z]+(?=;)");
+        Matcher objHashMatcher = objHashPattern.matcher(node.toString());
+
+        // AccessibilityNodeInfo必然有且只有一次匹配，因此不再作判断
+        objHashMatcher.find();
+
+        return objHashMatcher.group(0);
+    }
+
+    /**
+     * 将节点对象的id和红包上的内容合并
+     * 用于表示一个唯一的红包
+     *
+     * @param node 任意对象
+     * @return 红包标识字符串
+     */
+    private String getHongbaoHash(AccessibilityNodeInfo node) {
+        /* 获取红包上的文本 */
+        String content;
+        try {
+            AccessibilityNodeInfo i = node.getParent().getChild(0);
+            content = i.getText().toString();
+        } catch (NullPointerException npr) {
+            return null;
+        }
+
+        return content + "@" + getNodeId(node);
     }
 
 }

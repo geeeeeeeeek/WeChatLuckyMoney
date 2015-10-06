@@ -5,6 +5,6 @@
     android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged"
     android:accessibilityFeedbackType="feedbackAllMask"
     android:packageNames="com.tencent.mm"
-    android:notificationTimeout="0"
+    android:notificationTimeout="10"
     android:accessibilityFlags=""
     android:canRetrieveWindowContent="true"/>
