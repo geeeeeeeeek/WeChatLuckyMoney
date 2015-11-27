@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,14 +25,12 @@ public class MainActivity extends Activity {
     private final Intent mAccessibleIntent =
             new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
-    private TextView githubLink;
     private Button switchPlugin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        githubLink = (TextView) findViewById(R.id.github);
         switchPlugin = (Button) findViewById(R.id.button_accessible);
 
         handleMIUIStatusBar();
@@ -63,6 +62,12 @@ public class MainActivity extends Activity {
         updateServiceStatus();
     }
 
+    @Override
+    protected void onDestroy() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        super.onDestroy();
+    }
+
     private void updateServiceStatus() {
         boolean serviceEnabled = false;
 
@@ -73,10 +78,18 @@ public class MainActivity extends Activity {
         for (AccessibilityServiceInfo info : accessibilityServices) {
             if (info.getId().equals(getPackageName() + "/.HongbaoService")) {
                 serviceEnabled = true;
+                break;
             }
         }
-        switchPlugin.setText(serviceEnabled ? "关闭插件" : "开启插件");
 
+        if (serviceEnabled) {
+            switchPlugin.setText("关闭插件");
+            // Prevent screen from dimming
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            switchPlugin.setText("开启插件");
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
     }
 
     public void onButtonClicked(View view) {

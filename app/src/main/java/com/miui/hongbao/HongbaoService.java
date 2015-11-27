@@ -3,7 +3,9 @@ package com.miui.hongbao;
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.PowerManager;
 import android.util.Log;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -168,5 +170,4 @@ public class HongbaoService extends AccessibilityService {
 
         return content + "@" + getNodeId(node);
     }
-
 }
