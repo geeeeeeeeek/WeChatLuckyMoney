@@ -135,13 +135,13 @@ if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
 
  除此之外，由于我们只监听微信，还需要指定微信的包名
 
- ````xml
-
+``` xml
 android:packageNames="com.tencent.mm"
+```
+
+为了获取窗口内容，我们还需要指定
 
 ``` 
-为了获取窗口内容，我们还需要指定
-​````xml
 android:canRetrieveWindowContent="true"
 ```
 
