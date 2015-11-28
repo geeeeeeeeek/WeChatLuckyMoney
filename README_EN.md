@@ -1,10 +1,10 @@
-# WeChat Red Envelopes [Chinese Version](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README.md)
+# WeChat Red Envelopes [中文版本](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README.md)
 
 This Android app helps you snatch red envelopes in WeChat group chat. When a red envelope is detected, the service automatically clicks on it, faster than any mankind.
 
-You are now at the [**stable branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/stable). Please goto [**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/) to download available apk. According to our test, the stable version is capable of snatching every single red envelope. 
+You are now on the [**stable branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md). Please goto [**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/) page to download available apk. According to our test, the stable version is capable of snatching every single red envelope. 
 
-> **Note:** You can also switch to the [**dev branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/dev) to find out more experimental improvements. However, the stability might not be as good as the stable one.
+> **Note:** You can also switch to the [**dev branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README_EN.md) to find out more experimental improvements. However, the stability might not be as good as the stable one.
 
 The following doc is targeted at **stable branch**.
 
@@ -24,7 +24,7 @@ The following doc is targeted at **stable branch**.
 
 ## Implementation
 
-[The document at dev branch](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README.md) covers every single detail of the implementation. However, it's in Chinese and I'm not gonna do the translation.
+[The document on dev branch](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README.md) covers every single detail of the implementation. However, it's in Chinese and I'm not gonna do the translation.
 
 ## License
 
