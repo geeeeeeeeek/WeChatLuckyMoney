@@ -2,7 +2,7 @@
 
 This Android app helps you snatch red envelopes in WeChat group chat. When a red envelope is detected, the service automatically clicks on it, faster than any mankind.
 
-You are now at the [**dev branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README_EN.md). It contains some of the experimental improvements, which may lead to instability. If you wish to have a ready-to-use version, please switch to [**stable branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md).
+You are now on the [**dev branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README_EN.md). It contains some of the experimental improvements, which may lead to instability. If you wish to have a ready-to-use version, please switch to [**stable branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md).
 
 > **Note:** The app on the stable branch only snatches the latest red envelope. According to our test, the stable version is capable of snatching every single red envelope. However, the stability might not be as good as the stable one.
 
