@@ -37,13 +37,15 @@ public class MainActivity extends Activity {
         updateServiceStatus();
     }
 
+    /**
+     * 适配MIUI沉浸状态栏
+     */
     private void handleMIUIStatusBar() {
         Window window = getWindow();
 
         Class clazz = window.getClass();
         try {
             int tranceFlag = 0;
-            int darkModeFlag = 0;
             Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
 
             Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_TRANSPARENT");
@@ -52,7 +54,7 @@ public class MainActivity extends Activity {
             Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
             extraFlagField.invoke(window, tranceFlag, tranceFlag);
         } catch (Exception e) {
-            e.printStackTrace();
+            // 考虑到大多数非MIUI ROM都会打印出错误栈,不太优雅,而且一点卵用也没有,于是删了
         }
     }
 
