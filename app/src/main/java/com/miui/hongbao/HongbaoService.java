@@ -46,7 +46,7 @@ public class HongbaoService extends AccessibilityService {
                 String id = getHongbaoHash(mReceiveNode.get(size - 1));
 
                 long now = System.currentTimeMillis();
-                if (id == null || (now - lastFetchedTime < 5000) && id.equals(lastFetchedHongbaoId))
+                if (id == null || (now - lastFetchedTime < 10000) && id.equals(lastFetchedHongbaoId))
                     return;
 
                 lastFetchedHongbaoId = id;
@@ -164,7 +164,7 @@ public class HongbaoService extends AccessibilityService {
             return null;
         }
 
-        return content + "@" + getNodeId(node);
+        return content;
     }
 
     /**
@@ -178,28 +178,14 @@ public class HongbaoService extends AccessibilityService {
     private List<AccessibilityNodeInfo> findAccessibilityNodeInfosByTexts(AccessibilityNodeInfo nodeInfo, String[] texts) {
         for (String text : texts) {
             List<AccessibilityNodeInfo> nodes = nodeInfo.findAccessibilityNodeInfosByText(text);
+
             if (!nodes.isEmpty()) {
-                Log.d("text",text);
+                if(text.equals("Open") && !nodeInfo.findAccessibilityNodeInfosByText("opened").isEmpty()){
+                    continue;
+                }
                 return nodes;
             }
         }
         return new ArrayList<>();
-    }
-
-    private void debugFlags() {
-        Log.d("flags", "mLuckyMoneyPicked:" + this.mLuckyMoneyPicked
-                + ",mLuckyMoneyReceived:" + this.mLuckyMoneyReceived
-                + ",mNeedUnpack:" + this.mNeedUnpack
-                + ",mNeedBack:" + this.mNeedBack);
-        Log.d("mReceiveNode", parseNull(mReceiveNode));
-        Log.d("mUnpackNode", parseNull(mUnpackNode));
-    }
-
-    private String parseNull(Object o) {
-        if (o == null) {
-            return "null";
-        } else {
-            return o.toString();
-        }
     }
 }
