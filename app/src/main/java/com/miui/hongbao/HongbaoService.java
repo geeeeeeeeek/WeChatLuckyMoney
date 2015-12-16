@@ -37,7 +37,6 @@ public class HongbaoService extends AccessibilityService {
         mUnpackNode = null;
         checkNodeInfo();
 
-        debugFlags();
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
@@ -91,34 +90,29 @@ public class HongbaoService extends AccessibilityService {
         if (nodeInfo == null) return;
 
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
-        List<AccessibilityNodeInfo> node0 = nodeInfo.findAccessibilityNodeInfosByText("查看红包");
-        List<AccessibilityNodeInfo> node1 = nodeInfo.findAccessibilityNodeInfosByText("领取红包");
+        List<AccessibilityNodeInfo> nodes1 = this.findAccessibilityNodeInfosByTexts(nodeInfo, new String[]{"查看红包", "领取红包"});
 
-        if (!node1.isEmpty() || !node0.isEmpty()) {
+        if (!nodes1.isEmpty()) {
             String nodeId = Integer.toHexString(System.identityHashCode(nodeInfo));
             if (!checkFetched(nodeId)) {
                 mLuckyMoneyReceived = true;
-                mReceiveNode = node1.isEmpty() ? node0 : node1;
+                mReceiveNode = nodes1;
             }
             return;
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        List<AccessibilityNodeInfo> node2 = nodeInfo.findAccessibilityNodeInfosByText("拆红包");
-        List<AccessibilityNodeInfo> node7 = nodeInfo.findAccessibilityNodeInfosByText("Open");
-        if (!node2.isEmpty() || !node7.isEmpty()) {
-            mUnpackNode = node2.isEmpty() ? node7 : node2;
+        List<AccessibilityNodeInfo> nodes2 = this.findAccessibilityNodeInfosByTexts(nodeInfo, new String[]{"拆红包", "Open"});
+        if (!nodes2.isEmpty()) {
+            mUnpackNode = nodes2;
             mNeedUnpack = true;
             return;
         }
 
         /* 戳开红包，红包已被抢完，遍历节点匹配“红包详情”和“手慢了” */
         if (mLuckyMoneyPicked) {
-            List<AccessibilityNodeInfo> node3 = nodeInfo.findAccessibilityNodeInfosByText("红包详情");
-            List<AccessibilityNodeInfo> node4 = nodeInfo.findAccessibilityNodeInfosByText("手慢了");
-            List<AccessibilityNodeInfo> node5 = nodeInfo.findAccessibilityNodeInfosByText("Better luck next time!");
-            List<AccessibilityNodeInfo> node6 = nodeInfo.findAccessibilityNodeInfosByText("Details");
-            if (!node3.isEmpty() || !node4.isEmpty() || !node5.isEmpty() || !node6.isEmpty()) {
+            List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(nodeInfo, new String[]{"红包详情", "手慢了", "Better luck next time!", "Details"});
+            if (!nodes3.isEmpty()) {
                 mNeedBack = true;
                 mLuckyMoneyPicked = false;
             }
@@ -171,6 +165,25 @@ public class HongbaoService extends AccessibilityService {
         }
 
         return content + "@" + getNodeId(node);
+    }
+
+    /**
+     * 批量化执行AccessibilityNodeInfo.findAccessibilityNodeInfosByText(text).
+     * 由于这个操作影响性能,将所有需要匹配的文字一起处理,尽早返回
+     *
+     * @param nodeInfo 窗口根节点
+     * @param texts 需要匹配的字符串们
+     * @return 匹配到的节点数组
+     */
+    private List<AccessibilityNodeInfo> findAccessibilityNodeInfosByTexts(AccessibilityNodeInfo nodeInfo, String[] texts) {
+        for (String text : texts) {
+            List<AccessibilityNodeInfo> nodes = nodeInfo.findAccessibilityNodeInfosByText(text);
+            if (!nodes.isEmpty()) {
+                Log.d("text",text);
+                return nodes;
+            }
+        }
+        return new ArrayList<>();
     }
 
     private void debugFlags() {
