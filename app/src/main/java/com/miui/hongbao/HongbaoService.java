@@ -3,6 +3,7 @@ package com.miui.hongbao;
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -35,6 +36,8 @@ public class HongbaoService extends AccessibilityService {
         mReceiveNode = null;
         mUnpackNode = null;
         checkNodeInfo();
+
+        debugFlags();
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
@@ -102,8 +105,9 @@ public class HongbaoService extends AccessibilityService {
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
         List<AccessibilityNodeInfo> node2 = nodeInfo.findAccessibilityNodeInfosByText("拆红包");
-        if (!node2.isEmpty()) {
-            mUnpackNode = node2;
+        List<AccessibilityNodeInfo> node7 = nodeInfo.findAccessibilityNodeInfosByText("Open");
+        if (!node2.isEmpty() || !node7.isEmpty()) {
+            mUnpackNode = node2.isEmpty() ? node7 : node2;
             mNeedUnpack = true;
             return;
         }
@@ -112,7 +116,9 @@ public class HongbaoService extends AccessibilityService {
         if (mLuckyMoneyPicked) {
             List<AccessibilityNodeInfo> node3 = nodeInfo.findAccessibilityNodeInfosByText("红包详情");
             List<AccessibilityNodeInfo> node4 = nodeInfo.findAccessibilityNodeInfosByText("手慢了");
-            if (!node3.isEmpty() || !node4.isEmpty()) {
+            List<AccessibilityNodeInfo> node5 = nodeInfo.findAccessibilityNodeInfosByText("Better luck next time!");
+            List<AccessibilityNodeInfo> node6 = nodeInfo.findAccessibilityNodeInfosByText("Details");
+            if (!node3.isEmpty() || !node4.isEmpty() || !node5.isEmpty() || !node6.isEmpty()) {
                 mNeedBack = true;
                 mLuckyMoneyPicked = false;
             }
@@ -165,5 +171,22 @@ public class HongbaoService extends AccessibilityService {
         }
 
         return content + "@" + getNodeId(node);
+    }
+
+    private void debugFlags() {
+        Log.d("flags", "mLuckyMoneyPicked:" + this.mLuckyMoneyPicked
+                + ",mLuckyMoneyReceived:" + this.mLuckyMoneyReceived
+                + ",mNeedUnpack:" + this.mNeedUnpack
+                + ",mNeedBack:" + this.mNeedBack);
+        Log.d("mReceiveNode", parseNull(mReceiveNode));
+        Log.d("mUnpackNode", parseNull(mUnpackNode));
+    }
+
+    private String parseNull(Object o) {
+        if (o == null) {
+            return "null";
+        } else {
+            return o.toString();
+        }
     }
 }
