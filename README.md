@@ -25,7 +25,7 @@
 
 [dev分支文档](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README.md)中详细介绍了实现。
 
-## 版权说明
+## **版权及免责声明**
 
 本项目源自小米今年秋季发布会时演示的抢红包测试[源码](https://github.com/XiaoMi/LuckyMoneyTool)。stable分支基于此代码继续开发，dev分支重写了几乎所有的逻辑代码。应用的包名com.miui.hongbao未变。
 
