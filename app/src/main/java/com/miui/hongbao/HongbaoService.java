@@ -95,7 +95,7 @@ public class HongbaoService extends AccessibilityService {
             String nodeId = Integer.toHexString(System.identityHashCode(nodeInfo));
             if (!checkFetched(nodeId)) {
                 mLuckyMoneyReceived = true;
-                mReceiveNode = node1.isEmpty() ? node1 : node0;
+                mReceiveNode = node1.isEmpty() ? node0 : node1;
             }
             return;
         }
