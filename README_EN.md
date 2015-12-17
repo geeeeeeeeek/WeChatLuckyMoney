@@ -4,7 +4,7 @@ This Android app helps you snatch red envelopes in WeChat group chat. When a red
 
 You are now on the [**dev branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README_EN.md). It contains some of the experimental improvements, which may lead to instability. If you wish to have a ready-to-use version, please switch to [**stable branch**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md).
 
-> **Note:** The app on the stable branch only snatches the latest red envelope. According to our test, the stable version is capable of snatching every single red envelope. However, the stability might not be as good as the stable one.
+> **Note:** The app on the stable branch only snatches the latest red envelope. According to our test, the stable version is capable of snatching every single red envelope.
 
 The following doc is targeted at **dev branch**.
 
@@ -24,4 +24,4 @@ The following doc is targeted at **dev branch**.
 
 The project was heavily inspired by an [app](https://github.com/XiaoMi/LuckyMoneyTool) demonstrated on XiaoMi's news conference for its phone product this autumn. The stable branch is developed after this, while the dev branch rewrites nearly all the code. The package name remains unchanged as `com.miui.hongbao`.
 
-**Note that:** This app might alter the natural way of interactions with WeChat. Thus the code is restricted to educational use only. You are *not* allowed to use it for other purposes.
+**Note that:** This app might alter the natural way of interactions with WeChat. Thus the code is restricted to educational use only. You are *not* allowed to use it for other purposes. You must understand and be fully responsiable of the potential risks of using the app, including "being forbidden to use WeChat Lucky Money functionality", etc. 
