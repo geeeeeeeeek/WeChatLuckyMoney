@@ -2,7 +2,10 @@ package com.miui.hongbao;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.os.Build;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -14,6 +17,10 @@ import java.util.regex.Pattern;
 
 
 public class HongbaoService extends AccessibilityService {
+
+
+    private final static String TAG = "HONGBAO";
+
     private List<AccessibilityNodeInfo> mReceiveNode, mUnpackNode;
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
@@ -34,6 +41,9 @@ public class HongbaoService extends AccessibilityService {
     private String WECHAT_VIEW_OTHERS_CH = "领取红包";
     private String WECHAT_DEFAULT_TEXT_EN = "Best wishes!";
     private String WECHAT_DEFAULT_TEXT_CH = "恭喜发财,大吉大利!";
+
+    private final static String NOTIFICATION_TIP = "[微信红包]";
+
     private int MAX_DURATION_TOLERANCE = 5000;
 
 
@@ -45,6 +55,24 @@ public class HongbaoService extends AccessibilityService {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+
+        if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) {
+            String tip = event.getText().toString();
+            if (!tip.contains(NOTIFICATION_TIP)) {
+                return;
+            }
+            Parcelable parcelable = event.getParcelableData();
+            if (parcelable instanceof Notification) {
+                Notification notification = (Notification) parcelable;
+                try {
+                    notification.contentIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    Log.e(TAG, "", e);
+                }
+            }
+            return;
+        }
+
         this.rootNodeInfo = event.getSource();
 
         if (rootNodeInfo == null) return;
@@ -62,10 +90,10 @@ public class HongbaoService extends AccessibilityService {
 
                 long now = System.currentTimeMillis();
 
-                Log.d("111","0");
+                Log.d("111", "0");
                 if (this.shouldReturn(id, now - lastFetchedTime))
                     return;
-                Log.d("111","1");
+                Log.d("111", "1");
 
                 lastFetchedHongbaoId = id;
                 lastFetchedTime = now;
