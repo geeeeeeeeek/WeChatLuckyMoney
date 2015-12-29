@@ -2,7 +2,10 @@ package com.miui.hongbao;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.os.Build;
+import android.os.Parcelable;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -20,18 +23,21 @@ public class HongbaoService extends AccessibilityService {
 
     private AccessibilityNodeInfo rootNodeInfo;
 
-    private static String WECHAT_DETAILS_EN = "Details";
-    private static String WECHAT_DETAILS_CH = "红包详情";
-    private static String WECHAT_BETTER_LUCK_EN = "Better luck next time!";
-    private static String WECHAT_BETTER_LUCK_CH = "手慢了";
-    private static String WECHAT_OPEN_EN = "Open";
-    private static String WECHAT_OPENED_EN = "You've opened";
-    private static String WECHAT_OPEN_CH = "拆红包";
-    private static String WECHAT_VIEW_SELF_CH = "查看红包";
-    private static String WECHAT_VIEW_OTHERS_CH = "领取红包";
-    private static String WECHAT_DEFAULT_TEXT_EN = "Best wishes!";
-    private static String WECHAT_DEFAULT_TEXT_CH = "恭喜发财,大吉大利!";
-    private static int MAX_CACHE_TOLERANCE = 5000;
+    private static final String WECHAT_DETAILS_EN = "Details";
+    private static final String WECHAT_DETAILS_CH = "红包详情";
+    private static final String WECHAT_BETTER_LUCK_EN = "Better luck next time!";
+    private static final String WECHAT_BETTER_LUCK_CH = "手慢了";
+    private static final String WECHAT_OPEN_EN = "Open";
+    private static final String WECHAT_OPENED_EN = "You've opened";
+    private static final String WECHAT_OPEN_CH = "拆红包";
+    private static final String WECHAT_VIEW_SELF_CH = "查看红包";
+    private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
+    private static final String WECHAT_DEFAULT_TEXT_EN = "Best wishes!";
+    private static final String WECHAT_DEFAULT_TEXT_CH = "恭喜发财,大吉大利!";
+    private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
+
+    private static final int MAX_CACHE_TOLERANCE = 5000;
+    private boolean mCycle = false;
 
 
     /**
@@ -42,6 +48,26 @@ public class HongbaoService extends AccessibilityService {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+
+        /* 检测通知消息 */
+        if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED && !mCycle) {
+            /* TODO: 在下一个版本中启用 */
+            /*String tip = event.getText().toString();
+
+            if (!tip.contains(WECHAT_NOTIFICATION_TIP)) return;
+
+            Parcelable parcelable = event.getParcelableData();
+            if (parcelable instanceof Notification) {
+                Notification notification = (Notification) parcelable;
+                try {
+                    notification.contentIntent.send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+            }*/
+            return;
+        }
+
         this.rootNodeInfo = event.getSource();
 
         if (rootNodeInfo == null) return;
@@ -61,6 +87,8 @@ public class HongbaoService extends AccessibilityService {
 
                 if (this.shouldReturn(id, now - lastFetchedTime))
                     return;
+
+                mCycle = true;
 
                 lastFetchedHongbaoId = id;
                 lastFetchedTime = now;
@@ -84,6 +112,7 @@ public class HongbaoService extends AccessibilityService {
 
         if (mNeedBack) {
             performGlobalAction(GLOBAL_ACTION_BACK);
+            mCycle = false;
             mNeedBack = false;
         }
     }
