@@ -12,10 +12,10 @@ The following doc is targeted at **stable branch**.
 
 ## Newest Version
 
-[**v1.2 (2015.12.17) !important**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.2)
+[**v1.3 (2015.12.29)**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.3)
 
-1. Add support for the English language. Fix related issues.
-2. Change the logic of detecting duplicate red envelopes. Only those name unmatched with cached or those name matched but with a duration > 5 secs will be touched.
+1. Fix repeatedly opening envelopes. Related issue #27 .
+2. Add watch for WeChat notification, from which enter the chat activity. This feature will not be available in this version, until well tested.
 
 ## Usage
 
