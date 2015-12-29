@@ -10,10 +10,9 @@
 
 ## 最新版本
 
-[**v1.2 (2015.12.17) 重要更新**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.2)
-
-1. 增加了微信语言 英语 的支持，修复了由此导致的一系列问题。
-2. 修改了红包重复判断的逻辑，戳“名称与缓存不一致的红包”和“名称一致且间隔大于5秒”的红包。
+[**v1.3 (2015.12.29)**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.3)
+1. 修复了 红包频繁点击 的bug。
+2. 并入了 从通知栏进入抢红包 的代码(#28)，充分测试后加入下一个版本。
 
 ## 使用方法
 
