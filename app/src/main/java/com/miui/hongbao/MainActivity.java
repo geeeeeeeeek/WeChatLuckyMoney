@@ -21,6 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import im.fir.sdk.FIR;
+
 public class MainActivity extends Activity {
     private final Intent mAccessibleIntent =
             new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
@@ -30,6 +32,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FIR.init(this);
         setContentView(R.layout.activity_main);
         switchPlugin = (Button) findViewById(R.id.button_accessible);
 
