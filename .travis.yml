@@ -2,11 +2,12 @@ language: android
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a armeabi
+    - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a armeabi
 
 android:
   components:
-    - build-tools-19.0.0
+    - platform-tools
+    - build-tools-21.1.1
     - android-L
     - extra
 
