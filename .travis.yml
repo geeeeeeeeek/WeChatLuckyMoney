@@ -2,7 +2,7 @@ language: android
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a armeabi 
+    - ANDROID_TARGET=android-22  ANDROID_ABI=armeabi-v7a armeabi
 
 android:
   components:
