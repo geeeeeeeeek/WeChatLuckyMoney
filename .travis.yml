@@ -6,7 +6,9 @@ env:
 
 android:
   components:
-    - build-tools-19.0.0
+    - build-tools-22.0.1
+    - android-L
+    - extra
 
 before_script:
   # Create and start emulator
@@ -15,4 +17,4 @@ before_script:
   - adb wait-for-device
   - adb shell input keyevent 82 &
 
-script: ./gradlew connectedAndroidTest
+script: ./gradlew build connectedCheck
