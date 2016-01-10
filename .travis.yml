@@ -18,4 +18,13 @@ before_script:
   - adb wait-for-device
   - adb shell input keyevent 82 &
 
-script: ./gradlew build connectedCheck
+script: 
+  - ./gradlew assembleRelease
+
+deploy:  
+  provider: releases
+  api_key: 8cabfb62ca2bbd85290e6284e868bfa299b551ff
+  file: app/build/outputs/apk/app-release.apk
+  skip_cleanup: true
+  on:
+    tags: true
