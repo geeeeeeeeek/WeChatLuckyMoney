@@ -28,9 +28,10 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="去Github关注项目进展"
-            android:id="@+id/textView2" android:layout_below="@+id/textView3"
-            android:layout_centerHorizontal="true" android:clickable="true" android:onClick="openGithub"
-            android:layout_marginTop="3dp"/>
+            android:id="@+id/textView2"
+        android:clickable="true" android:onClick="openGithub"
+        android:layout_above="@+id/github"
+        android:layout_centerHorizontal="true" />
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -45,9 +46,11 @@
             android:text="@string/service_name"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:onClick="onButtonClicked" android:layout_alignParentBottom="false"
-            android:background="#fdfdfd" android:textColor="#ff666666"
+            android:onClick="onButtonClicked"
+        android:background="#fdfdfd" android:textColor="#ff666666"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_marginRight="16dp" android:layout_marginLeft="16dp" android:layout_above="@+id/github"
-            />
+        android:layout_above="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="88dp" />
 </RelativeLayout>
