@@ -14,6 +14,7 @@ before_script:
 - emulator -avd test -no-skin -no-audio -no-window &
 - adb wait-for-device
 - adb shell input keyevent 82 &
+- gem install fir-cli
 script:
 - ./gradlew assembleRelease
 deploy:
@@ -24,3 +25,5 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+after_deploy:
+    - fir p app/build/outputs/apk/app-release.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
