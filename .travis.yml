@@ -24,3 +24,4 @@ deploy:
   on:
     repo: ray26/WeChatLuckyMoney
     branch: stable
+    tags: true
