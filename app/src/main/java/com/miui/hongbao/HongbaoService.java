@@ -14,8 +14,7 @@ import java.util.List;
 
 
 public class HongbaoService extends AccessibilityService {
-    private List<AccessibilityNodeInfo> mReceiveNode;
-    private AccessibilityNodeInfo mUnpackNode;
+    private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
 
@@ -75,25 +74,22 @@ public class HongbaoService extends AccessibilityService {
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
-            int size = mReceiveNode.size();
-            if (size > 0) {
-                String id = getHongbaoText(mReceiveNode.get(size - 1));
+            String id = getHongbaoText(mReceiveNode);
 
-                long now = System.currentTimeMillis();
+            long now = System.currentTimeMillis();
 
-                if (this.shouldReturn(id, now - lastFetchedTime))
-                    return;
+            if (this.shouldReturn(id, now - lastFetchedTime))
+                return;
 
-                mCycle = true;
+            mCycle = true;
 
-                lastFetchedHongbaoId = id;
-                lastFetchedTime = now;
+            lastFetchedHongbaoId = id;
+            lastFetchedTime = now;
 
-                AccessibilityNodeInfo cellNode = mReceiveNode.get(size - 1);
-                cellNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                mLuckyMoneyReceived = false;
-                mLuckyMoneyPicked = true;
-            }
+            AccessibilityNodeInfo cellNode = mReceiveNode;
+            cellNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            mLuckyMoneyReceived = false;
+            mLuckyMoneyPicked = true;
         }
         /* 如果戳开但还未领取 */
         if (mNeedUnpack && (mUnpackNode != null)) {
@@ -130,7 +126,7 @@ public class HongbaoService extends AccessibilityService {
             String nodeId = Integer.toHexString(System.identityHashCode(this.rootNodeInfo));
             if (!nodeId.equals(lastFetchedHongbaoId)) {
                 mLuckyMoneyReceived = true;
-                mReceiveNode = nodes1;
+                mReceiveNode = nodes1.get(nodes1.size() - 1);
             }
             return;
         }
