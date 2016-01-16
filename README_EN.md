@@ -12,10 +12,9 @@ The following doc is targeted at **stable branch**.
 
 ## Newest Version
 
-[**v1.2 (2015.12.17) !important**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.2)
+[**v1.4 (2016.01.16)**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.4)
 
-1. Add support for the English language. Fix related issues.
-2. Change the logic of detecting duplicate red envelopes. Only those name unmatched with cached or those name matched but with a duration > 5 secs will be touched.
+1. Fix failure caused by new WeChat Hongbao UI. Related issue [#41](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues/41).
 
 ## Usage
 
