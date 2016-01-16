@@ -14,7 +14,8 @@ import java.util.List;
 
 
 public class HongbaoService extends AccessibilityService {
-    private List<AccessibilityNodeInfo> mReceiveNode, mUnpackNode;
+    private List<AccessibilityNodeInfo> mReceiveNode;
+    private AccessibilityNodeInfo mUnpackNode;
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
 
@@ -27,13 +28,8 @@ public class HongbaoService extends AccessibilityService {
     private static final String WECHAT_DETAILS_CH = "红包详情";
     private static final String WECHAT_BETTER_LUCK_EN = "Better luck next time!";
     private static final String WECHAT_BETTER_LUCK_CH = "手慢了";
-    private static final String WECHAT_OPEN_EN = "Open";
-    private static final String WECHAT_OPENED_EN = "You've opened";
-    private static final String WECHAT_OPEN_CH = "拆红包";
     private static final String WECHAT_VIEW_SELF_CH = "查看红包";
     private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
-    private static final String WECHAT_DEFAULT_TEXT_EN = "Best wishes!";
-    private static final String WECHAT_DEFAULT_TEXT_CH = "恭喜发财,大吉大利!";
     private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
 
     private static final int MAX_CACHE_TOLERANCE = 5000;
@@ -101,12 +97,9 @@ public class HongbaoService extends AccessibilityService {
         }
         /* 如果戳开但还未领取 */
         if (mNeedUnpack && (mUnpackNode != null)) {
-            int size = mUnpackNode.size();
-            if (size > 0) {
-                AccessibilityNodeInfo cellNode = mUnpackNode.get(size - 1);
-                cellNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                mNeedUnpack = false;
-            }
+            AccessibilityNodeInfo cellNode = mUnpackNode;
+            cellNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            mNeedUnpack = false;
         }
 
 
@@ -143,10 +136,16 @@ public class HongbaoService extends AccessibilityService {
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        List<AccessibilityNodeInfo> nodes2 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
-                WECHAT_OPEN_CH, WECHAT_OPEN_EN});
-        if (!nodes2.isEmpty()) {
-            mUnpackNode = nodes2;
+//        List<AccessibilityNodeInfo> nodes2 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
+//                WECHAT_OPEN_CH, WECHAT_OPEN_EN});
+//        if (!nodes2.isEmpty()) {
+//            mUnpackNode = nodes2;
+//            mNeedUnpack = true;
+//            return;
+//        }
+        AccessibilityNodeInfo node2 = this.rootNodeInfo.getChild(3);
+        if (node2 != null && node2.getClassName().equals("android.widget.Button")) {
+            mUnpackNode = node2;
             mNeedUnpack = true;
             return;
         }
@@ -197,12 +196,7 @@ public class HongbaoService extends AccessibilityService {
 
             List<AccessibilityNodeInfo> nodes = nodeInfo.findAccessibilityNodeInfosByText(text);
 
-            if (!nodes.isEmpty()) {
-                if (text.equals(WECHAT_OPEN_EN) && !nodeInfo.findAccessibilityNodeInfosByText(WECHAT_OPENED_EN).isEmpty()) {
-                    continue;
-                }
-                return nodes;
-            }
+            if (!nodes.isEmpty()) return nodes;
         }
         return new ArrayList<>();
     }
@@ -221,9 +215,7 @@ public class HongbaoService extends AccessibilityService {
         if (id == null) return true;
 
         // 名称和缓存不一致
-        if (duration < MAX_CACHE_TOLERANCE && id.equals(lastFetchedHongbaoId)) {
-            return true;
-        }
+        if (duration < MAX_CACHE_TOLERANCE && id.equals(lastFetchedHongbaoId)) return true;
 
         return false;
     }
