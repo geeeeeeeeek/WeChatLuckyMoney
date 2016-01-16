@@ -27,6 +27,7 @@ public class HongbaoService extends AccessibilityService {
     private static final String WECHAT_DETAILS_CH = "红包详情";
     private static final String WECHAT_BETTER_LUCK_EN = "Better luck next time!";
     private static final String WECHAT_BETTER_LUCK_CH = "手慢了";
+    private static final String WECHAT_EXPIRES_CH = "红包已失效";
     private static final String WECHAT_VIEW_SELF_CH = "查看红包";
     private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
     private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
@@ -132,7 +133,7 @@ public class HongbaoService extends AccessibilityService {
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        AccessibilityNodeInfo node2 = this.rootNodeInfo.getChild(3);
+        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3) ? this.rootNodeInfo.getChild(3) : null;
         if (node2 != null && node2.getClassName().equals("android.widget.Button")) {
             mUnpackNode = node2;
             mNeedUnpack = true;
@@ -143,7 +144,7 @@ public class HongbaoService extends AccessibilityService {
         if (mLuckyMoneyPicked) {
             List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
                     WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
-                    WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN});
+                    WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN, WECHAT_EXPIRES_CH});
             if (!nodes3.isEmpty()) {
                 mNeedBack = true;
                 mLuckyMoneyPicked = false;
