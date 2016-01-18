@@ -8,8 +8,8 @@ android {
         applicationId "com.miui.hongbao"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "v2.0"
     }
     buildTypes {
         release {
