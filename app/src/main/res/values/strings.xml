@@ -1,16 +1,6 @@
 <resources>
     <string name="app_name">微信红包</string>
+    <string name="app_description">∠( ᐛ 」∠)_使用指南∠( ᐛ 」∠)_\n\n ○ 狠戳插件开关\n ○ 回到微信聊天\n ○ 坐等红包进账\n\n 遇到问题, 欢迎通过Github issue反馈~\n https://github.com/geeeeeeeeek/WeChatLuckyMoney</string>
     <string name="service_status">当前辅助服务状态:</string>
     <string name="service_name">设置抢红包辅助服务</string>
-    <string name="wechat_details_en">Details</string>
-    <string name="wechat_better_luck_en">Better luck next time!</string>
-    <string name="wechat_details_ch">红包详情</string>
-    <string name="wechat_better_luck_ch">手慢了</string>
-    <string name="wechat_open_en">Open</string>
-    <string name="wechat_opened_en">opened</string>
-    <string name="wechat_open_ch">拆红包</string>
-    <string name="wechat_view_self_ch">查看红包</string>
-    <string name="wechat_view_others_ch">领取红包</string>
-    <string name="wechat_default_text_ch">恭喜发财,大吉大利!</string>
-    <string name="wechat_default_text_en">Best wishes!</string>
 </resources>
