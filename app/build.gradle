@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.miui.hongbao"
+        applicationId "xyz.monkeytong.hongbao"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 2

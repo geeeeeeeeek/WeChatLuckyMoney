@@ -1,7 +1,6 @@
-package com.miui.hongbao;
+package xyz.monkeytong.hongbao;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +12,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
-import android.widget.TextView;
 
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
