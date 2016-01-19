@@ -3,4 +3,5 @@
     <string name="app_description">∠( ᐛ 」∠)_使用指南∠( ᐛ 」∠)_\n\n ○ 狠戳插件开关\n ○ 回到微信聊天\n ○ 坐等红包进账\n\n 遇到问题, 欢迎通过Github issue反馈~\n https://github.com/geeeeeeeeek/WeChatLuckyMoney</string>
     <string name="service_status">当前辅助服务状态:</string>
     <string name="service_name">设置抢红包辅助服务</string>
+    <string name="preference">偏好设置</string>
 </resources>

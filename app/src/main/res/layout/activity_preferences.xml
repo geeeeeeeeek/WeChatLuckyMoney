@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#d55849"
+                tools:context=".SettingsActivity"
+>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:id="@+id/settings_bar"
+              android:text="@string/preference" android:textColor="#fde1b5"
+              android:gravity="left|center_horizontal"
+              android:elegantTextHeight="false" android:textSize="20sp"
+              android:layout_centerVertical="true" android:layout_toRightOf="@+id/preference_back"/>
+    <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/preference_back"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="8dp"
+            android:background="@mipmap/back"
+            android:layout_centerVertical="true" android:clickable="true" android:onClick="performBack"/>
+</RelativeLayout>
