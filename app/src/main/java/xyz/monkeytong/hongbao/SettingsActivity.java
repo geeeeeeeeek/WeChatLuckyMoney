@@ -4,8 +4,13 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Created by Zhongyi on 1/19/16.
@@ -28,7 +33,6 @@ public class SettingsActivity extends PreferenceActivity {
             }
         });
     }
-
     @Override
     protected void onResume() {
         super.onResume();

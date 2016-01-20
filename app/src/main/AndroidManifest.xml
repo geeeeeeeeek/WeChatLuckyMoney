@@ -9,14 +9,13 @@
                 android:name="xyz.monkeytong.hongbao.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/Base.Theme.AppCompat.Light">
-
-        </activity>
-        <activity android:name="SettingsActivity"
-                  android:theme="@style/Base.Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name="SettingsActivity"
+                  android:theme="@style/Base.Theme.AppCompat.Light">
         </activity>
         <service
                 android:name="xyz.monkeytong.hongbao.HongbaoService"

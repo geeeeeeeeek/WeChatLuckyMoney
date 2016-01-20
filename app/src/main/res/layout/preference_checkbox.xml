@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center_vertical"
-              android:paddingLeft="22dp"
+              android:paddingLeft="16dp"
               android:paddingRight="?android:attr/scrollbarSize">
 
 
@@ -31,7 +31,7 @@
                   android:layout_below="@android:id/title"
                   android:layout_alignLeft="@android:id/title"
                   android:textColor="?android:attr/textColorSecondary"
-                  android:textSize="14sp"
+                  android:textSize="16sp"
                   android:maxLines="4" />
 
     </RelativeLayout>

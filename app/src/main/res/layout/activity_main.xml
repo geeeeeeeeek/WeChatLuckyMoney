@@ -2,13 +2,27 @@
                 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                 android:layout_height="match_parent" tools:context=".MainActivity"
                 android:background="#faf6f1">
+    <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:id="@+id/main_actiob_bar_placeholder" android:layout_alignParentTop="true"
+            android:background="#d65645" android:layout_alignTop="@+id/textView"/>
     <TextView
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textView" android:background="@mipmap/action_bar" android:text="微信红包" android:textColor="#fee1b4"
             android:gravity="center_vertical|center_horizontal"
-            android:textSize="26dp" android:paddingBottom="20dp"/>
+            android:textSize="26dp" android:autoText="false"/>
+    <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:id="@+id/imageView2"
+            android:src="@mipmap/ic_settings"
+            android:padding="10dp"
+            android:onClick="openSettings"
+            android:layout_alignRight="@+id/textView" android:layout_below="@+id/main_actiob_bar_placeholder"
+            android:layout_marginRight="6dp"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -2,7 +2,10 @@ package xyz.monkeytong.hongbao;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.os.Build;
+import android.os.Parcelable;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -15,7 +18,7 @@ public class HongbaoService extends AccessibilityService {
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
 
-    private String lastFetchedHongbaoId = null;
+    private String lastFetchedHongbaoId, lastContentDescription = "";
     private long lastFetchedTime = 0;
 
     private AccessibilityNodeInfo rootNodeInfo;
@@ -30,7 +33,7 @@ public class HongbaoService extends AccessibilityService {
     private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
 
     private static final int MAX_CACHE_TOLERANCE = 5000;
-    private boolean mCycle = false;
+    private boolean mMutex = false;
 
 
     /**
@@ -41,25 +44,13 @@ public class HongbaoService extends AccessibilityService {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-
         /* 检测通知消息 */
-        if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED && !mCycle) {
-            /* TODO: 在下一个版本中启用 */
-            /*String tip = event.getText().toString();
-
-            if (!tip.contains(WECHAT_NOTIFICATION_TIP)) return;
-
-            Parcelable parcelable = event.getParcelableData();
-            if (parcelable instanceof Notification) {
-                Notification notification = (Notification) parcelable;
-                try {
-                    notification.contentIntent.send();
-                } catch (PendingIntent.CanceledException e) {
-                    e.printStackTrace();
-                }
-            }*/
-            return;
+        if (!mMutex) {
+            if (MainActivity.watchNotification && watchNotifications(event)) return;
+            if (MainActivity.watchList && watchList(event)) return;
         }
+
+        if (!MainActivity.watchChat) return;
 
         this.rootNodeInfo = event.getSource();
 
@@ -79,7 +70,7 @@ public class HongbaoService extends AccessibilityService {
             if (this.shouldReturn(id, now - lastFetchedTime))
                 return;
 
-            mCycle = true;
+            mMutex = true;
 
             lastFetchedHongbaoId = id;
             lastFetchedTime = now;
@@ -99,9 +90,47 @@ public class HongbaoService extends AccessibilityService {
 
         if (mNeedBack) {
             performGlobalAction(GLOBAL_ACTION_BACK);
-            mCycle = false;
+            mMutex = false;
             mNeedBack = false;
         }
+    }
+
+    private boolean watchList(AccessibilityEvent event) {
+        // Not a message
+        if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED || event.getSource() == null)
+            return false;
+
+        List<AccessibilityNodeInfo> nodes = event.getSource().findAccessibilityNodeInfosByText(WECHAT_NOTIFICATION_TIP);
+        if (!nodes.isEmpty()) {
+            AccessibilityNodeInfo nodeToClick = nodes.get(0);
+            CharSequence contentDescription = nodeToClick.getContentDescription();
+            if (contentDescription != null && !lastContentDescription.equals(contentDescription)) {
+                nodeToClick.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                lastContentDescription = contentDescription.toString();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean watchNotifications(AccessibilityEvent event) {
+        // Not a notification
+        if (event.getEventType() != AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) return false;
+
+        // Not a hongbao
+        String tip = event.getText().toString();
+        if (!tip.contains(WECHAT_NOTIFICATION_TIP)) return true;
+
+        Parcelable parcelable = event.getParcelableData();
+        if (parcelable instanceof Notification) {
+            Notification notification = (Notification) parcelable;
+            try {
+                notification.contentIntent.send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 
     @Override
