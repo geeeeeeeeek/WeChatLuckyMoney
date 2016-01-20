@@ -28,11 +28,13 @@ public class SettingsActivity extends PreferenceActivity {
         Preference myPref = (Preference) findPreference("pref_etc_check_update");
         myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                Toast.makeText(getApplicationContext(), "已是最新版本", Toast.LENGTH_SHORT).show();
+                new UpdateTask(getApplicationContext()).execute("https://api.github.com/repos/geeeeeeeeek/WeChatLuckyMoney/releases/latest");
+//                Toast.makeText(getApplicationContext(), "已是最新版本", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
