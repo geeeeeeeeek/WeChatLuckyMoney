@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.os.Build;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -18,8 +19,8 @@ public class HongbaoService extends AccessibilityService {
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
 
-    private String lastFetchedHongbaoId, lastContentDescription = "";
-    private long lastFetchedTime = 0;
+    private String lastContentDescription = "";
+    private HongbaoSignature signature = new HongbaoSignature();
 
     private AccessibilityNodeInfo rootNodeInfo;
 
@@ -32,7 +33,6 @@ public class HongbaoService extends AccessibilityService {
     private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
     private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
 
-    private static final int MAX_CACHE_TOLERANCE = 5000;
     private boolean mMutex = false;
 
 
@@ -44,6 +44,9 @@ public class HongbaoService extends AccessibilityService {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        // App must be running on service is on
+        if (MainActivity.watchedFlags == null) return;
+
         /* 检测通知消息 */
         if (!mMutex) {
             if (MainActivity.watchedFlags.get("pref_watch_notification") && watchNotifications(event)) return;
@@ -63,17 +66,7 @@ public class HongbaoService extends AccessibilityService {
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
-            String id = getHongbaoText(mReceiveNode);
-
-            long now = System.currentTimeMillis();
-
-            if (this.shouldReturn(id, now - lastFetchedTime))
-                return;
-
             mMutex = true;
-
-            lastFetchedHongbaoId = id;
-            lastFetchedTime = now;
 
             AccessibilityNodeInfo cellNode = mReceiveNode;
             cellNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
@@ -150,10 +143,11 @@ public class HongbaoService extends AccessibilityService {
                 WECHAT_VIEW_OTHERS_CH, WECHAT_VIEW_SELF_CH});
 
         if (!nodes1.isEmpty()) {
-            String nodeId = Integer.toHexString(System.identityHashCode(this.rootNodeInfo));
-            if (!nodeId.equals(lastFetchedHongbaoId)) {
+            AccessibilityNodeInfo targetNode = nodes1.get(nodes1.size() - 1);
+            if (this.signature.generateSignature(targetNode)) {
                 mLuckyMoneyReceived = true;
-                mReceiveNode = nodes1.get(nodes1.size() - 1);
+                mReceiveNode = targetNode;
+                Log.d("sig", this.signature.toString());
             }
             return;
         }
@@ -215,23 +209,5 @@ public class HongbaoService extends AccessibilityService {
             if (!nodes.isEmpty()) return nodes;
         }
         return new ArrayList<>();
-    }
-
-    /**
-     * 判断是否返回,减少点击次数
-     * 现在的策略是当红包文本和缓存不一致时,戳
-     * 文本一致且间隔大于MAX_CACHE_TOLERANCE时,戳
-     *
-     * @param id       红包id
-     * @param duration 红包到达与缓存的间隔
-     * @return 是否应该返回
-     */
-    private boolean shouldReturn(String id, long duration) {
-        // ID为空
-        if (id == null) return true;
-
-        // 名称和缓存不一致
-        return duration < MAX_CACHE_TOLERANCE && id.equals(lastFetchedHongbaoId);
-
     }
 }

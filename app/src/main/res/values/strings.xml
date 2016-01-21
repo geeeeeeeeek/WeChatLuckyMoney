@@ -8,4 +8,6 @@
     <string name="update_new_seg1">发现新版本(</string>
     <string name="update_new_seg2">),正在为您准备下载( /) V (\\ )</string>
     <string name="update_already_latest">已经是最新版本了(❁´▽`❁)</string>
+    <string name="service_off">关闭插件</string>
+    <string name="service_on">开启插件</string>
 </resources>

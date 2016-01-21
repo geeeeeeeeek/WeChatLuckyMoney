@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class MainActivity extends Activity {
-    public static Map<String, Boolean> watchedFlags = new HashMap<String, Boolean>();
+    public static Map<String, Boolean> watchedFlags = new HashMap<>();
     private final Intent mAccessibleIntent =
             new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
@@ -92,7 +92,6 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onDestroy();
     }
 
@@ -111,12 +110,9 @@ public class MainActivity extends Activity {
         }
 
         if (serviceEnabled) {
-            switchPlugin.setText("关闭插件");
-            // Prevent screen from dimming
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            switchPlugin.setText(R.string.service_off);
         } else {
-            switchPlugin.setText("开启插件");
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            switchPlugin.setText(R.string.service_on);
         }
     }
 
@@ -136,9 +132,7 @@ public class MainActivity extends Activity {
 
     public int getStatusBarHeight() {
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            return getResources().getDimensionPixelSize(resourceId);
-        }
+        if (resourceId > 0) return getResources().getDimensionPixelSize(resourceId);
         return 0;
     }
 }
