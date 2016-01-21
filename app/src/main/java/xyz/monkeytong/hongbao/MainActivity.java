@@ -22,10 +22,10 @@ import android.widget.RelativeLayout;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.*;
 
 public class MainActivity extends Activity {
-    public static boolean watchNotification, watchList, watchChat;
+    public static Map<String, Boolean> watchedFlags = new HashMap<String, Boolean>();
     private final Intent mAccessibleIntent =
             new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
@@ -40,20 +40,23 @@ public class MainActivity extends Activity {
         handleMIUIStatusBar();
         updateServiceStatus();
 
+        watchFlagsFromPreference();
+    }
+
+    private void watchFlagsFromPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                MainActivity.watchNotification = sharedPreferences.getBoolean("pref_listen_notification", false);
-                MainActivity.watchList = sharedPreferences.getBoolean("pref_listen_list", false);
-                MainActivity.watchChat = sharedPreferences.getBoolean("pref_listen_chat", true);
-
+                Boolean changedValue = sharedPreferences.getBoolean(key, false);
+                MainActivity.watchedFlags.put(key, changedValue);
             }
         });
-        MainActivity.watchNotification = sharedPreferences.getBoolean("pref_listen_notification", false);
-        MainActivity.watchList = sharedPreferences.getBoolean("pref_listen_list", false);
-        MainActivity.watchChat = sharedPreferences.getBoolean("pref_listen_chat", true);
 
+        List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat");
+        for (String flag : flagsList) {
+            MainActivity.watchedFlags.put(flag, sharedPreferences.getBoolean(flag, false));
+        }
     }
 
     /**

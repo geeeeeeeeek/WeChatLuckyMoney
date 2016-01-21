@@ -46,11 +46,11 @@ public class HongbaoService extends AccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent event) {
         /* 检测通知消息 */
         if (!mMutex) {
-            if (MainActivity.watchNotification && watchNotifications(event)) return;
-            if (MainActivity.watchList && watchList(event)) return;
+            if (MainActivity.watchedFlags.get("pref_watch_notification") && watchNotifications(event)) return;
+            if (MainActivity.watchedFlags.get("pref_watch_list") && watchList(event)) return;
         }
 
-        if (!MainActivity.watchChat) return;
+        if (!MainActivity.watchedFlags.get("pref_watch_chat")) return;
 
         this.rootNodeInfo = event.getSource();
 
