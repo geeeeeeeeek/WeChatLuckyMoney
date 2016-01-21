@@ -1,4 +1,4 @@
-package xyz.monkeytong.hongbao;
+package xyz.monkeytong.hongbao.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,13 +6,8 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.view.View;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import xyz.monkeytong.hongbao.R;
+import xyz.monkeytong.hongbao.utils.UpdateTask;
 
 /**
  * Created by Zhongyi on 1/19/16.

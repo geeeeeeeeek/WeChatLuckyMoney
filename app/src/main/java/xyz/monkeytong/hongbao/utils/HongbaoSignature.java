@@ -1,4 +1,4 @@
-package xyz.monkeytong.hongbao;
+package xyz.monkeytong.hongbao.utils;
 
 import android.view.accessibility.AccessibilityNodeInfo;
 
@@ -8,7 +8,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 public class HongbaoSignature {
     private String sender, content, time;
 
-    protected boolean generateSignature(AccessibilityNodeInfo node) {
+    public boolean generateSignature(AccessibilityNodeInfo node) {
         try {
             AccessibilityNodeInfo hongbaoNode = node.getParent();
             String hongbaoContent = hongbaoNode.getChild(0).getText().toString();

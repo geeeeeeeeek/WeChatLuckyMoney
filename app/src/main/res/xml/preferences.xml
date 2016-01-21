@@ -13,19 +13,19 @@
         <CheckBoxPreference
                 android:key="pref_watch_notification"
                 android:title="监视系统通知"
-                android:summary="读取微信新消息通知中的红包提示"
+                android:summary="读取微信新消息通知中的红包"
                 android:defaultValue="false"
                 android:layout="@layout/preference_checkbox"/>
         <CheckBoxPreference
                 android:key="pref_watch_list"
                 android:title="监视聊天列表"
-                android:summary="读取微信聊天列表中的红包提示"
+                android:summary="读取微信聊天列表中的红包"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
         <CheckBoxPreference
                 android:key="pref_watch_chat"
                 android:title="监视当前聊天页面"
-                android:summary="读取当前微信聊天页面,可能会降低使用流畅度"
+                android:summary="读取当前聊天中的红包,拆开红包需要开启该选项"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
     </PreferenceCategory>

@@ -1,4 +1,4 @@
-package xyz.monkeytong.hongbao;
+package xyz.monkeytong.hongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
@@ -9,6 +9,8 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import xyz.monkeytong.hongbao.utils.HongbaoSignature;
+import xyz.monkeytong.hongbao.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
