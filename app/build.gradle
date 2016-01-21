@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "xyz.monkeytong.hongbao"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 2
         versionName "v2.0"
