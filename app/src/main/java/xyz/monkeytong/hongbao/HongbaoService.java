@@ -231,8 +231,7 @@ public class HongbaoService extends AccessibilityService {
         if (id == null) return true;
 
         // 名称和缓存不一致
-        if (duration < MAX_CACHE_TOLERANCE && id.equals(lastFetchedHongbaoId)) return true;
+        return duration < MAX_CACHE_TOLERANCE && id.equals(lastFetchedHongbaoId);
 
-        return false;
     }
 }
