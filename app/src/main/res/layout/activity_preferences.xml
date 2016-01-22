@@ -24,5 +24,12 @@
             android:layout_marginRight="8dp"
             android:clickable="true" android:onClick="performBack"
             android:layout_alignBottom="@+id/settings_bar"
-            android:layout_below="@+id/preference_action_bar_placeholder" android:src="@mipmap/back"/>
+            android:layout_below="@+id/preference_action_bar_placeholder" android:src="@mipmap/ic_back"/>
+    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:id="@+id/imageView3"
+               android:clickable="true"
+               android:onClick="enterAccessibilityPage"
+               android:layout_below="@+id/preference_action_bar_placeholder"
+               android:layout_alignBottom="@+id/settings_bar" android:layout_alignParentRight="true"
+               android:layout_marginRight="10dp" android:layout_marginLeft="8dp"
+               android:padding="6dp" android:src="@mipmap/ic_refresh"/>
 </RelativeLayout>

@@ -11,7 +11,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textView" android:background="@mipmap/action_bar" android:text="微信红包" android:textColor="#fee1b4"
+            android:id="@+id/textView" android:background="@mipmap/bg_action_bar" android:text="微信红包" android:textColor="#fee1b4"
             android:gravity="center_vertical|center_horizontal"
             android:textSize="26dp" android:autoText="false"/>
     <ImageView

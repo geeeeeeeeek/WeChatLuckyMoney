@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.provider.Settings;
 import android.view.View;
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
@@ -58,5 +59,11 @@ public class SettingsActivity extends PreferenceActivity {
 
     public void performBack(View view) {
         super.onBackPressed();
+    }
+
+    public void enterAccessibilityPage(View view) {
+        Intent mAccessibleIntent =
+                new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+        startActivity(mAccessibleIntent);
     }
 }
