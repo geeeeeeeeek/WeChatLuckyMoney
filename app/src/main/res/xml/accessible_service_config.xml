@@ -6,6 +6,6 @@
     android:accessibilityFeedbackType="feedbackAllMask"
     android:packageNames="com.tencent.mm"
     android:notificationTimeout="10"
-    android:settingsActivity="xyz.monkeytong.hongbao.MainActivity"
+    android:settingsActivity="xyz.monkeytong.hongbao.activities.MainActivity"
     android:accessibilityFlags="flagDefault"
     android:canRetrieveWindowContent="true"/>

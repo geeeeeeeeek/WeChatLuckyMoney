@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="去Github关注项目进展"
+            android:text="前往Github关注项目进展"
             android:id="@+id/textView2" android:layout_below="@+id/textView3"
             android:layout_centerHorizontal="true" android:clickable="true" android:onClick="openGithub"
             android:layout_marginTop="3dp" android:textColor="#999999"/>
