@@ -35,9 +35,10 @@
         <CheckBoxPreference
                 android:key="pref_etc_log"
                 android:title="开启红包日志"
-                android:summary="记录我抢到的红包"
+                android:enabled="false"
+                android:summary="记录我抢到的红包,敬请期待"
                 android:layout="@layout/preference_checkbox"
-                android:defaultValue="true"/>
+                android:defaultValue="false"/>
         <Preference
                 android:key="pref_etc_check_update"
                 android:title="检查新版本"

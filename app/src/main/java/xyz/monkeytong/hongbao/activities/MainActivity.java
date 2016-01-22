@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import xyz.monkeytong.hongbao.R;
+import xyz.monkeytong.hongbao.utils.UpdateTask;
 
 
 import java.lang.reflect.Field;
@@ -86,6 +87,9 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         updateServiceStatus();
+
+        // Check for update
+        new UpdateTask(this, false).update();
     }
 
     @Override

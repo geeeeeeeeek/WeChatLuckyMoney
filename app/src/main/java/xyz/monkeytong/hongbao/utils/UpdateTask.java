@@ -23,10 +23,13 @@ import java.io.IOException;
  */
 public class UpdateTask extends AsyncTask<String, String, String> {
     private Context context;
+    private boolean isUpdateOnRelease;
+    public static final String updateUrl = "https://api.github.com/repos/geeeeeeeeek/WeChatLuckyMoney/releases/latest";
 
-    public UpdateTask(Context context) {
-        Toast.makeText(context, "正在检查新版本……", Toast.LENGTH_SHORT).show();
+    public UpdateTask(Context context, boolean needUpdate) {
         this.context = context;
+        this.isUpdateOnRelease = needUpdate;
+        if (this.isUpdateOnRelease) Toast.makeText(context, "正在检查新版本……", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -67,8 +70,13 @@ public class UpdateTask extends AsyncTask<String, String, String> {
             boolean isPreRelease = release.getBoolean("prerelease");
             if (!isPreRelease && version.compareToIgnoreCase(latestVersion) >= 0) {
                 // Your version is ahead of or same as the latest.
-                Toast.makeText(context, R.string.update_already_latest, Toast.LENGTH_SHORT).show();
+                if (this.isUpdateOnRelease)
+                    Toast.makeText(context, R.string.update_already_latest, Toast.LENGTH_SHORT).show();
             } else {
+                if (!isUpdateOnRelease) {
+                    Toast.makeText(context, context.getString(R.string.update_new_seg1) + latestVersion + context.getString(R.string.update_new_seg3), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 // Need update.
                 String downloadUrl = release.getJSONArray("assets").getJSONObject(0).getString("browser_download_url");
 
@@ -80,7 +88,11 @@ public class UpdateTask extends AsyncTask<String, String, String> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, R.string.update_error, Toast.LENGTH_LONG).show();
+            if (this.isUpdateOnRelease) Toast.makeText(context, R.string.update_error, Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void update() {
+        super.execute(updateUrl);
     }
 }

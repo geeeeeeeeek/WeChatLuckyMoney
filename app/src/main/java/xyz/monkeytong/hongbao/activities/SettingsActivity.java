@@ -12,6 +12,7 @@ import xyz.monkeytong.hongbao.utils.UpdateTask;
 
 /**
  * Created by Zhongyi on 1/19/16.
+ * Settings page.
  */
 public class SettingsActivity extends PreferenceActivity {
     @Override
@@ -27,7 +28,7 @@ public class SettingsActivity extends PreferenceActivity {
         Preference updatePref = findPreference("pref_etc_check_update");
         updatePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                new UpdateTask(getApplicationContext()).execute("https://api.github.com/repos/geeeeeeeeek/WeChatLuckyMoney/releases/latest");
+                new UpdateTask(getApplicationContext(),true).update();
                 return false;
             }
         });
