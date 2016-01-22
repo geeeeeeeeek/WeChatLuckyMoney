@@ -10,9 +10,9 @@
 
 ## 最新版本
 
-[**v1.1 (2015.10.28)**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.1)
+[**v1.4 (2016.01.16)**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.4)
 
-1. 服务运行时防止息屏。
+1. 修复了微信新版(6.3.9.48_refecd3e)红包UI调整导致的功能失效。
 
 ## 使用方法
 
@@ -24,10 +24,10 @@
 
 [dev分支文档](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README.md)中详细介绍了实现。
 
-## 版权说明
+## **版权及免责声明**
 
 本项目源自小米今年秋季发布会时演示的抢红包测试[源码](https://github.com/XiaoMi/LuckyMoneyTool)。stable分支基于此代码继续开发，dev分支重写了几乎所有的逻辑代码。应用的包名com.miui.hongbao未变。
 
-由于插件可能会改变自然的微信交互方式，这份代码仅可用于教学目的，不得更改后用于其他用途。
+由于插件可能会改变自然的微信交互方式，这份代码仅可用于教学目的，不得更改后用于其他用途。对于使用插件时可能发生的任何情形，由使用者自行承担，包括但不限于“禁用红包功能”、“微信封号”。
 
-项目使用MIT许可证。在上述前提下，你可以将代码用于任何用途。
+项目使用MIT许可证。在理解可能的风险后，你可以将代码用于任何用途。

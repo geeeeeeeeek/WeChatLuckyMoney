@@ -12,9 +12,9 @@ The following doc is targeted at **stable branch**.
 
 ## Newest Version
 
-[**v1.1 (2015.10.28)**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.1)
+[**v1.4 (2016.01.16)**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.4)
 
-1. Keep screen on when service is running.
+1. Fix failure caused by new WeChat Hongbao UI. Related issue [#41](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues/41).
 
 ## Usage
 
@@ -30,4 +30,4 @@ The following doc is targeted at **stable branch**.
 
 The project was heavily inspired by an [app](https://github.com/XiaoMi/LuckyMoneyTool) demonstrated on XiaoMi's news conference for its phone product this autumn. The stable branch is developed after this, while the dev branch rewrites nearly all the code. The package name remains unchanged as `com.miui.hongbao`.
 
-**Note that:** This app might alter the natural way of interactions with WeChat. Thus the code is restricted to educational use only. You are *not* allowed to use it for other purposes.
+**Note that:** This app might alter the natural way of interactions with WeChat. Thus the code is restricted to educational use only. You are *not* allowed to use it for other purposes. You must understand and be fully responsiable of the potential risks of using the app, including "being forbidden to use WeChat Lucky Money functionality", etc.
