@@ -1,4 +1,4 @@
-package com.miui.hongbao;
+package xyz.monkeytong.hongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
@@ -6,8 +6,11 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.os.Build;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import xyz.monkeytong.hongbao.utils.HongbaoSignature;
+import xyz.monkeytong.hongbao.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +21,8 @@ public class HongbaoService extends AccessibilityService {
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
 
-    private String lastFetchedHongbaoId = null;
-    private long lastFetchedTime = 0;
+    private String lastContentDescription = "";
+    private HongbaoSignature signature = new HongbaoSignature();
 
     private AccessibilityNodeInfo rootNodeInfo;
 
@@ -32,8 +35,7 @@ public class HongbaoService extends AccessibilityService {
     private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
     private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
 
-    private static final int MAX_CACHE_TOLERANCE = 5000;
-    private boolean mCycle = false;
+    private boolean mMutex = false;
 
 
     /**
@@ -44,25 +46,16 @@ public class HongbaoService extends AccessibilityService {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        // App must be running on service is on
+        if (MainActivity.watchedFlags == null) return;
 
         /* 检测通知消息 */
-        if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED && !mCycle) {
-            /* TODO: 在下一个版本中启用 */
-            /*String tip = event.getText().toString();
-
-            if (!tip.contains(WECHAT_NOTIFICATION_TIP)) return;
-
-            Parcelable parcelable = event.getParcelableData();
-            if (parcelable instanceof Notification) {
-                Notification notification = (Notification) parcelable;
-                try {
-                    notification.contentIntent.send();
-                } catch (PendingIntent.CanceledException e) {
-                    e.printStackTrace();
-                }
-            }*/
-            return;
+        if (!mMutex) {
+            if (MainActivity.watchedFlags.get("pref_watch_notification") && watchNotifications(event)) return;
+            if (MainActivity.watchedFlags.get("pref_watch_list") && watchList(event)) return;
         }
+
+        if (!MainActivity.watchedFlags.get("pref_watch_chat")) return;
 
         this.rootNodeInfo = event.getSource();
 
@@ -75,17 +68,7 @@ public class HongbaoService extends AccessibilityService {
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
-            String id = getHongbaoText(mReceiveNode);
-
-            long now = System.currentTimeMillis();
-
-            if (this.shouldReturn(id, now - lastFetchedTime))
-                return;
-
-            mCycle = true;
-
-            lastFetchedHongbaoId = id;
-            lastFetchedTime = now;
+            mMutex = true;
 
             AccessibilityNodeInfo cellNode = mReceiveNode;
             cellNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
@@ -102,9 +85,47 @@ public class HongbaoService extends AccessibilityService {
 
         if (mNeedBack) {
             performGlobalAction(GLOBAL_ACTION_BACK);
-            mCycle = false;
+            mMutex = false;
             mNeedBack = false;
         }
+    }
+
+    private boolean watchList(AccessibilityEvent event) {
+        // Not a message
+        if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED || event.getSource() == null)
+            return false;
+
+        List<AccessibilityNodeInfo> nodes = event.getSource().findAccessibilityNodeInfosByText(WECHAT_NOTIFICATION_TIP);
+        if (!nodes.isEmpty()) {
+            AccessibilityNodeInfo nodeToClick = nodes.get(0);
+            CharSequence contentDescription = nodeToClick.getContentDescription();
+            if (contentDescription != null && !lastContentDescription.equals(contentDescription)) {
+                nodeToClick.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                lastContentDescription = contentDescription.toString();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean watchNotifications(AccessibilityEvent event) {
+        // Not a notification
+        if (event.getEventType() != AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) return false;
+
+        // Not a hongbao
+        String tip = event.getText().toString();
+        if (!tip.contains(WECHAT_NOTIFICATION_TIP)) return true;
+
+        Parcelable parcelable = event.getParcelableData();
+        if (parcelable instanceof Notification) {
+            Notification notification = (Notification) parcelable;
+            try {
+                notification.contentIntent.send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 
     @Override
@@ -124,10 +145,11 @@ public class HongbaoService extends AccessibilityService {
                 WECHAT_VIEW_OTHERS_CH, WECHAT_VIEW_SELF_CH});
 
         if (!nodes1.isEmpty()) {
-            String nodeId = Integer.toHexString(System.identityHashCode(this.rootNodeInfo));
-            if (!nodeId.equals(lastFetchedHongbaoId)) {
+            AccessibilityNodeInfo targetNode = nodes1.get(nodes1.size() - 1);
+            if (this.signature.generateSignature(targetNode)) {
                 mLuckyMoneyReceived = true;
-                mReceiveNode = nodes1.get(nodes1.size() - 1);
+                mReceiveNode = targetNode;
+                Log.d("sig", this.signature.toString());
             }
             return;
         }
@@ -189,24 +211,5 @@ public class HongbaoService extends AccessibilityService {
             if (!nodes.isEmpty()) return nodes;
         }
         return new ArrayList<>();
-    }
-
-    /**
-     * 判断是否返回,减少点击次数
-     * 现在的策略是当红包文本和缓存不一致时,戳
-     * 文本一致且间隔大于MAX_CACHE_TOLERANCE时,戳
-     *
-     * @param id       红包id
-     * @param duration 红包到达与缓存的间隔
-     * @return 是否应该返回
-     */
-    private boolean shouldReturn(String id, long duration) {
-        // ID为空
-        if (id == null) return true;
-
-        // 名称和缓存不一致
-        if (duration < MAX_CACHE_TOLERANCE && id.equals(lastFetchedHongbaoId)) return true;
-
-        return false;
     }
 }

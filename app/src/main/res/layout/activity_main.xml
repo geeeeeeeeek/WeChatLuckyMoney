@@ -1,36 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                android:layout_height="match_parent" tools:context=".MainActivity">
+                android:layout_height="match_parent" tools:context=".MainActivity"
+                android:background="#faf6f1">
+    <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:id="@+id/main_actiob_bar_placeholder" android:layout_alignParentTop="true"
+            android:background="#d65645" android:layout_alignTop="@+id/textView"/>
     <TextView
             android:layout_width="fill_parent"
-            android:layout_height="68dp"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textView" android:background="#e53935" android:text="微信红包" android:textColor="#fff"
-            android:gravity="bottom|center_horizontal" android:paddingBottom="12dp"
-            android:elevation="8dp"/>
+            android:id="@+id/textView" android:background="@mipmap/bg_action_bar" android:text="微信红包" android:textColor="#fee1b4"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="26dp" android:autoText="false"/>
     <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/imageView" android:src="@mipmap/github"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:id="@+id/imageView2"
+            android:src="@mipmap/ic_settings"
+            android:padding="10dp"
+            android:onClick="openSettings"
+            android:layout_alignRight="@+id/textView" android:layout_below="@+id/main_actiob_bar_placeholder"
+            android:layout_marginRight="6dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView" android:src="@mipmap/open"
             android:scaleType="centerInside"
             android:layout_above="@+id/textView3"
-            android:layout_centerHorizontal="true" android:onClick="openGithub" android:clickable="true"/>
+            android:layout_centerHorizontal="true" android:onClick="openGithub" android:clickable="true"
+    />
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:text="stable - 稳定版"
+            android:text="稳定版 v2.0"
             android:id="@+id/textView3"
-            android:layout_centerVertical="true" android:gravity="center" android:onClick="openGithub"
-            android:clickable="true"/>
+            android:gravity="center" android:onClick="openGithub"
+            android:clickable="true" android:layout_centerInParent="true" android:textColor="#c5a45e"
+            android:paddingTop="6dp" android:paddingBottom="1dp"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="去Github关注项目进展"
+            android:text="前往Github关注项目进展"
             android:id="@+id/textView2" android:layout_below="@+id/textView3"
             android:layout_centerHorizontal="true" android:clickable="true" android:onClick="openGithub"
-            android:layout_marginTop="3dp"/>
+            android:layout_marginTop="3dp" android:textColor="#999999"/>
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -38,16 +55,16 @@
             android:text="https://github.com/geeeeeeeeek/WeChatLuckyMoney"
             android:id="@+id/github" android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="20dp" android:layout_marginTop="15dp"
-            android:textColor="#2196f3" android:clickable="true" android:onClick="openGithub"/>
+            android:layout_alignParentBottom="true" android:layout_marginBottom="20dp" android:layout_marginTop="20dp"
+            android:textColor="#5272ae" android:clickable="true" android:onClick="openGithub"/>
     <Button
             android:id="@+id/button_accessible"
             android:text="@string/service_name"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:onClick="onButtonClicked" android:layout_alignParentBottom="false"
-            android:background="#fdfdfd" android:textColor="#ff666666"
+            android:background="#24e2b379" android:textColor="#c5a45e"
             style="?android:attr/borderlessButtonStyle"
             android:layout_marginRight="16dp" android:layout_marginLeft="16dp" android:layout_above="@+id/github"
-            />
+            android:textSize="20dp"/>
 </RelativeLayout>

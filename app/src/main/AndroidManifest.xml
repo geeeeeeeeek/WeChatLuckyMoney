@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.miui.hongbao" >
-    <uses-sdk android:minSdkVersion="18"
-              android:targetSdkVersion="22"/>
+          package="xyz.monkeytong.hongbao">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name">
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Base.Theme.AppCompat.Light">
+                android:name=".activities.MainActivity"
+                android:label="@string/app_name"
+                android:theme="@style/Base.Theme.AppCompat.Light">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".activities.SettingsActivity"
+                  android:theme="@style/Base.Theme.AppCompat.Light">
+        </activity>
         <service
-            android:name=".HongbaoService"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+                android:name=".services.HongbaoService"
+                android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService"/>
             </intent-filter>

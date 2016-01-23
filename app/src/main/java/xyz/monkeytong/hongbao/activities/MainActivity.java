@@ -1,27 +1,30 @@
-package com.miui.hongbao;
+package xyz.monkeytong.hongbao.activities;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import xyz.monkeytong.hongbao.R;
+import xyz.monkeytong.hongbao.utils.UpdateTask;
 
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.*;
 
 public class MainActivity extends Activity {
+    public static Map<String, Boolean> watchedFlags = new HashMap<>();
     private final Intent mAccessibleIntent =
             new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
@@ -35,6 +38,24 @@ public class MainActivity extends Activity {
 
         handleMIUIStatusBar();
         updateServiceStatus();
+
+        watchFlagsFromPreference();
+    }
+
+    private void watchFlagsFromPreference() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                Boolean changedValue = sharedPreferences.getBoolean(key, false);
+                MainActivity.watchedFlags.put(key, changedValue);
+            }
+        });
+
+        List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat");
+        for (String flag : flagsList) {
+            MainActivity.watchedFlags.put(flag, sharedPreferences.getBoolean(flag, false));
+        }
     }
 
     /**
@@ -53,6 +74,10 @@ public class MainActivity extends Activity {
 
             Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
             extraFlagField.invoke(window, tranceFlag, tranceFlag);
+
+            ImageView placeholder = (ImageView) findViewById(R.id.main_actiob_bar_placeholder);
+            int placeholderHeight = getStatusBarHeight();
+            placeholder.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, placeholderHeight));
         } catch (Exception e) {
             // 考虑到大多数非MIUI ROM都会打印出错误栈,不太优雅,而且一点卵用也没有,于是删了
         }
@@ -62,11 +87,13 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         updateServiceStatus();
+
+        // Check for update
+        new UpdateTask(this, false).update();
     }
 
     @Override
     protected void onDestroy() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onDestroy();
     }
 
@@ -85,12 +112,9 @@ public class MainActivity extends Activity {
         }
 
         if (serviceEnabled) {
-            switchPlugin.setText("关闭插件");
-            // Prevent screen from dimming
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            switchPlugin.setText(R.string.service_off);
         } else {
-            switchPlugin.setText("开启插件");
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            switchPlugin.setText(R.string.service_on);
         }
     }
 
@@ -101,5 +125,16 @@ public class MainActivity extends Activity {
     public void openGithub(View view) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/geeeeeeeeek/WeChatLuckyMoney"));
         startActivity(browserIntent);
+    }
+
+    public void openSettings(View view) {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
+
+    public int getStatusBarHeight() {
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) return getResources().getDimensionPixelSize(resourceId);
+        return 0;
     }
 }
