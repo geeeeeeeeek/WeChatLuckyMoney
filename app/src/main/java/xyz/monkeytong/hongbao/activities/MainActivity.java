@@ -4,11 +4,10 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.accessibility.AccessibilityManager;
@@ -18,13 +17,11 @@ import android.widget.RelativeLayout;
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.List;
 
 public class MainActivity extends Activity {
-    public static Map<String, Boolean> watchedFlags = new HashMap<>();
     private final Intent mAccessibleIntent =
             new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
@@ -39,23 +36,11 @@ public class MainActivity extends Activity {
         handleMIUIStatusBar();
         updateServiceStatus();
 
-        watchFlagsFromPreference();
+        explicitlyLoadPreferences();
     }
 
-    private void watchFlagsFromPreference() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Boolean changedValue = sharedPreferences.getBoolean(key, false);
-                MainActivity.watchedFlags.put(key, changedValue);
-            }
-        });
-
-        List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat");
-        for (String flag : flagsList) {
-            MainActivity.watchedFlags.put(flag, sharedPreferences.getBoolean(flag, false));
-        }
+    private void explicitlyLoadPreferences() {
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
     /**
