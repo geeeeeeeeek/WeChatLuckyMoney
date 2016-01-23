@@ -4,16 +4,20 @@ import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 import xyz.monkeytong.hongbao.activities.MainActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class HongbaoService extends AccessibilityService {
@@ -37,6 +41,7 @@ public class HongbaoService extends AccessibilityService {
 
     private boolean mMutex = false;
 
+    public static Map<String, Boolean> watchedFlags = new HashMap<>();
 
     /**
      * AccessibilityEvent的回调方法
@@ -46,16 +51,15 @@ public class HongbaoService extends AccessibilityService {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        // App must be running on service is on
-        if (MainActivity.watchedFlags == null) return;
+        if (watchedFlags == null) return;
 
         /* 检测通知消息 */
         if (!mMutex) {
-            if (MainActivity.watchedFlags.get("pref_watch_notification") && watchNotifications(event)) return;
-            if (MainActivity.watchedFlags.get("pref_watch_list") && watchList(event)) return;
+            if (watchedFlags.get("pref_watch_notification") && watchNotifications(event)) return;
+            if (watchedFlags.get("pref_watch_list") && watchList(event)) return;
         }
 
-        if (!MainActivity.watchedFlags.get("pref_watch_chat")) return;
+        if (!watchedFlags.get("pref_watch_chat")) return;
 
         this.rootNodeInfo = event.getSource();
 
@@ -211,5 +215,27 @@ public class HongbaoService extends AccessibilityService {
             if (!nodes.isEmpty()) return nodes;
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public void onServiceConnected() {
+        super.onServiceConnected();
+        watchFlagsFromPreference();
+    }
+
+    private void watchFlagsFromPreference() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                Boolean changedValue = sharedPreferences.getBoolean(key, false);
+                watchedFlags.put(key, changedValue);
+            }
+        });
+
+        List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat");
+        for (String flag : flagsList) {
+            watchedFlags.put(flag, sharedPreferences.getBoolean(flag, false));
+        }
     }
 }
