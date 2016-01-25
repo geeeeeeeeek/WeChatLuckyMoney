@@ -1,13 +1,29 @@
 language: android
+sudo: false
 jdk: oraclejdk7
-
+env:
+  matrix:
+  - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a armeabi
 android:
   components:
-    # The BuildTools version used by your project
-    - build-tools-22.0.1
-
-    # The SDK version used to compile your project
-    - android-22
-
-    # Additional components
-    - extra-android-m2repository
+  - platform-tools
+  - build-tools-21.1.1
+  - android-L
+  - extra
+before_install:
+#please use travis to config your sign
+before_script:
+- echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+- emulator -avd test -no-skin -no-audio -no-window &
+- adb wait-for-device
+- adb shell input keyevent 82 &
+- gem install fir-cli
+script:
+- ./gradlew assembleRelease
+deploy:
+  provider: releases
+  #api_key:please use travis to config api key to upload release
+  file: app/build/outputs/apk/app-release.apk
+  skip_cleanup: true
+  on:
+    tags: true
