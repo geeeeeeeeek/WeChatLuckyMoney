@@ -1,5 +1,7 @@
 # 微信抢红包插件 [English Version](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
 
+[![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=workflow-automation)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)[![Issue Count](https://codeclimate.com/github/geeeeeeeeek/WeChatLuckyMoney/badges/issue_count.svg)](https://codeclimate.com/github/geeeeeeeeek/WeChatLuckyMoney)
+
 这个Android插件可以帮助你在微信群聊抢红包时战无不胜。当检测到红包时，插件会自动点击屏幕，人工点击的速度无法比拟。
 
 你正在查看的是[**stable分支**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/stable)，前往[**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/)下载最新可用版本。根据目前的测试，稳定版本抢到红包的概率为100%。
