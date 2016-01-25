@@ -17,7 +17,6 @@ before_script:
 - emulator -avd test -no-skin -no-audio -no-window &
 - adb wait-for-device
 - adb shell input keyevent 82 &
-- gem install fir-cli
 script:
 - ./gradlew assembleRelease
 deploy:
