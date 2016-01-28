@@ -11,7 +11,7 @@
 
 一个帮助你在微信抢红包时战无不胜的Android应用。自动检测并且拆开红包，速度超乎你的想象。
 
-前往[**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/)下载最新版本。已下载用户可直接在设置里面更新
+前往[**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/)下载最新版本。已下载用户可直接在设置里面更新。
 
 ### 特性
 
