@@ -4,10 +4,9 @@ import android.accessibilityservice.AccessibilityService;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+import android.content.ComponentName;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
-import xyz.monkeytong.hongbao.activities.MainActivity;
 
 import java.util.*;
 
@@ -38,6 +36,7 @@ public class HongbaoService extends AccessibilityService {
     private static final String WECHAT_VIEW_SELF_CH = "查看红包";
     private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
     private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
+    private final static String WECHAT_LUCKMONEY_ACTIVITY = "luckymoney";
 
     private boolean mMutex = false;
 
@@ -59,6 +58,9 @@ public class HongbaoService extends AccessibilityService {
             if (watchedFlags.get("pref_watch_list") && watchList(event)) return;
         }
 
+
+
+
         if (!watchedFlags.get("pref_watch_chat")) return;
 
         this.rootNodeInfo = event.getSource();
@@ -68,7 +70,7 @@ public class HongbaoService extends AccessibilityService {
         mReceiveNode = null;
         mUnpackNode = null;
 
-        checkNodeInfo();
+        checkNodeInfo(event);
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
@@ -91,6 +93,28 @@ public class HongbaoService extends AccessibilityService {
             performGlobalAction(GLOBAL_ACTION_BACK);
             mMutex = false;
             mNeedBack = false;
+        }
+    }
+
+
+    /**
+     * 获取当前activity名称
+     * @param event
+     * @return
+     */
+    private String getCurrentActivity(AccessibilityEvent event) {
+
+        ComponentName componentName = new ComponentName(
+                event.getPackageName().toString(),
+                event.getClassName().toString()
+        );
+
+        try {
+            getPackageManager().getActivityInfo(componentName, 0);
+            return componentName.flattenToShortString();
+
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
         }
     }
 
@@ -144,7 +168,7 @@ public class HongbaoService extends AccessibilityService {
      * 检查节点信息
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void checkNodeInfo() {
+    private void checkNodeInfo(AccessibilityEvent event) {
         if (this.rootNodeInfo == null) return;
 
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
@@ -162,9 +186,8 @@ public class HongbaoService extends AccessibilityService {
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3 && this.rootNodeInfo.getChildCount() < 10) ? this.rootNodeInfo.getChild(3) : null;
-
-        if (node2 != null && node2.getClassName().equals("android.widget.Button")) {
+        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3 && this.rootNodeInfo.getChildCount() < 10 ) ? this.rootNodeInfo.getChild(3) : null;
+        if (node2 != null && node2.getClassName().equals("android.widget.Button") && getCurrentActivity(event).contains(WECHAT_LUCKMONEY_ACTIVITY)) {
             mUnpackNode = node2;
             mNeedUnpack = true;
             return;
