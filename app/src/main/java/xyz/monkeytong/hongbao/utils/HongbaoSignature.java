@@ -61,4 +61,11 @@ public class HongbaoSignature {
         }
         return result;
     }
+
+    public void cleanSignature(){
+        this.content = "";
+        this.time = "";
+        this.sender ="";
+    }
+
 }

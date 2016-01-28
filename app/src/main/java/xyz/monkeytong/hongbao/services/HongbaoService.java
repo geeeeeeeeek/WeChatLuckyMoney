@@ -124,6 +124,9 @@ public class HongbaoService extends AccessibilityService {
         if (parcelable instanceof Notification) {
             Notification notification = (Notification) parcelable;
             try {
+                /* 清除signature,避免进入会话后误判*/
+                signature.cleanSignature();
+
                 notification.contentIntent.send();
             } catch (PendingIntent.CanceledException e) {
                 e.printStackTrace();
