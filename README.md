@@ -2,11 +2,16 @@
 
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/built-by-codebabes.svg)](http://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com) 
 
-[![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney) [**English README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
+### CI STATUS
+
+[![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)
+
+### English version(未更新)
+[**English README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
 
 一个帮助你在微信抢红包时战无不胜的Android应用。自动检测并且拆开红包，速度超乎你的想象。
 
-前往[**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/)下载最新版本。
+前往[**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/)下载最新版本。已下载用户可直接在设置里面更新
 
 ### 特性
 
@@ -24,7 +29,7 @@
   
 - **轻量、安全、值得信赖**
   
-  安装包仅1M，无需ROOT，开箱即用。代码公开透明，活跃的社区讨论，数万用户下载，值得你的信赖。
+  安装包仅1M，无需ROOT，下载即用。代码公开透明，活跃的社区讨论，数万用户下载，值得你的信赖。
 
 ### 使用方法
 
