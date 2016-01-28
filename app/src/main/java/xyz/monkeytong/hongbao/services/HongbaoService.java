@@ -162,7 +162,8 @@ public class HongbaoService extends AccessibilityService {
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3) ? this.rootNodeInfo.getChild(3) : null;
+        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3 && this.rootNodeInfo.getChildCount() < 10) ? this.rootNodeInfo.getChild(3) : null;
+
         if (node2 != null && node2.getClassName().equals("android.widget.Button")) {
             mUnpackNode = node2;
             mNeedUnpack = true;
