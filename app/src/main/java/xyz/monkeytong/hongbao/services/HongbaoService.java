@@ -13,12 +13,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 
 import java.util.*;
 
 
-public class HongbaoService extends AccessibilityService {
+public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
     private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
@@ -137,7 +138,8 @@ public class HongbaoService extends AccessibilityService {
 
     private boolean watchNotifications(AccessibilityEvent event) {
         // Not a notification
-        if (event.getEventType() != AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) return false;
+        if (event.getEventType() != AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED)
+            return false;
 
         // Not a hongbao
         String tip = event.getText().toString();
@@ -231,17 +233,18 @@ public class HongbaoService extends AccessibilityService {
 
     private void watchFlagsFromPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Boolean changedValue = sharedPreferences.getBoolean(key, false);
-                watchedFlags.put(key, changedValue);
-            }
-        });
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat");
         for (String flag : flagsList) {
             watchedFlags.put(flag, sharedPreferences.getBoolean(flag, false));
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        //监听设置选项的变化
+        Boolean changedValue = sharedPreferences.getBoolean(key, false);
+        watchedFlags.put(key, changedValue);
     }
 }
