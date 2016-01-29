@@ -2,6 +2,7 @@ package xyz.monkeytong.hongbao.activities;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,12 +15,14 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import xyz.monkeytong.hongbao.R;
-import xyz.monkeytong.hongbao.utils.UpdateTask;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+
+import xyz.monkeytong.hongbao.R;
+import xyz.monkeytong.hongbao.utils.PrefUtil;
+import xyz.monkeytong.hongbao.utils.UpdateTask;
 
 public class MainActivity extends Activity {
     private final Intent mAccessibleIntent =
@@ -37,6 +40,18 @@ public class MainActivity extends Activity {
         updateServiceStatus();
 
         explicitlyLoadPreferences();
+
+        showDialogIfFirstOpened();
+    }
+
+    private void showDialogIfFirstOpened() {
+        if (PrefUtil.isFirstOpened(this)) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.first_open_dialog_title)
+                    .setMessage(R.string.first_open_dialog_content)
+                    .show();
+            PrefUtil.setOpened(this);
+        }
     }
 
     private void explicitlyLoadPreferences() {
