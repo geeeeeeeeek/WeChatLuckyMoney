@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import xyz.monkeytong.hongbao.R;
+import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
 import java.lang.reflect.Field;
@@ -73,8 +74,8 @@ public class MainActivity extends Activity {
         super.onResume();
         updateServiceStatus();
 
-        // Check for update
-        new UpdateTask(this, false).update();
+        // Check for update when WIFI is connected or on first time.
+        if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0) new UpdateTask(this, false).update();
     }
 
     @Override
