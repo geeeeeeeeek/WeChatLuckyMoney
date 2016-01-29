@@ -35,12 +35,16 @@ public class HongbaoService extends AccessibilityService {
     private static final String WECHAT_EXPIRES_CH = "红包已失效";
     private static final String WECHAT_VIEW_SELF_CH = "查看红包";
     private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
-    private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
-    private final static String WECHAT_LUCKMONEY_ACTIVITY = "luckymoney";
+    private static final String WECHAT_NOTIFICATION_TIP = "[微信红包]";
+    private static final String WECHAT_LUCKMONEY_RECEIVE_ACTIVITY = "LuckyMoneyReceiveUI";
+    private static final String WECHAT_LUCKMONEY_DETAIL_ACTIVITY = "LuckyMoneyDetailUI";
+    private static final String WECHAT_LUCKMONEY_GENERAL_ACTIVITY = "LauncherUI";
 
     private boolean mMutex = false;
 
     public static Map<String, Boolean> watchedFlags = new HashMap<>();
+
+    private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
 
     /**
      * AccessibilityEvent的回调方法
@@ -52,14 +56,13 @@ public class HongbaoService extends AccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (watchedFlags == null) return;
 
+        setCurrentActivityName(event);
+
         /* 检测通知消息 */
         if (!mMutex) {
             if (watchedFlags.get("pref_watch_notification") && watchNotifications(event)) return;
             if (watchedFlags.get("pref_watch_list") && watchList(event)) return;
         }
-
-
-
 
         if (!watchedFlags.get("pref_watch_chat")) return;
 
@@ -70,7 +73,7 @@ public class HongbaoService extends AccessibilityService {
         mReceiveNode = null;
         mUnpackNode = null;
 
-        checkNodeInfo(event);
+        checkNodeInfo();
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
@@ -96,25 +99,21 @@ public class HongbaoService extends AccessibilityService {
         }
     }
 
-
-    /**
-     * 获取当前activity名称
-     * @param event
-     * @return
-     */
-    private String getCurrentActivity(AccessibilityEvent event) {
-
-        ComponentName componentName = new ComponentName(
-                event.getPackageName().toString(),
-                event.getClassName().toString()
-        );
+    private void setCurrentActivityName(AccessibilityEvent event) {
+        if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            return;
+        }
 
         try {
-            getPackageManager().getActivityInfo(componentName, 0);
-            return componentName.flattenToShortString();
+            ComponentName componentName = new ComponentName(
+                    event.getPackageName().toString(),
+                    event.getClassName().toString()
+            );
 
+            getPackageManager().getActivityInfo(componentName, 0);
+            currentActivityName = componentName.flattenToShortString();
         } catch (PackageManager.NameNotFoundException e) {
-            return "";
+            currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
         }
     }
 
@@ -168,14 +167,14 @@ public class HongbaoService extends AccessibilityService {
      * 检查节点信息
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void checkNodeInfo(AccessibilityEvent event) {
+    private void checkNodeInfo() {
         if (this.rootNodeInfo == null) return;
 
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
         List<AccessibilityNodeInfo> nodes1 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
                 WECHAT_VIEW_OTHERS_CH, WECHAT_VIEW_SELF_CH});
 
-        if (!nodes1.isEmpty()) {
+        if (!nodes1.isEmpty() && currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY)) {
             AccessibilityNodeInfo targetNode = nodes1.get(nodes1.size() - 1);
             if (this.signature.generateSignature(targetNode)) {
                 mLuckyMoneyReceived = true;
@@ -186,15 +185,15 @@ public class HongbaoService extends AccessibilityService {
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3 && this.rootNodeInfo.getChildCount() < 10 ) ? this.rootNodeInfo.getChild(3) : null;
-        if (node2 != null && "android.widget.Button".equals(node2.getClassName()) && getCurrentActivity(event).contains(WECHAT_LUCKMONEY_ACTIVITY)) {
+        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3) ? this.rootNodeInfo.getChild(3) : null;
+        if (node2 != null && "android.widget.Button".equals(node2.getClassName()) && currentActivityName.contains(WECHAT_LUCKMONEY_RECEIVE_ACTIVITY)) {
             mUnpackNode = node2;
             mNeedUnpack = true;
             return;
         }
 
         /* 戳开红包，红包已被抢完，遍历节点匹配“红包详情”和“手慢了” */
-        if (mLuckyMoneyPicked) {
+        if (mLuckyMoneyPicked && currentActivityName.contains(WECHAT_LUCKMONEY_DETAIL_ACTIVITY)) {
             List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
                     WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
                     WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN, WECHAT_EXPIRES_CH});
@@ -203,26 +202,6 @@ public class HongbaoService extends AccessibilityService {
                 mLuckyMoneyPicked = false;
             }
         }
-    }
-
-    /**
-     * 将节点对象的id和红包上的内容合并
-     * 用于表示一个唯一的红包
-     *
-     * @param node 任意对象
-     * @return 红包标识字符串
-     */
-    private String getHongbaoText(AccessibilityNodeInfo node) {
-        /* 获取红包上的文本 */
-        String content;
-        try {
-            AccessibilityNodeInfo i = node.getParent().getChild(0);
-            content = i.getText().toString();
-        } catch (NullPointerException npe) {
-            return null;
-        }
-
-        return content;
     }
 
     /**
@@ -247,7 +226,7 @@ public class HongbaoService extends AccessibilityService {
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
-        watchFlagsFromPreference();
+        this.watchFlagsFromPreference();
     }
 
     private void watchFlagsFromPreference() {
