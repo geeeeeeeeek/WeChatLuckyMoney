@@ -14,6 +14,8 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
@@ -31,6 +33,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toast.makeText(MainActivity.this , "只支持Android4.4以上版本手机", Toast.LENGTH_SHORT).show();
         switchPlugin = (Button) findViewById(R.id.button_accessible);
 
         handleMIUIStatusBar();
