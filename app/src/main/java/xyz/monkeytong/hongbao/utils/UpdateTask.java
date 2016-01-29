@@ -22,6 +22,7 @@ import java.io.IOException;
  * Util for app update task.
  */
 public class UpdateTask extends AsyncTask<String, String, String> {
+    public static int count = 0;
     private Context context;
     private boolean isUpdateOnRelease;
     public static final String updateUrl = "https://api.github.com/repos/geeeeeeeeek/WeChatLuckyMoney/releases/latest";
@@ -60,6 +61,7 @@ public class UpdateTask extends AsyncTask<String, String, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         try {
+            count += 1;
             JSONObject release = new JSONObject(result);
 
             // Get current version

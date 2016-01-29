@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.View;
 import xyz.monkeytong.hongbao.R;
@@ -28,7 +29,7 @@ public class SettingsActivity extends PreferenceActivity {
         Preference updatePref = findPreference("pref_etc_check_update");
         updatePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                new UpdateTask(getApplicationContext(),true).update();
+                new UpdateTask(getApplicationContext(), true).update();
                 return false;
             }
         });
@@ -41,6 +42,21 @@ public class SettingsActivity extends PreferenceActivity {
                 browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 SettingsActivity.this.startActivity(browserIntent);
                 return false;
+            }
+        });
+
+        Preference excludeWordsPref = findPreference("pref_watch_exclude_words");
+        String summary = getResources().getString(R.string.pref_watch_exclude_words_summary);
+        String value = PreferenceManager.getDefaultSharedPreferences(this).getString("pref_watch_exclude_words", "");
+        excludeWordsPref.setSummary(summary + ":" + value);
+
+        excludeWordsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                String summary = getResources().getString(R.string.pref_watch_exclude_words_summary);
+                if (o != null) summary += ":" + o.toString();
+                preference.setSummary(summary);
+                return true;
             }
         });
     }

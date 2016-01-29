@@ -35,7 +35,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:text="稳定版 v2.0"
+            android:text="稳定版 v2.1"
             android:id="@+id/textView3"
             android:gravity="center" android:onClick="openGithub"
             android:clickable="true" android:layout_centerInParent="true" android:textColor="#c5a45e"

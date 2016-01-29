@@ -13,13 +13,13 @@
         <CheckBoxPreference
                 android:key="pref_watch_notification"
                 android:title="监视系统通知"
-                android:summary="读取微信新消息通知中的红包"
+                android:summary="读取新消息通知中的红包提示并进入聊天页"
                 android:defaultValue="false"
                 android:layout="@layout/preference_checkbox"/>
         <CheckBoxPreference
                 android:key="pref_watch_list"
                 android:title="监视聊天列表"
-                android:summary="读取微信聊天列表中的红包"
+                android:summary="读取聊天列表中的红包提示并进入聊天页"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
         <CheckBoxPreference
@@ -28,17 +28,21 @@
                 android:summary="读取当前聊天中的红包,拆开红包需要开启该选项"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
+        <EditTextPreference
+                android:key="pref_watch_exclude_words"
+                android:title="屏蔽红包文字"
+                android:summary="@string/pref_watch_exclude_words_summary"
+                android:layout="@layout/preference_checkbox"/>
+        <CheckBoxPreference
+                android:key="pref_watch_on_lock"
+                android:title="息屏抢红包"
+                android:summary="取消锁屏,将极大增加电量消耗,请谨慎使用"
+                android:layout="@layout/preference_checkbox"
+                android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory
             android:title="辅助功能"
             android:layout="@layout/preference_category">
-        <CheckBoxPreference
-                android:key="pref_etc_log"
-                android:title="开启红包日志"
-                android:enabled="false"
-                android:summary="记录我抢到的红包,敬请期待"
-                android:layout="@layout/preference_checkbox"
-                android:defaultValue="false"/>
         <Preference
                 android:key="pref_etc_check_update"
                 android:title="检查新版本"
