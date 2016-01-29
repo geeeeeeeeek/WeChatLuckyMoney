@@ -13,12 +13,13 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 
 import java.util.*;
 
 
-public class HongbaoService extends AccessibilityService {
+public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
     private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
@@ -59,8 +60,6 @@ public class HongbaoService extends AccessibilityService {
         }
 
 
-
-
         if (!watchedFlags.get("pref_watch_chat")) return;
 
         this.rootNodeInfo = event.getSource();
@@ -99,6 +98,7 @@ public class HongbaoService extends AccessibilityService {
 
     /**
      * 获取当前activity名称
+     *
      * @param event
      * @return
      */
@@ -138,7 +138,8 @@ public class HongbaoService extends AccessibilityService {
 
     private boolean watchNotifications(AccessibilityEvent event) {
         // Not a notification
-        if (event.getEventType() != AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) return false;
+        if (event.getEventType() != AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED)
+            return false;
 
         // Not a hongbao
         String tip = event.getText().toString();
@@ -186,7 +187,7 @@ public class HongbaoService extends AccessibilityService {
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3 && this.rootNodeInfo.getChildCount() < 10 ) ? this.rootNodeInfo.getChild(3) : null;
+        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3 && this.rootNodeInfo.getChildCount() < 10) ? this.rootNodeInfo.getChild(3) : null;
         if (node2 != null && node2.getClassName().equals("android.widget.Button") && getCurrentActivity(event).contains(WECHAT_LUCKMONEY_ACTIVITY)) {
             mUnpackNode = node2;
             mNeedUnpack = true;
@@ -252,17 +253,18 @@ public class HongbaoService extends AccessibilityService {
 
     private void watchFlagsFromPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Boolean changedValue = sharedPreferences.getBoolean(key, false);
-                watchedFlags.put(key, changedValue);
-            }
-        });
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat");
         for (String flag : flagsList) {
             watchedFlags.put(flag, sharedPreferences.getBoolean(flag, false));
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        //监听设置选项的变化
+        Boolean changedValue = sharedPreferences.getBoolean(key, false);
+        watchedFlags.put(key, changedValue);
     }
 }
