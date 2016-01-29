@@ -26,8 +26,10 @@ public class PowerUtil {
     }
 
     private void release() {
-        wakeLock.release();
-        keyguardLock.reenableKeyguard();
+        if (wakeLock.isHeld()) {
+            wakeLock.release();
+            keyguardLock.reenableKeyguard();
+        }
     }
 
     public void handleWakeLock(boolean isWake) {
