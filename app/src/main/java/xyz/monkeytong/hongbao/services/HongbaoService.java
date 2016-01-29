@@ -15,6 +15,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
+import xyz.monkeytong.hongbao.utils.PowerUtil;
 
 import java.util.*;
 
@@ -46,6 +47,8 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     public static Map<String, Boolean> watchedFlags = new HashMap<>();
 
     private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
+
+    private PowerUtil powerUtil;
 
     /**
      * AccessibilityEvent的回调方法
@@ -122,7 +125,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         // Not a message
         if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED || event.getSource() == null)
             return false;
-
+        // TODO
         List<AccessibilityNodeInfo> nodes = event.getSource().findAccessibilityNodeInfosByText(WECHAT_NOTIFICATION_TIP);
         if (!nodes.isEmpty()) {
             AccessibilityNodeInfo nodeToClick = nodes.get(0);
@@ -235,9 +238,13 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
-        List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat");
+        this.powerUtil = new PowerUtil(this);
+
+        List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat", "pref_watch_on_lock");
         for (String flag : flagsList) {
-            watchedFlags.put(flag, sharedPreferences.getBoolean(flag, false));
+            Boolean value = sharedPreferences.getBoolean(flag, false);
+            watchedFlags.put(flag, value);
+            if (flag.equals("pref_watch_on_lock")) this.powerUtil.handleWakeLock(value);
         }
     }
 
@@ -246,5 +253,13 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         //监听设置选项的变化
         Boolean changedValue = sharedPreferences.getBoolean(key, false);
         watchedFlags.put(key, changedValue);
+
+        if (key.equals("pref_watch_on_lock")) this.powerUtil.handleWakeLock(changedValue);
+    }
+
+    @Override
+    public void onDestroy() {
+        this.powerUtil.handleWakeLock(false);
+        super.onDestroy();
     }
 }
