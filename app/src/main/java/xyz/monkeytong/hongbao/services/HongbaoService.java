@@ -1,35 +1,28 @@
 package xyz.monkeytong.hongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 import xyz.monkeytong.hongbao.utils.PowerUtil;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
-    private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
-
-    private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
-
-    private String lastContentDescription = "";
-    private HongbaoSignature signature = new HongbaoSignature();
-
-    private AccessibilityNodeInfo rootNodeInfo;
-
     private static final String WECHAT_DETAILS_EN = "Details";
     private static final String WECHAT_DETAILS_CH = "红包详情";
     private static final String WECHAT_BETTER_LUCK_EN = "Better luck next time!";
@@ -41,11 +34,13 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private static final String WECHAT_LUCKMONEY_RECEIVE_ACTIVITY = "LuckyMoneyReceiveUI";
     private static final String WECHAT_LUCKMONEY_DETAIL_ACTIVITY = "LuckyMoneyDetailUI";
     private static final String WECHAT_LUCKMONEY_GENERAL_ACTIVITY = "LauncherUI";
-
-    private boolean mMutex = false;
-
     public static Map<String, Boolean> watchedFlags = new HashMap<>();
-
+    private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
+    private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
+    private String lastContentDescription = "";
+    private HongbaoSignature signature = new HongbaoSignature();
+    private AccessibilityNodeInfo rootNodeInfo;
+    private boolean mMutex = false;
     private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
 
     private PowerUtil powerUtil;
@@ -55,7 +50,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
      *
      * @param event 事件
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (watchedFlags == null) return;
@@ -68,9 +62,12 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             if (watchedFlags.get("pref_watch_list") && watchList(event)) return;
         }
 
-        if (!watchedFlags.get("pref_watch_chat")) return;
+        if (watchedFlags.get("pref_watch_chat")) watchChat();
 
-        this.rootNodeInfo = event.getSource();
+    }
+
+    private void watchChat() {
+        this.rootNodeInfo = getRootInActiveWindow();
 
         if (rootNodeInfo == null) return;
 
@@ -93,13 +90,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             AccessibilityNodeInfo cellNode = mUnpackNode;
             cellNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
             mNeedUnpack = false;
-        }
-
-
-        if (mNeedBack) {
-            performGlobalAction(GLOBAL_ACTION_BACK);
-            mMutex = false;
-            mNeedBack = false;
         }
     }
 
@@ -152,7 +142,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         if (parcelable instanceof Notification) {
             Notification notification = (Notification) parcelable;
             try {
-                /* 清除signature,避免进入会话后误判*/
+                /* 清除signature,避免进入会话后误判 */
                 signature.cleanSignature();
 
                 notification.contentIntent.send();
@@ -171,19 +161,15 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     /**
      * 检查节点信息
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void checkNodeInfo() {
         if (this.rootNodeInfo == null) return;
 
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
-        List<AccessibilityNodeInfo> nodes1 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
-                WECHAT_VIEW_OTHERS_CH, WECHAT_VIEW_SELF_CH});
-
-        if (!nodes1.isEmpty() && currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY)) {
-            AccessibilityNodeInfo targetNode = nodes1.get(nodes1.size() - 1);
-            if (this.signature.generateSignature(targetNode)) {
+        AccessibilityNodeInfo node1 = this.getTheLastNode(WECHAT_VIEW_OTHERS_CH, WECHAT_VIEW_SELF_CH);
+        if (node1 != null && currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY)) {
+            if (this.signature.generateSignature(node1)) {
                 mLuckyMoneyReceived = true;
-                mReceiveNode = targetNode;
+                mReceiveNode = node1;
                 Log.d("sig", this.signature.toString());
             }
             return;
@@ -198,34 +184,49 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         }
 
         /* 戳开红包，红包已被抢完，遍历节点匹配“红包详情”和“手慢了” */
-        if (mLuckyMoneyPicked && currentActivityName.contains(WECHAT_LUCKMONEY_DETAIL_ACTIVITY)) {
-            List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
-                    WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
-                    WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN, WECHAT_EXPIRES_CH});
-            if (!nodes3.isEmpty()) {
-                mNeedBack = true;
-                mLuckyMoneyPicked = false;
-            }
+        boolean hasNodes = this.hasOneOfThoseNodes(
+                WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
+                WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN, WECHAT_EXPIRES_CH);
+        if (hasNodes && (currentActivityName.contains(WECHAT_LUCKMONEY_DETAIL_ACTIVITY)
+                || currentActivityName.contains(WECHAT_LUCKMONEY_RECEIVE_ACTIVITY))) {
+            mMutex = false;
+            mLuckyMoneyPicked = false;
+            performGlobalAction(GLOBAL_ACTION_BACK);
         }
     }
 
-    /**
-     * 批量化执行AccessibilityNodeInfo.findAccessibilityNodeInfosByText(text).
-     * 由于这个操作影响性能,将所有需要匹配的文字一起处理,尽早返回
-     *
-     * @param nodeInfo 窗口根节点
-     * @param texts    需要匹配的字符串们
-     * @return 匹配到的节点数组
-     */
-    private List<AccessibilityNodeInfo> findAccessibilityNodeInfosByTexts(AccessibilityNodeInfo nodeInfo, String[] texts) {
+
+    private boolean hasOneOfThoseNodes(String... texts) {
         for (String text : texts) {
             if (text == null) continue;
 
-            List<AccessibilityNodeInfo> nodes = nodeInfo.findAccessibilityNodeInfosByText(text);
+            List<AccessibilityNodeInfo> nodes = this.rootNodeInfo.findAccessibilityNodeInfosByText(text);
 
-            if (!nodes.isEmpty()) return nodes;
+            if (!nodes.isEmpty()) return true;
         }
-        return new ArrayList<>();
+        return false;
+    }
+
+    private AccessibilityNodeInfo getTheLastNode(String... texts) {
+        int bottom = 0;
+        AccessibilityNodeInfo lastNode = null;
+
+        for (String text : texts) {
+            if (text == null) continue;
+
+            List<AccessibilityNodeInfo> nodes = this.rootNodeInfo.findAccessibilityNodeInfosByText(text);
+
+            if (!nodes.isEmpty()) {
+                AccessibilityNodeInfo node = nodes.get(nodes.size() - 1);
+                Rect bounds = new Rect();
+                node.getBoundsInScreen(bounds);
+                if (bounds.bottom > bottom) {
+                    bottom = bounds.bottom;
+                    lastNode = node;
+                }
+            }
+        }
+        return lastNode;
     }
 
     @Override
