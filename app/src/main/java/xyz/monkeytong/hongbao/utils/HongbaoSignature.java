@@ -9,7 +9,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 public class HongbaoSignature {
     private String sender, content, time;
 
-    public boolean generateSignature(AccessibilityNodeInfo node) {
+    public boolean generateSignature(AccessibilityNodeInfo node, String excludeWords) {
         try {
             /* The hongbao container node. It should be a LinearLayout. By specifying that, we can avoid text messages. */
             AccessibilityNodeInfo hongbaoNode = node.getParent();
@@ -18,6 +18,12 @@ public class HongbaoSignature {
             /* The text in the hongbao. Should mean something. */
             String hongbaoContent = hongbaoNode.getChild(0).getText().toString();
             if (hongbaoContent == null) return false;
+
+            /* Check the user's exclude words list. */
+            String[] excludeWordsArray = excludeWords.split(" +");
+            for (String word : excludeWordsArray) {
+                if (hongbaoContent.contains(word)) return false;
+            }
 
             /* The container node for a piece of message. It should be inside the screen.
                 Or sometimes it will get opened twice while scrolling. */

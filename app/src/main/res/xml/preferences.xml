@@ -28,6 +28,11 @@
                 android:summary="读取当前聊天中的红包,拆开红包需要开启该选项"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
+        <EditTextPreference
+                android:key="pref_watch_exclude_words"
+                android:title="屏蔽红包文字"
+                android:summary="@string/pref_watch_exclude_words_summary"
+                android:layout="@layout/preference_checkbox"/>
         <CheckBoxPreference
                 android:key="pref_watch_on_lock"
                 android:title="息屏抢红包"

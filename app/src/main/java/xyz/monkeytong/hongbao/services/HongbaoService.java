@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Parcelable;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
@@ -34,7 +35,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private static final String WECHAT_LUCKMONEY_RECEIVE_ACTIVITY = "LuckyMoneyReceiveUI";
     private static final String WECHAT_LUCKMONEY_DETAIL_ACTIVITY = "LuckyMoneyDetailUI";
     private static final String WECHAT_LUCKMONEY_GENERAL_ACTIVITY = "LauncherUI";
-    public static Map<String, Boolean> watchedFlags = new HashMap<>();
+    //    public static Map<String, Boolean> watchedFlags = new HashMap<>();
     private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
     private String lastContentDescription = "";
@@ -44,6 +45,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
 
     private PowerUtil powerUtil;
+    private SharedPreferences sharedPreferences;
 
     /**
      * AccessibilityEvent的回调方法
@@ -52,18 +54,17 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
      */
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        if (watchedFlags == null) return;
+        if (sharedPreferences == null) return;
 
         setCurrentActivityName(event);
 
         /* 检测通知消息 */
         if (!mMutex) {
-            if (watchedFlags.get("pref_watch_notification") && watchNotifications(event)) return;
-            if (watchedFlags.get("pref_watch_list") && watchList(event)) return;
+            if (sharedPreferences.getBoolean("pref_watch_notification", false) && watchNotifications(event)) return;
+            if (sharedPreferences.getBoolean("pref_watch_list", false) && watchList(event)) return;
         }
 
-        if (watchedFlags.get("pref_watch_chat")) watchChat();
-
+        if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat();
     }
 
     private void watchChat() {
@@ -167,7 +168,8 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
         AccessibilityNodeInfo node1 = this.getTheLastNode(WECHAT_VIEW_OTHERS_CH, WECHAT_VIEW_SELF_CH);
         if (node1 != null && currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY)) {
-            if (this.signature.generateSignature(node1)) {
+            String excludeWords = sharedPreferences.getString("pref_watch_exclude_words", "");
+            if (this.signature.generateSignature(node1, excludeWords)) {
                 mLuckyMoneyReceived = true;
                 mReceiveNode = node1;
                 Log.d("sig", this.signature.toString());
@@ -236,26 +238,20 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     }
 
     private void watchFlagsFromPreference() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         this.powerUtil = new PowerUtil(this);
-
-        List<String> flagsList = Arrays.asList("pref_watch_notification", "pref_watch_list", "pref_watch_chat", "pref_watch_on_lock");
-        for (String flag : flagsList) {
-            Boolean value = sharedPreferences.getBoolean(flag, false);
-            watchedFlags.put(flag, value);
-            if (flag.equals("pref_watch_on_lock")) this.powerUtil.handleWakeLock(value);
-        }
+        Boolean watchOnLockFlag = sharedPreferences.getBoolean("pref_watch_on_lock", false);
+        this.powerUtil.handleWakeLock(watchOnLockFlag);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        //监听设置选项的变化
-        Boolean changedValue = sharedPreferences.getBoolean(key, false);
-        watchedFlags.put(key, changedValue);
-
-        if (key.equals("pref_watch_on_lock")) this.powerUtil.handleWakeLock(changedValue);
+        if (key.equals("pref_watch_on_lock")) {
+            Boolean changedValue = sharedPreferences.getBoolean(key, false);
+            this.powerUtil.handleWakeLock(changedValue);
+        }
     }
 
     @Override
