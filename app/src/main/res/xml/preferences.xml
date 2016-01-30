@@ -28,17 +28,16 @@
                 android:summary="读取当前聊天中的红包,拆开红包需要开启该选项"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="pref_watch_self"
+                android:title="拆开自己发的红包"
+                android:layout="@layout/preference_checkbox"
+                android:defaultValue="true"/>
         <EditTextPreference
                 android:key="pref_watch_exclude_words"
                 android:title="屏蔽红包文字"
                 android:summary="@string/pref_watch_exclude_words_summary"
                 android:layout="@layout/preference_checkbox"/>
-        <CheckBoxPreference
-                android:key="pref_watch_on_lock"
-                android:title="息屏抢红包"
-                android:summary="取消锁屏,将极大增加电量消耗,请谨慎使用"
-                android:layout="@layout/preference_checkbox"
-                android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory
             android:title="辅助功能"
@@ -46,12 +45,18 @@
         <Preference
                 android:key="pref_etc_check_update"
                 android:title="检查新版本"
-                android:summary="https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases"
+                android:summary="http://dwz.cn/WeChatLuckyMoney"
                 android:layout="@layout/preference_checkbox"/>
         <Preference
                 android:key="pref_etc_issue"
                 android:title="帮助与反馈"
                 android:summary="前往Github项目主页提交issue"
                 android:layout="@layout/preference_checkbox"/>
+        <CheckBoxPreference
+                android:key="pref_watch_on_lock"
+                android:title="息屏抢红包"
+                android:summary="取消锁屏,将极大增加电量消耗,请谨慎使用"
+                android:layout="@layout/preference_checkbox"
+                android:defaultValue="false"/>
     </PreferenceCategory>
 </PreferenceScreen>
