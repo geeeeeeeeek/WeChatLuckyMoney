@@ -1,36 +1,51 @@
-# 微信抢红包插件 [English Version](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
+# 微信红包
 
-[![Build Status](https://travis-ci.org/ray26/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/ray26/WeChatLuckyMoney)
+[![Join the chat at https://gitter.im/geeeeeeeeek/WeChatLuckyMoney](https://badges.gitter.im/geeeeeeeeek/WeChatLuckyMoney.svg)](https://gitter.im/geeeeeeeeek/WeChatLuckyMoney?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-这个Android插件可以帮助你在微信群聊抢红包时战无不胜。当检测到红包时，插件会自动点击屏幕，人工点击的速度无法比拟。
+[![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)[![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com) 
 
-你正在查看的是[**stable分支**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/stable)，前往[**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/)下载最新可用版本。根据目前的测试，稳定版本抢到红包的概率为100%。
+[![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)  [**English README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
 
-> **注：** 你还可以切换到[**dev分支**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/tree/dev)，查看更多实验性的修改。dev分支在stable分支的基础上尝试了大量修改和优化，能使用但无法保证稳定性。
+一个帮助你在微信抢红包时战无不胜的Android应用。自动检测并且拆开红包，速度超乎你的想象。
 
-下面的文档仅针对**stable分支**。
+前往[**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/)下载最新版本。已下载用户可直接在设置里面更新。
 
-## 最新版本
+### 特性
 
-[**v1.3 (2015.12.29)**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v1.3)
+- **监视选项任意组合，满足多样化的使用需求**[[?]](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues/48)
+  
+  提供了`系统通知`/`聊天列表`/`聊天页面`三档选项，无论是想要谨慎不被察觉，还是想要高效志在必得，这个插件如你所愿。
+  
+- **不仅快人一步，红包识别更加智能**
+  
+  多种特征标识，聊天时不再重复点击红包。智能过滤红包关键字[[?]](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues/96)，避免落入“专属红包”、“抢到翻倍”的陷阱。
+  
+- **紧跟微信更新，内置最新春节红包资讯**
+  
+  第一时间适配最新版本微信，应用内即可一键更新。
+  
+- **轻量、安全、值得信赖**
+  
+  安装包仅1M，无需ROOT，下载即用。代码公开透明，活跃的社区讨论，数万用户下载，值得你的信赖。
 
-1. 修复了 红包频繁点击 的bug。
-2. 并入了 从通知栏进入抢红包 的代码(#28)，充分测试后加入下一个版本。
-
-## 使用方法
+### 使用方法
 
 1. 打开『微信红包』应用，开启插件。
-2. 打开『微信』应用，进入有红包的群。
+2. 做你想做的事。
 3. 坐等红包进账。
 
-## 实现原理
+### 实现原理
 
-[dev分支文档](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README.md)中详细介绍了实现。
+请见[技术文档](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/dev/README.md)，注意文档描述的是dev分支(已弃用)的具体实现，而不是stable分支。若有疑问，请在[ISSUES](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues)中提出。
 
-## **版权及免责声明**
+### 更新日志
 
-本项目源自小米今年秋季发布会时演示的抢红包测试[源码](https://github.com/XiaoMi/LuckyMoneyTool)。stable分支基于此代码继续开发，dev分支重写了几乎所有的逻辑代码。应用的包名com.miui.hongbao未变。
+完整的更新日志请见[CHANGELOG](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/CHANGELOG.md)。
 
-由于插件可能会改变自然的微信交互方式，这份代码仅可用于教学目的，不得更改后用于其他用途。对于使用插件时可能发生的任何情形，由使用者自行承担，包括但不限于“禁用红包功能”、“微信封号”。
+### **版权及免责声明**
 
-项目使用MIT许可证。在理解可能的风险后，你可以将代码用于任何用途。
+本项目源自小米去年秋季发布会时演示的MIUI 7抢红包测试[代码](https://github.com/XiaoMi/LuckyMoneyTool)。
+
+插件可能会在一定程度上改变微信的交互方式。使用本项目中包含的代码及其生成物时，使用者自行承担随之而来的各种风险，包括但不限于“禁用红包功能”、“微信封号”。
+
+本项目使用[MIT许可证](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/LICENSE.md)。
