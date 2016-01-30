@@ -71,17 +71,16 @@ public class SettingsActivity extends PreferenceActivity {
         setContentView(R.layout.activity_preferences);
         addPreferencesFromResource(R.xml.preferences);
 
-        try {
-            Window window = this.getWindow();
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
 
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        Window window = this.getWindow();
 
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-            window.setStatusBarColor(0xffd84e43);
-        } catch (Exception e) {
-            // Guai wo lo
-        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        window.setStatusBarColor(0xffd84e43);
+
     }
 
     @Override
