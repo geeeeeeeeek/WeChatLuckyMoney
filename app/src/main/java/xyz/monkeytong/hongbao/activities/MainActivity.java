@@ -14,18 +14,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
+
+import java.util.List;
+
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
-import java.lang.reflect.Method;
-import java.util.List;
+public class MainActivity extends Activity implements AccessibilityManager.AccessibilityStateChangeListener {
 
-public class MainActivity extends Activity {
-    private final Intent mAccessibleIntent =
-            new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-
+    //开关切换按钮
     private Button switchPlugin;
+    //AccessibilityService 管理
+    private AccessibilityManager accessibilityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,13 @@ public class MainActivity extends Activity {
         switchPlugin = (Button) findViewById(R.id.button_accessible);
 
         handleMaterialStatusBar();
-        updateServiceStatus();
 
         explicitlyLoadPreferences();
+
+        //监听AccessibilityService 变化
+        accessibilityManager = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+        accessibilityManager.addAccessibilityStateChangeListener(this);
+        updateServiceStatus();
     }
 
     private void explicitlyLoadPreferences() {
@@ -64,40 +69,22 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateServiceStatus();
 
         // Check for update when WIFI is connected or on first time.
-        if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0) new UpdateTask(this, false).update();
+        if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0)
+            new UpdateTask(this, false).update();
     }
 
     @Override
     protected void onDestroy() {
+        //移除监听服务
+        accessibilityManager.removeAccessibilityStateChangeListener(this);
         super.onDestroy();
     }
 
-    private void updateServiceStatus() {
-        boolean serviceEnabled = false;
-
-        AccessibilityManager accessibilityManager =
-                (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> accessibilityServices =
-                accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
-        for (AccessibilityServiceInfo info : accessibilityServices) {
-            if (info.getId().equals(getPackageName() + "/.services.HongbaoService")) {
-                serviceEnabled = true;
-                break;
-            }
-        }
-
-        if (serviceEnabled) {
-            switchPlugin.setText(R.string.service_off);
-        } else {
-            switchPlugin.setText(R.string.service_on);
-        }
-    }
-
     public void onButtonClicked(View view) {
-        startActivity(mAccessibleIntent);
+        Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+        startActivity(accessibleIntent);
     }
 
     public void openGithub(View view) {
@@ -126,4 +113,35 @@ public class MainActivity extends Activity {
         startActivity(webViewIntent);
     }
 
+    @Override
+    public void onAccessibilityStateChanged(boolean enabled) {
+        updateServiceStatus();
+    }
+
+    /**
+     * 更新当前 HongbaoService 显示状态
+     */
+    private void updateServiceStatus() {
+        if (isServiceEnabled()) {
+            switchPlugin.setText(R.string.service_off);
+        } else {
+            switchPlugin.setText(R.string.service_on);
+        }
+    }
+
+    /**
+     * 获取 HongbaoService 是否启用状态
+     *
+     * @return
+     */
+    private boolean isServiceEnabled() {
+        List<AccessibilityServiceInfo> accessibilityServices =
+                accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        for (AccessibilityServiceInfo info : accessibilityServices) {
+            if (info.getId().equals(getPackageName() + "/.services.HongbaoService")) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
