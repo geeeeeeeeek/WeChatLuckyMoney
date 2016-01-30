@@ -17,11 +17,10 @@ public class PowerUtil {
                 "HongbaoWakelock");
         KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         keyguardLock = km.newKeyguardLock("HongbaoKeyguardLock");
-
     }
 
     private void acquire() {
-        wakeLock.acquire();
+        wakeLock.acquire(1800000);
         keyguardLock.disableKeyguard();
     }
 
