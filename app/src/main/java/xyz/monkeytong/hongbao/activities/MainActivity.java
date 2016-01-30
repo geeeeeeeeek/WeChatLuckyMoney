@@ -18,6 +18,7 @@ import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import im.fir.sdk.FIR;
@@ -52,17 +53,17 @@ public class MainActivity extends Activity {
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void handleMaterialStatusBar() {
-        try {
-            Window window = this.getWindow();
+        // Not supported in APK level lower than 21
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return;
 
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        Window window = this.getWindow();
 
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-            window.setStatusBarColor(0xffd84e43);
-        } catch (Exception e) {
-            // Guai wo lo
-        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        window.setStatusBarColor(0xffd84e43);
+
     }
 
     @Override
