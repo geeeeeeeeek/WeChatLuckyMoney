@@ -7,9 +7,7 @@ import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Parcelable;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
@@ -17,10 +15,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 import xyz.monkeytong.hongbao.utils.PowerUtil;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -35,14 +30,12 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private static final String WECHAT_LUCKMONEY_RECEIVE_ACTIVITY = "LuckyMoneyReceiveUI";
     private static final String WECHAT_LUCKMONEY_DETAIL_ACTIVITY = "LuckyMoneyDetailUI";
     private static final String WECHAT_LUCKMONEY_GENERAL_ACTIVITY = "LauncherUI";
-    //    public static Map<String, Boolean> watchedFlags = new HashMap<>();
-    private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
-    private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
-    private String lastContentDescription = "";
-    private HongbaoSignature signature = new HongbaoSignature();
-    private AccessibilityNodeInfo rootNodeInfo;
-    private boolean mMutex = false;
     private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
+
+    private AccessibilityNodeInfo rootNodeInfo, mReceiveNode, mUnpackNode;
+    private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack;
+    private boolean mMutex = false;
+    private HongbaoSignature signature = new HongbaoSignature();
 
     private PowerUtil powerUtil;
     private SharedPreferences sharedPreferences;
@@ -64,10 +57,10 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             if (sharedPreferences.getBoolean("pref_watch_list", false) && watchList(event)) return;
         }
 
-        if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat();
+        if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat(event);
     }
 
-    private void watchChat() {
+    private void watchChat(AccessibilityEvent event) {
         this.rootNodeInfo = getRootInActiveWindow();
 
         if (rootNodeInfo == null) return;
@@ -75,7 +68,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         mReceiveNode = null;
         mUnpackNode = null;
 
-        checkNodeInfo();
+        checkNodeInfo(event.getEventType());
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
@@ -116,14 +109,14 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         // Not a message
         if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED || event.getSource() == null)
             return false;
-        // TODO
+
         List<AccessibilityNodeInfo> nodes = event.getSource().findAccessibilityNodeInfosByText(WECHAT_NOTIFICATION_TIP);
         if (!nodes.isEmpty()) {
             AccessibilityNodeInfo nodeToClick = nodes.get(0);
             CharSequence contentDescription = nodeToClick.getContentDescription();
-            if (contentDescription != null && !lastContentDescription.equals(contentDescription)) {
+            if (contentDescription != null && !signature.getContentDescription().equals(contentDescription)) {
                 nodeToClick.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                lastContentDescription = contentDescription.toString();
+                signature.setContentDescription(contentDescription.toString());
                 return true;
             }
         }
@@ -162,7 +155,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     /**
      * 检查节点信息
      */
-    private void checkNodeInfo() {
+    private void checkNodeInfo(int eventType) {
         if (this.rootNodeInfo == null) return;
 
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
@@ -189,7 +182,8 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         boolean hasNodes = this.hasOneOfThoseNodes(
                 WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
                 WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN, WECHAT_EXPIRES_CH);
-        if (hasNodes && (currentActivityName.contains(WECHAT_LUCKMONEY_DETAIL_ACTIVITY)
+        if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && hasNodes
+                && (currentActivityName.contains(WECHAT_LUCKMONEY_DETAIL_ACTIVITY)
                 || currentActivityName.contains(WECHAT_LUCKMONEY_RECEIVE_ACTIVITY))) {
             mMutex = false;
             mLuckyMoneyPicked = false;

@@ -7,7 +7,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * Created by Zhongyi on 1/21/16.
  */
 public class HongbaoSignature {
-    private String sender, content, time;
+    private String sender, content, time, contentDescription;
 
     public boolean generateSignature(AccessibilityNodeInfo node, String excludeWords) {
         try {
@@ -22,7 +22,7 @@ public class HongbaoSignature {
             /* Check the user's exclude words list. */
             String[] excludeWordsArray = excludeWords.split(" +");
             for (String word : excludeWordsArray) {
-                if (hongbaoContent.contains(word)) return false;
+                if (word.length() > 0 && hongbaoContent.contains(word)) return false;
             }
 
             /* The container node for a piece of message. It should be inside the screen.
@@ -61,6 +61,14 @@ public class HongbaoSignature {
         }
 
         return signature.substring(0, signature.length() - 1);
+    }
+
+    public String getContentDescription() {
+        return this.contentDescription;
+    }
+
+    public void setContentDescription(String description) {
+        this.contentDescription = description;
     }
 
     private String[] getSenderContentDescriptionFromNode(AccessibilityNodeInfo node) {
