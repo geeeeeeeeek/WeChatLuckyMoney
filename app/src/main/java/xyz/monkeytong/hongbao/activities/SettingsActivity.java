@@ -1,13 +1,17 @@
 package xyz.monkeytong.hongbao.activities;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
@@ -38,7 +42,7 @@ public class SettingsActivity extends PreferenceActivity {
         Preference issuePref = findPreference("pref_etc_issue");
         issuePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_github_issues)));
                 browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 SettingsActivity.this.startActivity(browserIntent);
                 return false;
@@ -60,12 +64,18 @@ public class SettingsActivity extends PreferenceActivity {
         });
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void loadUI() {
+        setContentView(R.layout.activity_preferences);
         addPreferencesFromResource(R.xml.preferences);
 
-        // Get rid of the fucking additional padding
-        getListView().setPadding(0, 0, 0, 0);
-        getListView().setBackgroundColor(0xfffaf6f1);
+        Window window = this.getWindow();
+
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        window.setStatusBarColor(0xffd84e43);
     }
 
     @Override

@@ -12,4 +12,5 @@
     <string name="service_off">关闭插件</string>
     <string name="service_on">开启插件</string>
     <string name="pref_watch_exclude_words_summary">不拆开包含这些文字的红包(空格间隔)</string>
+    <string name="url_github_issues">https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues</string>
 </resources>

@@ -1,15 +1,18 @@
 package xyz.monkeytong.hongbao.activities;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,26 +50,15 @@ public class MainActivity extends Activity {
     /**
      * 适配MIUI沉浸状态栏
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void handleMIUIStatusBar() {
-        Window window = getWindow();
+        Window window = this.getWindow();
 
-        Class clazz = window.getClass();
-        try {
-            int tranceFlag = 0;
-            Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_TRANSPARENT");
-            tranceFlag = field.getInt(layoutParams);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-            extraFlagField.invoke(window, tranceFlag, tranceFlag);
-
-            ImageView placeholder = (ImageView) findViewById(R.id.main_actiob_bar_placeholder);
-            int placeholderHeight = getStatusBarHeight();
-            placeholder.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, placeholderHeight));
-        } catch (Exception e) {
-            // Do nothing
-        }
+        window.setStatusBarColor(0xffd84e43);
     }
 
     @Override

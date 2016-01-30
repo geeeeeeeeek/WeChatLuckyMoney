@@ -3,10 +3,6 @@
                   xmlns:android="http://schemas.android.com/apk/res/android"
                   tools:context=".SettingsActivity"
                   android:icon="@null">
-    <Preference
-            android:layout="@layout/activity_preferences">
-    </Preference>
-
     <PreferenceCategory
             android:title="监视选项"
             android:layout="@layout/preference_category">
