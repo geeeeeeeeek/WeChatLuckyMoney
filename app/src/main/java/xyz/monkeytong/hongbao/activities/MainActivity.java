@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,14 +14,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -37,7 +32,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         switchPlugin = (Button) findViewById(R.id.button_accessible);
 
-        handleMIUIStatusBar();
+        handleMaterialStatusBar();
         updateServiceStatus();
 
         explicitlyLoadPreferences();
@@ -51,14 +46,18 @@ public class MainActivity extends Activity {
      * 适配MIUI沉浸状态栏
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void handleMIUIStatusBar() {
-        Window window = this.getWindow();
+    private void handleMaterialStatusBar() {
+        try {
+            Window window = this.getWindow();
 
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        window.setStatusBarColor(0xffd84e43);
+            window.setStatusBarColor(0xffd84e43);
+        } catch (Exception e) {
+            // Guai wo lo
+        }
     }
 
     @Override
@@ -101,8 +100,17 @@ public class MainActivity extends Activity {
     }
 
     public void openGithub(View view) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/geeeeeeeeek/WeChatLuckyMoney"));
-        startActivity(browserIntent);
+        Intent webViewIntent = new Intent(this, WebViewActivity.class);
+        webViewIntent.putExtra("title", "Github项目主页");
+        webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney");
+        startActivity(webViewIntent);
+    }
+
+    public void openGithubReleaseNotes(View view) {
+        Intent webViewIntent = new Intent(this, WebViewActivity.class);
+        webViewIntent.putExtra("title", "发布日志");
+        webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues?q=is%3Aissue+is%3Aopen+label%3A%22release+notes%22");
+        startActivity(webViewIntent);
     }
 
     public void openSettings(View view) {
@@ -110,9 +118,11 @@ public class MainActivity extends Activity {
         startActivity(settingsIntent);
     }
 
-    public int getStatusBarHeight() {
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) return getResources().getDimensionPixelSize(resourceId);
-        return 0;
+    public void openNews(View view) {
+        Intent webViewIntent = new Intent(this, WebViewActivity.class);
+        webViewIntent.putExtra("title", "红包攻略");
+        webViewIntent.putExtra("url", "http://sec-cdn.static.xiaomi.net/secStatic/proj/luckyNewsInfo/0127/index.html?v=1&");
+        startActivity(webViewIntent);
     }
+
 }

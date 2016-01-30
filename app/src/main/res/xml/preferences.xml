@@ -51,7 +51,7 @@
         <CheckBoxPreference
                 android:key="pref_watch_on_lock"
                 android:title="息屏抢红包"
-                android:summary="30分钟内保持后台活跃,将极大增加电量消耗,谨慎使用"
+                android:summary="30分钟内后台将保持活跃,可能会极大增加电量消耗,请谨慎使用"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
     </PreferenceCategory>

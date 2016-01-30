@@ -3,7 +3,7 @@
           package="xyz.monkeytong.hongbao">
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <application
@@ -20,6 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.SettingsActivity"
+                  android:theme="@style/Base.Theme.AppCompat.Light">
+        </activity>
+        <activity android:name=".activities.WebViewActivity"
                   android:theme="@style/Base.Theme.AppCompat.Light">
         </activity>
         <service

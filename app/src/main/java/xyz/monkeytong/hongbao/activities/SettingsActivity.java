@@ -42,9 +42,11 @@ public class SettingsActivity extends PreferenceActivity {
         Preference issuePref = findPreference("pref_etc_issue");
         issuePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_github_issues)));
-                browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                SettingsActivity.this.startActivity(browserIntent);
+                Intent webViewIntent = new Intent(SettingsActivity.this, WebViewActivity.class);
+                webViewIntent.putExtra("title", "Github Issues");
+                webViewIntent.putExtra("url", getString(R.string.url_github_issues));
+                webViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(webViewIntent);
                 return false;
             }
         });
@@ -69,13 +71,17 @@ public class SettingsActivity extends PreferenceActivity {
         setContentView(R.layout.activity_preferences);
         addPreferencesFromResource(R.xml.preferences);
 
-        Window window = this.getWindow();
+        try {
+            Window window = this.getWindow();
 
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        window.setStatusBarColor(0xffd84e43);
+            window.setStatusBarColor(0xffd84e43);
+        } catch (Exception e) {
+            // Guai wo lo
+        }
     }
 
     @Override
