@@ -2,7 +2,7 @@
 
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/built-by-codebabes.svg)](http://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com) 
 
-[![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney) [**中文 README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README.md)
+[![Gitter](https://badges.gitter.im/geeeeeeeeek/WeChatLuckyMoney.svg)](https://gitter.im/geeeeeeeeek/WeChatLuckyMoney?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)  [![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)   [**中文 README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README.md)
 
 This Android app helps you snatch red envelopes in WeChat. It detects red envelopes automatically, and clicks to open them faster than your imagination.
 

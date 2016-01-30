@@ -2,7 +2,7 @@
 
 [![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)[![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com) 
 
-[![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)  [**English README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
+[![Gitter](https://badges.gitter.im/geeeeeeeeek/WeChatLuckyMoney.svg)](https://gitter.im/geeeeeeeeek/WeChatLuckyMoney?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)  [![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)    [**README IN ENGLISH**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
 
 一个帮助你在微信抢红包时战无不胜的Android应用。自动检测并且拆开红包，速度超乎你的想象。
 
@@ -16,7 +16,7 @@
   
 - **不仅快人一步，红包识别更加智能**
   
-  多种特征标识，聊天时不再重复点击红包。智能过滤红包关键字[[?]](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues/96)，避免落入“专属红包”、“抢到翻倍”的陷阱。
+  多种特征标识，聊天时不再重复点击红包。智能过滤红包关键字[[?]](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues/97)，避免落入“专属红包”、“抢到翻倍”的陷阱。
   
 - **紧跟微信更新，内置最新春节红包资讯**
   
