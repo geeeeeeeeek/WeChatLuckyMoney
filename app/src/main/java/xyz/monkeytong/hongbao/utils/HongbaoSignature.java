@@ -7,7 +7,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * Created by Zhongyi on 1/21/16.
  */
 public class HongbaoSignature {
-    private String sender, content, time, contentDescription;
+    private String sender, content, time, contentDescription = "";
 
     public boolean generateSignature(AccessibilityNodeInfo node, String excludeWords) {
         try {
