@@ -4,16 +4,16 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" tools:context=".activities.WebViewActivity">
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#d84e43"
-                    tools:context=".SettingsActivity"
+                    tools:context=".WebViewActivity"
     >
         <TextView android:layout_width="wrap_content" android:layout_height="60dp"
-                  android:id="@+id/settings_bar"
-                  android:text="@string/preference" android:textColor="#fde1b5"
+                  android:id="@+id/webview_bar"
+                  android:text="@string/app_name" android:textColor="#fde1b5"
                   android:gravity="left|center_vertical|center_horizontal"
                   android:elegantTextHeight="false" android:textSize="20sp"
                   android:layout_toRightOf="@+id/preference_back"
@@ -25,18 +25,12 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="8dp"
                 android:clickable="true" android:onClick="performBack"
-                android:layout_alignBottom="@+id/settings_bar"
+                android:layout_alignBottom="@+id/webview_bar"
                 android:src="@mipmap/ic_back"/>
-        <ImageView android:layout_width="40dp" android:layout_height="match_parent" android:id="@+id/imageView3"
-                   android:clickable="true"
-                   android:onClick="enterAccessibilityPage"
-                   android:layout_alignParentRight="true"
-                   android:layout_marginRight="10dp" android:layout_marginLeft="8dp"
-                   android:padding="6dp" android:src="@mipmap/ic_refresh"
-                   android:layout_alignBottom="@+id/settings_bar"/>
     </RelativeLayout>
-    <ListView android:layout_height="wrap_content" android:layout_width="match_parent"
-              android:id="@android:id/list" android:background="#fffaf6f1" android:padding="0dp">
+    <WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/webView" android:layout_gravity="center_horizontal" android:foreground="#d84e43"/>
 
-    </ListView>
 </LinearLayout>

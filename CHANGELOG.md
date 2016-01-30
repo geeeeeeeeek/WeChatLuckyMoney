@@ -1,5 +1,30 @@
 # 更新日志
 
+**[v2.1 (2016.01.30)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v2.1)**
+
+- 新增 屏蔽指定红包文字的可选项
+
+
+- 新增 息屏抢红包的可选项
+
+
+- 新增 不拆开自己发的红包的可选项
+
+
+- 新增 内置红包攻略
+
+
+- 新增 所有链接默认用内置WebView打开
+- 优化 仅在WiFi环境下回到应用时检测更新
+- 优化 抢红包的逻辑流程，减少了一些误判情形
+- 优化 适配了Lollipop以上版本的透明Status Bar
+- 修复 插件开启后按钮仍然显示“开启插件”
+- 修复 监听SharedPreferences变化无效的问题 (感谢 @act262 对这项修改的贡献)
+- 修复 在其他界面会做额外的操作的问题 (感谢 @sxyy 对这项修改的贡献)
+- 修复 响应Notification进入聊天后，可能误判不抢的问题 (感谢 @tttony3 对这项修改的贡献)
+
+
+
 **[v2.0.1 (2016.01.23)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v2.0.1)**
 
 - 修复了用户第一次使用，偏好设置未加载导致的插件失效。 Fix issue #50, #51.

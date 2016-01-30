@@ -1,13 +1,8 @@
 # 微信红包
 
-[![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/built-by-codebabes.svg)](http://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com) 
+[![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com)[![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com) 
 
-### CI STATUS
-
-[![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)
-
-### English version(未更新)
-[**English README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
+[![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)  [**English README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README_EN.md)
 
 一个帮助你在微信抢红包时战无不胜的Android应用。自动检测并且拆开红包，速度超乎你的想象。
 
@@ -19,11 +14,11 @@
   
   提供了`系统通知`/`聊天列表`/`聊天页面`三档选项，无论是想要谨慎不被察觉，还是想要高效志在必得，这个插件如你所愿。
   
-- **更智能的红包识别**
+- **不仅快人一步，红包识别更加智能**
   
-  多种特征标识，聊天时不再重复点击红包。反反外挂策略(即将发布)自我保护，避免插件失效。
+  多种特征标识，聊天时不再重复点击红包。智能过滤红包关键字[[?]](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues/96)，避免落入“专属红包”、“抢到翻倍”的陷阱。
   
-- **自动检测更新**
+- **紧跟微信更新，内置最新春节红包资讯**
   
   第一时间适配最新版本微信，应用内即可一键更新。
   

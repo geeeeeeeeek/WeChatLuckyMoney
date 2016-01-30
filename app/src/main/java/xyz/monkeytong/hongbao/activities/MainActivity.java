@@ -1,24 +1,23 @@
 package xyz.monkeytong.hongbao.activities;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import xyz.monkeytong.hongbao.R;
+import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -33,7 +32,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         switchPlugin = (Button) findViewById(R.id.button_accessible);
 
-        handleMIUIStatusBar();
+        handleMaterialStatusBar();
         updateServiceStatus();
 
         explicitlyLoadPreferences();
@@ -46,25 +45,18 @@ public class MainActivity extends Activity {
     /**
      * 适配MIUI沉浸状态栏
      */
-    private void handleMIUIStatusBar() {
-        Window window = getWindow();
-
-        Class clazz = window.getClass();
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void handleMaterialStatusBar() {
         try {
-            int tranceFlag = 0;
-            Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+            Window window = this.getWindow();
 
-            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_TRANSPARENT");
-            tranceFlag = field.getInt(layoutParams);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-            extraFlagField.invoke(window, tranceFlag, tranceFlag);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-            ImageView placeholder = (ImageView) findViewById(R.id.main_actiob_bar_placeholder);
-            int placeholderHeight = getStatusBarHeight();
-            placeholder.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, placeholderHeight));
+            window.setStatusBarColor(0xffd84e43);
         } catch (Exception e) {
-            // Do nothing
+            // Guai wo lo
         }
     }
 
@@ -73,8 +65,8 @@ public class MainActivity extends Activity {
         super.onResume();
         updateServiceStatus();
 
-        // Check for update
-        new UpdateTask(this, false).update();
+        // Check for update when WIFI is connected or on first time.
+        if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0) new UpdateTask(this, false).update();
     }
 
     @Override
@@ -108,8 +100,17 @@ public class MainActivity extends Activity {
     }
 
     public void openGithub(View view) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/geeeeeeeeek/WeChatLuckyMoney"));
-        startActivity(browserIntent);
+        Intent webViewIntent = new Intent(this, WebViewActivity.class);
+        webViewIntent.putExtra("title", "Github项目主页");
+        webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney");
+        startActivity(webViewIntent);
+    }
+
+    public void openGithubReleaseNotes(View view) {
+        Intent webViewIntent = new Intent(this, WebViewActivity.class);
+        webViewIntent.putExtra("title", "发布日志");
+        webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues?q=is%3Aissue+is%3Aopen+label%3A%22release+notes%22");
+        startActivity(webViewIntent);
     }
 
     public void openSettings(View view) {
@@ -117,9 +118,11 @@ public class MainActivity extends Activity {
         startActivity(settingsIntent);
     }
 
-    public int getStatusBarHeight() {
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) return getResources().getDimensionPixelSize(resourceId);
-        return 0;
+    public void openNews(View view) {
+        Intent webViewIntent = new Intent(this, WebViewActivity.class);
+        webViewIntent.putExtra("title", "红包攻略");
+        webViewIntent.putExtra("url", "http://sec-cdn.static.xiaomi.net/secStatic/proj/luckyNewsInfo/0127/index.html?v=1&");
+        startActivity(webViewIntent);
     }
+
 }
