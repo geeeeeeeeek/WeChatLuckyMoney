@@ -172,7 +172,13 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3) ? this.rootNodeInfo.getChild(3) : null;
+        AccessibilityNodeInfo node2 = null;
+        if(this.rootNodeInfo.getChildCount()==1 && "android.widget.FrameLayout".equals(this.rootNodeInfo.getChild(0).getClassName())) {
+            if(this.rootNodeInfo.getChild(0).getChildCount() > 3) {
+                node2 = this.rootNodeInfo.getChild(0).getChild(3);
+            }
+        }
+
         if (node2 != null && "android.widget.Button".equals(node2.getClassName()) && currentActivityName.contains(WECHAT_LUCKMONEY_RECEIVE_ACTIVITY)) {
             mUnpackNode = node2;
             mNeedUnpack = true;
