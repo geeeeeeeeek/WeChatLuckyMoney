@@ -34,7 +34,6 @@
             <meta-data android:name="android.accessibilityservice"
                        android:resource="@xml/accessible_service_config"/>
         </service>
-        <meta-data android:value="9bd7fe99bfd5104898afe6d0a3a68c9e" android:name="BUG_HD_SDK_GENERAL_KEY" />
     </application>
 
 </manifest>
