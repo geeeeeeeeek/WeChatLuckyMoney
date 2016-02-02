@@ -33,7 +33,8 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
 
     private AccessibilityNodeInfo rootNodeInfo, mReceiveNode, mUnpackNode;
-    private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack;
+    private boolean mLuckyMoneyPicked, mLuckyMoneyReceived;
+    private int mUnpackCount = 0;
     private boolean mMutex = false;
     private HongbaoSignature signature = new HongbaoSignature();
 
@@ -80,10 +81,9 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             mLuckyMoneyPicked = true;
         }
         /* 如果戳开但还未领取 */
-        if (mNeedUnpack && (mUnpackNode != null)) {
+        if (mUnpackCount == 1 && (mUnpackNode != null)) {
             AccessibilityNodeInfo cellNode = mUnpackNode;
             cellNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-            mNeedUnpack = false;
         }
     }
 
@@ -156,12 +156,12 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
      * 递归查找拆红包按钮
      */
     private AccessibilityNodeInfo findOpenButton(AccessibilityNodeInfo node) {
-        if (node==null)
+        if (node == null)
             return null;
 
         //非layout元素
         if (node.getChildCount() == 0) {
-            if("android.widget.Button".equals(node.getClassName()))
+            if ("android.widget.Button".equals(node.getClassName()))
                 return node;
             else
                 return null;
@@ -170,7 +170,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         //layout元素，遍历找button
         for (int i = 0; i < node.getChildCount(); i++) {
             AccessibilityNodeInfo button = findOpenButton(node.getChild(i));
-            if(button != null)
+            if (button != null)
                 return button;
         }
         return null;
@@ -199,7 +199,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         AccessibilityNodeInfo node2 = findOpenButton(this.rootNodeInfo);
         if (node2 != null && "android.widget.Button".equals(node2.getClassName()) && currentActivityName.contains(WECHAT_LUCKMONEY_RECEIVE_ACTIVITY)) {
             mUnpackNode = node2;
-            mNeedUnpack = true;
+            mUnpackCount += 1;
             return;
         }
 
@@ -207,11 +207,12 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         boolean hasNodes = this.hasOneOfThoseNodes(
                 WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
                 WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN, WECHAT_EXPIRES_CH);
-        if (eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && hasNodes
+        if (mMutex && eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && hasNodes
                 && (currentActivityName.contains(WECHAT_LUCKMONEY_DETAIL_ACTIVITY)
                 || currentActivityName.contains(WECHAT_LUCKMONEY_RECEIVE_ACTIVITY))) {
             mMutex = false;
             mLuckyMoneyPicked = false;
+            mUnpackCount = 0;
             performGlobalAction(GLOBAL_ACTION_BACK);
         }
     }
