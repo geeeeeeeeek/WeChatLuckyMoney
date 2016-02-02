@@ -22,7 +22,7 @@
             android:padding="10dp"
             android:onClick="openNews"
             android:layout_below="@+id/main_action_bar_placeholder"
-            android:layout_alignLeft="@+id/textView" android:layout_marginLeft="6dp"/>
+            android:layout_alignLeft="@+id/textView" android:layout_marginLeft="6dp" android:layout_marginTop="6dp"/>
 
     <ImageView
             android:layout_width="44dp"
@@ -32,7 +32,7 @@
             android:padding="10dp"
             android:onClick="openSettings"
             android:layout_alignRight="@+id/textView" android:layout_below="@+id/main_action_bar_placeholder"
-            android:layout_marginRight="6dp"/>
+            android:layout_marginRight="6dp" android:layout_marginTop="6dp"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
