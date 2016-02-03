@@ -29,6 +29,10 @@
                 android:title="拆开自己发的红包"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
+        <xyz.monkeytong.hongbao.activities.SeekBarPreference
+                android:key="pref_open_delay"
+                android:title="延时拆开红包"
+                android:layout="@layout/preference_checkbox"/>
         <EditTextPreference
                 android:key="pref_watch_exclude_words"
                 android:title="屏蔽红包文字"

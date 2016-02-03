@@ -75,15 +75,20 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
             mMutex = true;
 
-            AccessibilityNodeInfo cellNode = mReceiveNode;
-            cellNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            mReceiveNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
             mLuckyMoneyReceived = false;
             mLuckyMoneyPicked = true;
         }
         /* 如果戳开但还未领取 */
         if (mUnpackCount == 1 && (mUnpackNode != null)) {
-            AccessibilityNodeInfo cellNode = mUnpackNode;
-            cellNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            int delayFlag = sharedPreferences.getInt("pref_open_delay", 0) * 1000;
+            new android.os.Handler().postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                        }
+                    },
+                    delayFlag);
         }
     }
 
