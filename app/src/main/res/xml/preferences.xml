@@ -10,7 +10,7 @@
                 android:key="pref_watch_notification"
                 android:title="监视系统通知"
                 android:summary="读取新消息通知中的红包提示并进入聊天页"
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:layout="@layout/preference_checkbox"/>
         <CheckBoxPreference
                 android:key="pref_watch_list"
@@ -18,21 +18,24 @@
                 android:summary="读取聊天列表中的红包提示并进入聊天页"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="防封号选项"
+            android:layout="@layout/preference_category">
         <CheckBoxPreference
                 android:key="pref_watch_chat"
-                android:title="监视当前聊天页面"
-                android:summary="读取当前聊天中的红包,拆开红包需要开启该选项"
-                android:layout="@layout/preference_checkbox"
-                android:defaultValue="true"/>
-        <CheckBoxPreference
-                android:key="pref_watch_self"
-                android:title="拆开自己发的红包"
+                android:title="自动拆开红包"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
         <xyz.monkeytong.hongbao.activities.SeekBarPreference
                 android:key="pref_open_delay"
                 android:title="延时拆开红包"
                 android:layout="@layout/preference_checkbox"/>
+        <CheckBoxPreference
+                android:key="pref_watch_self"
+                android:title="拆开自己发的红包"
+                android:layout="@layout/preference_checkbox"
+                android:defaultValue="true"/>
         <EditTextPreference
                 android:key="pref_watch_exclude_words"
                 android:title="屏蔽红包文字"
@@ -40,7 +43,7 @@
                 android:layout="@layout/preference_checkbox"/>
     </PreferenceCategory>
     <PreferenceCategory
-            android:title="辅助功能"
+            android:title="关于应用"
             android:layout="@layout/preference_category">
         <Preference
                 android:key="pref_etc_check_update"
@@ -52,10 +55,14 @@
                 android:title="帮助与反馈"
                 android:summary="前往Github项目主页提交issue"
                 android:layout="@layout/preference_checkbox"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="实验功能"
+            android:layout="@layout/preference_category">
         <CheckBoxPreference
                 android:key="pref_watch_on_lock"
                 android:title="息屏抢红包"
-                android:summary="30分钟内后台将保持活跃,可能会极大增加电量消耗,请谨慎使用"
+                android:summary="保持30分钟后台活跃,可能会极大增加电量消耗,请谨慎使用"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
     </PreferenceCategory>

@@ -60,7 +60,11 @@ public class SettingsActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 String summary = getResources().getString(R.string.pref_watch_exclude_words_summary);
-                if (o != null && o.toString().length() > 0) preference.setSummary(summary + ":" + o.toString());
+                if (o != null && o.toString().length() > 0) {
+                    preference.setSummary(summary + ":" + o.toString());
+                } else {
+                    preference.setSummary(summary);
+                }
                 return true;
             }
         });

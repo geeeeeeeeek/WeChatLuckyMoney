@@ -36,7 +36,9 @@
                    android:layout_alignBottom="@+id/settings_bar"/>
     </RelativeLayout>
     <ListView android:layout_height="wrap_content" android:layout_width="match_parent"
-              android:id="@android:id/list" android:background="#fffaf6f1" android:padding="0dp">
+              android:id="@android:id/list" android:background="#fffaf6f1" android:paddingLeft="0dp"
+              android:paddingRight="0dp" android:paddingBottom="0dp" android:paddingTop="10dp"
+              android:dividerHeight="1dp" android:divider="#22333333">
 
     </ListView>
 </LinearLayout>
