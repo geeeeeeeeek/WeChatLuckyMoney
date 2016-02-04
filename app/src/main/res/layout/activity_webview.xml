@@ -16,17 +16,26 @@
                   android:text="@string/app_name" android:textColor="#fde1b5"
                   android:gravity="left|center_vertical|center_horizontal"
                   android:elegantTextHeight="false" android:textSize="20sp"
-                  android:layout_toRightOf="@+id/preference_back"
+                  android:layout_toRightOf="@+id/webview_back"
         />
         <ImageView
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:id="@+id/preference_back"
+                android:id="@+id/webview_back"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="8dp"
                 android:clickable="true" android:onClick="performBack"
                 android:layout_alignBottom="@+id/webview_bar"
                 android:src="@mipmap/ic_back"/>
+        <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:id="@+id/webview_outlink"
+                android:layout_marginRight="10dp"
+                android:clickable="true" android:onClick="openLink"
+                android:layout_alignBottom="@+id/webview_bar"
+                android:src="@mipmap/ic_open_in_browser" android:layout_alignParentRight="true"
+                android:layout_marginLeft="8dp" android:padding="6dp"/>
     </RelativeLayout>
     <WebView
             android:layout_width="match_parent"

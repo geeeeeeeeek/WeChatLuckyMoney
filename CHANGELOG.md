@@ -1,6 +1,26 @@
 # 更新日志
 
-**[v2.1 (2016.01.30)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v2.1)**
+**[v2.2 (2016.02.04)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v2.2)**
+
+- 新增 延时拆开红包的可选项
+
+
+- 新增 跳转至浏览器打开的入口
+- 新增 接入腾讯Bugly
+- 新增 自动回复的可选项(实验中)
+
+
+- 优化 手动拆开的红包不返回
+
+
+- 优化 适配三星等坑爹机型 (感谢 [@firesunCN](https://github.com/firesunCN) 对这项修改的贡献)
+
+
+- 修复 拆开红包后的多次返回问题
+
+
+
+**[v2.1 (2016.01.30)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v2.1.1)**
 
 - 新增 屏蔽指定红包文字的可选项
 
