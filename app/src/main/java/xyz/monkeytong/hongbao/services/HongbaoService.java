@@ -90,7 +90,13 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             new android.os.Handler().postDelayed(
                     new Runnable() {
                         public void run() {
-                            mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                            try {
+                                mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                            } catch (Exception e) {
+                                mMutex = false;
+                                mLuckyMoneyPicked = false;
+                                mUnpackCount = 0;
+                            }
                         }
                     },
                     delayFlag);
