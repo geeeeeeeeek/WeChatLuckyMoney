@@ -35,10 +35,9 @@
                    android:padding="6dp" android:src="@mipmap/ic_refresh"
                    android:layout_alignBottom="@+id/settings_bar"/>
     </RelativeLayout>
-    <ListView android:layout_height="wrap_content" android:layout_width="match_parent"
-              android:id="@android:id/list" android:background="#fffaf6f1" android:paddingLeft="0dp"
-              android:paddingRight="0dp" android:paddingBottom="0dp" android:paddingTop="10dp"
-              android:dividerHeight="1dp" android:divider="#22333333">
-
-    </ListView>
+    <fragment android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/preferences_fragment"
+              tools:layout="@android:layout/simple_list_item_1"
+              class="xyz.monkeytong.hongbao.fragments.GeneralSettingsFragment"/>
 </LinearLayout>

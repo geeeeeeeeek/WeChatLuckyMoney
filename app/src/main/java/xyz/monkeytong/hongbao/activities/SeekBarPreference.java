@@ -17,10 +17,23 @@ import xyz.monkeytong.hongbao.R;
 public class SeekBarPreference extends DialogPreference {
     private SeekBar seekBar;
     private TextView textView;
+    private String hintText, prefKind;
 
     public SeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        for (int i = 0; i < attrs.getAttributeCount(); i++) {
+            String attr = attrs.getAttributeName(i);
+            if (attr.equalsIgnoreCase("pref_kind")) {
+                prefKind = attrs.getAttributeValue(i);
+                break;
+            }
+        }
+        if (prefKind.equals("pref_open_delay")) {
+            hintText = "拆开红包";
+        } else if (prefKind.equals("pref_comment_delay")) {
+            hintText = "发送回复";
+        }
         setDialogLayoutResource(R.layout.preference_seekbar);
     }
 
@@ -30,17 +43,25 @@ public class SeekBarPreference extends DialogPreference {
 
         SharedPreferences pref = getSharedPreferences();
 
-        int delay = pref.getInt("pref_open_delay", 0);
+        int delay = pref.getInt(prefKind, 0);
         this.seekBar = (SeekBar) view.findViewById(R.id.delay_seekBar);
         this.seekBar.setProgress(delay);
 
         this.textView = (TextView) view.findViewById(R.id.pref_seekbar_textview);
-        this.textView.setText("延迟" + delay + "秒拆开红包");
+        if (delay == 0) {
+            this.textView.setText("立即" + hintText);
+        } else {
+            this.textView.setText("延迟" + delay + "秒" + hintText);
+        }
 
         this.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textView.setText("延迟" + i + "秒拆开红包");
+                if (i == 0) {
+                    textView.setText("立即" + hintText);
+                } else {
+                    textView.setText("延迟" + i + "秒" + hintText);
+                }
             }
 
             @Override
@@ -59,7 +80,7 @@ public class SeekBarPreference extends DialogPreference {
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
             SharedPreferences.Editor editor = getEditor();
-            editor.putInt("pref_open_delay", this.seekBar.getProgress());
+            editor.putInt(prefKind, this.seekBar.getProgress());
             editor.commit();
         }
         super.onDialogClosed(positiveResult);

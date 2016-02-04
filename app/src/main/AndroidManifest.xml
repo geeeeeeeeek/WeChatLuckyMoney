@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".activities.SettingsActivity"
                   android:theme="@style/Base.Theme.AppCompat.Light"
-                  android:launchMode="singleTask">
+                  android:launchMode="standard">
         </activity>
         <activity android:name=".activities.WebViewActivity"
                   android:theme="@style/Base.Theme.AppCompat.Light"
