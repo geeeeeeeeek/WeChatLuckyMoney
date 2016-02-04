@@ -1,17 +1,22 @@
 package xyz.monkeytong.hongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
+import android.app.Instrumentation;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import xyz.monkeytong.hongbao.activities.MainActivity;
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 import xyz.monkeytong.hongbao.utils.PowerUtil;
 
@@ -42,7 +47,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private SharedPreferences sharedPreferences;
 
     /**
-     * AccessibilityEvent的回调方法
+     * AccessibilityEvent
      *
      * @param event 事件
      */
@@ -158,7 +163,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     }
 
     /**
-     * 递归查找拆红包按钮
+     * 红包 钮
      */
     private AccessibilityNodeInfo findOpenButton(AccessibilityNodeInfo node) {
         if (node == null)
@@ -182,10 +187,15 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     }
 
     /**
-     * 检查节点信息
+     * 节 信
      */
     private void checkNodeInfo(int eventType) {
         if (this.rootNodeInfo == null) return;
+
+        if (signature.commentString != null) {
+            sendComment();
+            signature.commentString = null;
+        }
 
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
         AccessibilityNodeInfo node1 = (sharedPreferences.getBoolean("pref_watch_self", false)) ?
@@ -219,6 +229,24 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             mLuckyMoneyPicked = false;
             mUnpackCount = 0;
             performGlobalAction(GLOBAL_ACTION_BACK);
+            signature.commentString = generateCommentString();
+        }
+    }
+
+    private void sendComment() {
+        try {
+            AccessibilityNodeInfo outNode =
+                    getRootInActiveWindow().getChild(0).getChild(0);
+            AccessibilityNodeInfo nodeToInput = outNode.getChild(outNode.getChildCount() - 1).getChild(0).getChild(1);
+
+            if ("android.widget.EditText".equals(nodeToInput.getClassName())) {
+                Bundle arguments = new Bundle();
+                arguments.putCharSequence(AccessibilityNodeInfo
+                        .ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, signature.commentString);
+                nodeToInput.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
+            }
+        } catch (Exception e) {
+            // Not support
         }
     }
 
@@ -250,6 +278,11 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                 if (bounds.bottom > bottom) {
                     bottom = bounds.bottom;
                     lastNode = node;
+                    if (text.equals(WECHAT_VIEW_OTHERS_CH)) {
+                        signature.others = true;
+                    } else {
+                        signature.others = false;
+                    }
                 }
             }
         }
@@ -283,5 +316,22 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     public void onDestroy() {
         this.powerUtil.handleWakeLock(false);
         super.onDestroy();
+    }
+
+    private String generateCommentString() {
+        if (!signature.others) return null;
+
+        Boolean needComment = sharedPreferences.getBoolean("pref_comment_switch", false);
+        if (!needComment) return null;
+
+        String[] wordsArray = sharedPreferences.getString("pref_comment_words", "").split(" +");
+        if (wordsArray.length == 0) return null;
+
+        Boolean atSender = sharedPreferences.getBoolean("pref_comment_at", false);
+        if (atSender) {
+            return "@" + signature.sender + " " + wordsArray[(int) (Math.random() * wordsArray.length)];
+        } else {
+            return wordsArray[(int) (Math.random() * wordsArray.length)];
+        }
     }
 }

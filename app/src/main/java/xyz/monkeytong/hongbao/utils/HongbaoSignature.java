@@ -7,7 +7,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * Created by Zhongyi on 1/21/16.
  */
 public class HongbaoSignature {
-    private String sender, content, time, contentDescription = "";
+    public String sender, content, time, contentDescription = "", commentString;
+    public boolean others;
 
     public boolean generateSignature(AccessibilityNodeInfo node, String excludeWords) {
         try {
@@ -78,7 +79,7 @@ public class HongbaoSignature {
             AccessibilityNodeInfo thisNode = node.getChild(i);
             if ("android.widget.ImageView".equals(thisNode.getClassName())) {
                 CharSequence contentDescription = thisNode.getContentDescription();
-                if (contentDescription != null) result[0] = contentDescription.toString();
+                if (contentDescription != null) result[0] = contentDescription.toString().replaceAll("头像$", "");
             } else if ("android.widget.TextView".equals(thisNode.getClassName())) {
                 CharSequence thisNodeText = thisNode.getText();
                 if (thisNodeText != null) result[1] = thisNodeText.toString();

@@ -21,6 +21,7 @@ public class SeekBarPreference extends DialogPreference {
 
     public SeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setDialogLayoutResource(R.layout.preference_seekbar);
 
         for (int i = 0; i < attrs.getAttributeCount(); i++) {
             String attr = attrs.getAttributeName(i);
@@ -32,9 +33,8 @@ public class SeekBarPreference extends DialogPreference {
         if (prefKind.equals("pref_open_delay")) {
             hintText = "拆开红包";
         } else if (prefKind.equals("pref_comment_delay")) {
-            hintText = "发送回复";
+            hintText = "发送回复(暂不支持延时)";
         }
-        setDialogLayoutResource(R.layout.preference_seekbar);
     }
 
     @Override
@@ -46,6 +46,10 @@ public class SeekBarPreference extends DialogPreference {
         int delay = pref.getInt(prefKind, 0);
         this.seekBar = (SeekBar) view.findViewById(R.id.delay_seekBar);
         this.seekBar.setProgress(delay);
+
+        if (prefKind.equals("pref_comment_delay")) {
+            this.seekBar.setEnabled(false);
+        }
 
         this.textView = (TextView) view.findViewById(R.id.pref_seekbar_textview);
         if (delay == 0) {

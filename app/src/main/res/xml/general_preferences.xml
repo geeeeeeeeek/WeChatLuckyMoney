@@ -42,17 +42,6 @@
                 android:title="屏蔽红包文字"
                 android:summary="@string/pref_watch_exclude_words_summary"
                 android:layout="@layout/preference_checkbox"/>
-        <PreferenceScreen
-                android:key="pref_auto_comment"
-                android:title="拆开红包后自动回复"
-                android:layout="@layout/preference_checkbox">
-            <intent android:action="android.intent.action.VIEW"
-                    android:targetPackage="xyz.monkeytong.hongbao"
-                    android:targetClass="xyz.monkeytong.hongbao.activities.SettingsActivity">
-                <extra android:name="title" android:value="自动回复设置"/>
-                <extra android:name="frag_id" android:value="CommentSettingsFragment"/>
-            </intent>
-        </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory
             android:title="关于应用"
@@ -77,5 +66,16 @@
                 android:summary="保持30分钟后台活跃,可能会极大增加电量消耗,请谨慎使用"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
+        <PreferenceScreen
+                android:key="pref_auto_comment"
+                android:title="拆开红包后自动回复"
+                android:layout="@layout/preference_checkbox">
+            <intent android:action="android.intent.action.VIEW"
+                    android:targetPackage="xyz.monkeytong.hongbao"
+                    android:targetClass="xyz.monkeytong.hongbao.activities.SettingsActivity">
+                <extra android:name="title" android:value="自动回复设置"/>
+                <extra android:name="frag_id" android:value="CommentSettingsFragment"/>
+            </intent>
+        </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

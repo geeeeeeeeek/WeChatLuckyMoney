@@ -4,7 +4,7 @@
                   tools:context=".SettingsActivity"
                   android:icon="@null">
     <PreferenceCategory
-            android:title="自动回复"
+            android:title="自动回复(Android 5.0以上系统)"
             android:layout="@layout/preference_category">
         <CheckBoxPreference
                 android:key="pref_comment_switch"
@@ -29,7 +29,7 @@
         <EditTextPreference
                 android:key="pref_comment_words"
                 android:title="自定义回复内容"
-                android:summary="@string/pref_comment_words"
+                android:summary="@string/pref_comment_words_summary"
                 android:layout="@layout/preference_checkbox"/>
     </PreferenceCategory>
 </PreferenceScreen>
