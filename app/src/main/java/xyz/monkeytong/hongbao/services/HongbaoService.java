@@ -61,7 +61,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         if (!mMutex) {
             if (sharedPreferences.getBoolean("pref_watch_notification", false) && watchNotifications(event)) return;
             if (sharedPreferences.getBoolean("pref_watch_list", false) && watchList(event)) return;
-            mListMutex = false;
         }
 
         if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat(event);
@@ -125,21 +124,29 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private boolean watchList(AccessibilityEvent event) {
         if (mListMutex) return false;
         mListMutex = true;
-        AccessibilityNodeInfo eventSource = event.getSource();
-        // Not a message
-        if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED || eventSource == null)
-            return false;
-
-        List<AccessibilityNodeInfo> nodes = eventSource.findAccessibilityNodeInfosByText(WECHAT_NOTIFICATION_TIP);
-        if (!nodes.isEmpty()) {
-            AccessibilityNodeInfo nodeToClick = nodes.get(0);
-            CharSequence contentDescription = nodeToClick.getContentDescription();
-            if (contentDescription != null && !signature.getContentDescription().equals(contentDescription)) {
-                nodeToClick.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                signature.setContentDescription(contentDescription.toString());
-                return true;
+        try {
+            AccessibilityNodeInfo eventSource = event.getSource();
+            // Not a message
+            if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED || eventSource == null) {
+                mListMutex = false;
+                return false;
             }
+
+            List<AccessibilityNodeInfo> nodes = eventSource.findAccessibilityNodeInfosByText(WECHAT_NOTIFICATION_TIP);
+            if (!nodes.isEmpty()) {
+                AccessibilityNodeInfo nodeToClick = nodes.get(0);
+                CharSequence contentDescription = nodeToClick.getContentDescription();
+                if (contentDescription != null && !signature.getContentDescription().equals(contentDescription)) {
+                    nodeToClick.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    signature.setContentDescription(contentDescription.toString());
+                    mListMutex = false;
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        mListMutex = false;
         return false;
     }
 
