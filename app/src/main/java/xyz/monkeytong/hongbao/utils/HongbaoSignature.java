@@ -18,7 +18,7 @@ public class HongbaoSignature {
 
             /* The text in the hongbao. Should mean something. */
             String hongbaoContent = hongbaoNode.getChild(0).getText().toString();
-            if (hongbaoContent == null) return false;
+            if (hongbaoContent == null || "查看红包".equals(hongbaoContent)) return false;
 
             /* Check the user's exclude words list. */
             String[] excludeWordsArray = excludeWords.split(" +");
