@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import java.util.List;
 
+import android.widget.Toast;
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.fragments.GeneralSettingsFragment;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
@@ -89,8 +90,14 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     }
 
     public void onButtonClicked(View view) {
-        Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-        startActivity(accessibleIntent);
+        try {
+            Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            startActivity(accessibleIntent);
+        } catch (Exception e) {
+            Toast.makeText(this, "遇到一些问题,请手动打开系统设置>辅助服务>微信红包(ฅ´ω`ฅ)", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
     }
 
     public void openGithub(View view) {

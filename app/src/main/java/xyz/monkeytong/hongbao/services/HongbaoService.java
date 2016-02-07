@@ -40,7 +40,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private AccessibilityNodeInfo rootNodeInfo, mReceiveNode, mUnpackNode;
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived;
     private int mUnpackCount = 0;
-    private boolean mMutex = false;
+    private boolean mMutex = false, mListMutex = false;
     private HongbaoSignature signature = new HongbaoSignature();
 
     private PowerUtil powerUtil;
@@ -61,6 +61,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         if (!mMutex) {
             if (sharedPreferences.getBoolean("pref_watch_notification", false) && watchNotifications(event)) return;
             if (sharedPreferences.getBoolean("pref_watch_list", false) && watchList(event)) return;
+            mListMutex = false;
         }
 
         if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat(event);
@@ -122,6 +123,8 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     }
 
     private boolean watchList(AccessibilityEvent event) {
+        if (mListMutex) return false;
+        mListMutex = true;
         AccessibilityNodeInfo eventSource = event.getSource();
         // Not a message
         if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED || eventSource == null)
