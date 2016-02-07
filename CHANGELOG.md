@@ -1,5 +1,12 @@
 # 更新日志
 
+**[v2.3 (2016.02.07)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v2.3)**
+
+- 优化 不打开拜年红包
+- 紧急修复了Bugly上几个高优先级的问题，减少Crash出现
+
+
+
 **[v2.2 (2016.02.04)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v2.2)**
 
 - 新增 延时拆开红包的可选项
