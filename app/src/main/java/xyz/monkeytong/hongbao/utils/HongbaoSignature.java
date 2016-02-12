@@ -18,7 +18,7 @@ public class HongbaoSignature {
 
             /* The text in the hongbao. Should mean something. */
             String hongbaoContent = hongbaoNode.getChild(0).getText().toString();
-            if (hongbaoContent == null) return false;
+            if (hongbaoContent == null || "查看红包".equals(hongbaoContent)) return false;
 
             /* Check the user's exclude words list. */
             String[] excludeWordsArray = excludeWords.split(" +");
@@ -77,10 +77,10 @@ public class HongbaoSignature {
         String[] result = {"unknownSender", "unknownTime"};
         for (int i = 0; i < count; i++) {
             AccessibilityNodeInfo thisNode = node.getChild(i);
-            if ("android.widget.ImageView".equals(thisNode.getClassName())) {
+            if ("android.widget.ImageView".equals(thisNode.getClassName()) && "unknownSender".equals(result[0])) {
                 CharSequence contentDescription = thisNode.getContentDescription();
                 if (contentDescription != null) result[0] = contentDescription.toString().replaceAll("头像$", "");
-            } else if ("android.widget.TextView".equals(thisNode.getClassName())) {
+            } else if ("android.widget.TextView".equals(thisNode.getClassName()) && "unknownTime".equals(result[1])) {
                 CharSequence thisNodeText = thisNode.getText();
                 if (thisNodeText != null) result[1] = thisNodeText.toString();
             }

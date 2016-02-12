@@ -1,7 +1,6 @@
 package xyz.monkeytong.hongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
-import android.app.Instrumentation;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -9,18 +8,18 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import xyz.monkeytong.hongbao.activities.MainActivity;
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 import xyz.monkeytong.hongbao.utils.PowerUtil;
 
 import java.util.List;
+
+import xyz.monkeytong.hongbao.utils.HongbaoSignature;
+import xyz.monkeytong.hongbao.utils.PowerUtil;
 
 
 public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -40,7 +39,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private AccessibilityNodeInfo rootNodeInfo, mReceiveNode, mUnpackNode;
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived;
     private int mUnpackCount = 0;
-    private boolean mMutex = false;
+    private boolean mMutex = false, mListMutex = false;
     private HongbaoSignature signature = new HongbaoSignature();
 
     private PowerUtil powerUtil;
@@ -61,6 +60,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         if (!mMutex) {
             if (sharedPreferences.getBoolean("pref_watch_notification", false) && watchNotifications(event)) return;
             if (sharedPreferences.getBoolean("pref_watch_list", false) && watchList(event)) return;
+            mListMutex = false;
         }
 
         if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat(event);
@@ -122,13 +122,17 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     }
 
     private boolean watchList(AccessibilityEvent event) {
+        if (mListMutex) return false;
+        mListMutex = true;
         AccessibilityNodeInfo eventSource = event.getSource();
         // Not a message
         if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED || eventSource == null)
             return false;
 
         List<AccessibilityNodeInfo> nodes = eventSource.findAccessibilityNodeInfosByText(WECHAT_NOTIFICATION_TIP);
-        if (!nodes.isEmpty()) {
+        //增加条件判断currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY)
+        //避免当订阅号中出现标题为“[微信红包]拜年红包”（其实并非红包）的信息时误判
+        if (!nodes.isEmpty() && currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY)) {
             AccessibilityNodeInfo nodeToClick = nodes.get(0);
             CharSequence contentDescription = nodeToClick.getContentDescription();
             if (contentDescription != null && !signature.getContentDescription().equals(contentDescription)) {
