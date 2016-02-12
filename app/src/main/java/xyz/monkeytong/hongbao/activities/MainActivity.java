@@ -121,12 +121,6 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         startActivity(settingsIntent);
     }
 
-    public void openNews(View view) {
-        Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", "红包攻略");
-        webViewIntent.putExtra("url", "http://sec-cdn.static.xiaomi.net/secStatic/proj/luckyNewsInfo/0127/index.html?v=1&");
-        startActivity(webViewIntent);
-    }
 
     @Override
     public void onAccessibilityStateChanged(boolean enabled) {

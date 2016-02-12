@@ -14,15 +14,6 @@
             android:id="@+id/textView" android:background="@mipmap/bg_action_bar" android:text="微信红包" android:textColor="#fee1b4"
             android:gravity="center_vertical|center_horizontal"
             android:textSize="26dp" android:autoText="false"/>
-    <ImageView
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:id="@+id/imageView3"
-            android:src="@mipmap/ic_books"
-            android:padding="10dp"
-            android:onClick="openNews"
-            android:layout_below="@+id/main_action_bar_placeholder"
-            android:layout_alignLeft="@+id/textView" android:layout_marginLeft="6dp" android:layout_marginTop="6dp"/>
 
     <ImageView
             android:layout_width="44dp"
