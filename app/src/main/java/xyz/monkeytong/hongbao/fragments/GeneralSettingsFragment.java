@@ -35,7 +35,7 @@ public class GeneralSettingsFragment extends PreferenceFragment {
         issuePref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 Intent webViewIntent = new Intent(getActivity(), WebViewActivity.class);
-                webViewIntent.putExtra("title", "Github Issues");
+                webViewIntent.putExtra("title", "GitHub Issues");
                 webViewIntent.putExtra("url", getString(R.string.url_github_issues));
                 webViewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(webViewIntent);
