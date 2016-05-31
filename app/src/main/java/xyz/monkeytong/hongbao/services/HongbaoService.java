@@ -23,7 +23,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private static final String WECHAT_DETAILS_CH = "红包详情";
     private static final String WECHAT_BETTER_LUCK_EN = "Better luck next time!";
     private static final String WECHAT_BETTER_LUCK_CH = "手慢了";
-    private static final String WECHAT_EXPIRES_CH = "红包已失效";
+    private static final String WECHAT_EXPIRES_CH = "已超过24小时";
     private static final String WECHAT_VIEW_SELF_CH = "查看红包";
     private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
     private static final String WECHAT_NOTIFICATION_TIP = "[微信红包]";
