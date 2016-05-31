@@ -39,7 +39,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private AccessibilityNodeInfo rootNodeInfo, mReceiveNode, mUnpackNode;
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived;
     private int mUnpackCount = 0;
-    private boolean mMutex = false, mListMutex = false;
+    private boolean mMutex = false, mListMutex = false, mChatMutex = false;
     private HongbaoSignature signature = new HongbaoSignature();
 
     private PowerUtil powerUtil;
@@ -63,7 +63,11 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             mListMutex = false;
         }
 
-        if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat(event);
+        if (!mChatMutex) {
+            mChatMutex = true;
+            if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat(event);
+            mChatMutex = false;
+        }
     }
 
     private void watchChat(AccessibilityEvent event) {
@@ -134,6 +138,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         //避免当订阅号中出现标题为“[微信红包]拜年红包”（其实并非红包）的信息时误判
         if (!nodes.isEmpty() && currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY)) {
             AccessibilityNodeInfo nodeToClick = nodes.get(0);
+            if (nodeToClick == null) return false;
             CharSequence contentDescription = nodeToClick.getContentDescription();
             if (contentDescription != null && !signature.getContentDescription().equals(contentDescription)) {
                 nodeToClick.performAction(AccessibilityNodeInfo.ACTION_CLICK);
@@ -173,9 +178,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
 
     }
 
-    /**
-     * 红包 钮
-     */
     private AccessibilityNodeInfo findOpenButton(AccessibilityNodeInfo node) {
         if (node == null)
             return null;
@@ -197,9 +199,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         return null;
     }
 
-    /**
-     * 节 信
-     */
     private void checkNodeInfo(int eventType) {
         if (this.rootNodeInfo == null) return;
 
@@ -257,7 +256,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                 nodeToInput.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments);
             }
         } catch (Exception e) {
-            // Not support
+            // Not supported
         }
     }
 
@@ -289,11 +288,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                 if (bounds.bottom > bottom) {
                     bottom = bounds.bottom;
                     lastNode = node;
-                    if (text.equals(WECHAT_VIEW_OTHERS_CH)) {
-                        signature.others = true;
-                    } else {
-                        signature.others = false;
-                    }
+                    signature.others = text.equals(WECHAT_VIEW_OTHERS_CH);
                 }
             }
         }
