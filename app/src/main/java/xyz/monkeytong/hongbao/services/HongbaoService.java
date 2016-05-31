@@ -18,10 +18,6 @@ import xyz.monkeytong.hongbao.utils.PowerUtil;
 
 import java.util.List;
 
-import xyz.monkeytong.hongbao.utils.HongbaoSignature;
-import xyz.monkeytong.hongbao.utils.PowerUtil;
-
-
 public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String WECHAT_DETAILS_EN = "Details";
     private static final String WECHAT_DETAILS_CH = "红包详情";
@@ -191,8 +187,9 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         }
 
         //layout元素，遍历找button
+        AccessibilityNodeInfo button;
         for (int i = 0; i < node.getChildCount(); i++) {
-            AccessibilityNodeInfo button = findOpenButton(node.getChild(i));
+            button = findOpenButton(node.getChild(i));
             if (button != null)
                 return button;
         }
@@ -262,32 +259,34 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
 
 
     private boolean hasOneOfThoseNodes(String... texts) {
+        List<AccessibilityNodeInfo> nodes;
         for (String text : texts) {
             if (text == null) continue;
 
-            List<AccessibilityNodeInfo> nodes = this.rootNodeInfo.findAccessibilityNodeInfosByText(text);
+            nodes = this.rootNodeInfo.findAccessibilityNodeInfosByText(text);
 
-            if (!nodes.isEmpty()) return true;
+            if (nodes != null && !nodes.isEmpty()) return true;
         }
         return false;
     }
 
     private AccessibilityNodeInfo getTheLastNode(String... texts) {
         int bottom = 0;
-        AccessibilityNodeInfo lastNode = null;
+        AccessibilityNodeInfo lastNode = null, tempNode;
+        List<AccessibilityNodeInfo> nodes;
 
         for (String text : texts) {
             if (text == null) continue;
 
-            List<AccessibilityNodeInfo> nodes = this.rootNodeInfo.findAccessibilityNodeInfosByText(text);
+            nodes = this.rootNodeInfo.findAccessibilityNodeInfosByText(text);
 
-            if (!nodes.isEmpty()) {
-                AccessibilityNodeInfo node = nodes.get(nodes.size() - 1);
+            if (nodes != null && !nodes.isEmpty()) {
+                tempNode = nodes.get(nodes.size() - 1);
                 Rect bounds = new Rect();
-                node.getBoundsInScreen(bounds);
+                tempNode.getBoundsInScreen(bounds);
                 if (bounds.bottom > bottom) {
                     bottom = bounds.bottom;
-                    lastNode = node;
+                    lastNode = tempNode;
                     signature.others = text.equals(WECHAT_VIEW_OTHERS_CH);
                 }
             }
