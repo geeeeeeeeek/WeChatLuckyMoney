@@ -282,6 +282,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
 
             if (nodes != null && !nodes.isEmpty()) {
                 tempNode = nodes.get(nodes.size() - 1);
+                if (tempNode == null) return null;
                 Rect bounds = new Rect();
                 tempNode.getBoundsInScreen(bounds);
                 if (bounds.bottom > bottom) {
