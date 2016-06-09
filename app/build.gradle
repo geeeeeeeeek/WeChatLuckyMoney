@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 21
     buildToolsVersion "21.1.2"
 
     defaultConfig {
@@ -37,7 +37,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
-    //compile 'com.tencent.bugly:crashreport:latest.release'  //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.8
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.0.1
 }
 
