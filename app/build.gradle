@@ -8,7 +8,7 @@ android {
         applicationId "xyz.monkeytong.hongbao"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 3
+        versionCode 4
         versionName "v3.0"
         ndk {
             //设置支持的SO库架构
