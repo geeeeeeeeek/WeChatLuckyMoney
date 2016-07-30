@@ -30,6 +30,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private static final String WECHAT_LUCKMONEY_RECEIVE_ACTIVITY = "LuckyMoneyReceiveUI";
     private static final String WECHAT_LUCKMONEY_DETAIL_ACTIVITY = "LuckyMoneyDetailUI";
     private static final String WECHAT_LUCKMONEY_GENERAL_ACTIVITY = "LauncherUI";
+    private static final String WECHAT_LUCKMONEY_CHATTING_ACTIVITY = "ChattingUI";
     private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
 
     private AccessibilityNodeInfo rootNodeInfo, mReceiveNode, mUnpackNode;
@@ -204,10 +205,13 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             signature.commentString = null;
         }
 
+        //meow meow meow
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
         AccessibilityNodeInfo node1 = (sharedPreferences.getBoolean("pref_watch_self", false)) ?
                 this.getTheLastNode(WECHAT_VIEW_OTHERS_CH, WECHAT_VIEW_SELF_CH) : this.getTheLastNode(WECHAT_VIEW_OTHERS_CH);
-        if (node1 != null && currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY)) {
+        if (node1 != null &&
+                (currentActivityName.contains(WECHAT_LUCKMONEY_CHATTING_ACTIVITY)
+                        || currentActivityName.contains(WECHAT_LUCKMONEY_GENERAL_ACTIVITY))) {
             String excludeWords = sharedPreferences.getString("pref_watch_exclude_words", "");
             if (this.signature.generateSignature(node1, excludeWords)) {
                 mLuckyMoneyReceived = true;

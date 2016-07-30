@@ -12,10 +12,7 @@
         <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
-        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugAndroidTest" />
-        <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileDebugAndroidTestSources" />
         <afterSyncTasks>
-          <task>generateDebugAndroidTestSources</task>
           <task>generateDebugSources</task>
         </afterSyncTasks>
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
@@ -28,7 +25,7 @@
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../app/build/intermediates/classes/debug" />
-    <output-test url="file://$MODULE_DIR$/../../../app/build/intermediates/classes/androidTest/debug" />
+    <output-test url="file://$MODULE_DIR$/../../../app/build/intermediates/classes/test/debug" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../app">
       <sourceFolder url="file://$MODULE_DIR$/../../../app/build/generated/source/r/debug" isTestSource="false" generated="true" />
@@ -50,6 +47,13 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/debug/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/debug/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/debug/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/assets" type="java-resource" />
@@ -57,6 +61,13 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/test/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/androidTest/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/androidTest/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/androidTest/assets" type="java-test-resource" />
@@ -71,9 +82,10 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/dex" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.tencent.bugly/crashreport_upgrade/1.0.2/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/exploded-aar/com.tencent.bugly/crashreport_upgrade/1.1.2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/manifests" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/mockable-android-22.jar" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/pre-dexed" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/proguard-rules" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/res" />
@@ -84,12 +96,13 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="crashreport_upgrade-1.0.2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="mockable-android-22" level="project" />
+    <orderEntry type="library" exported="" name="crashreport_upgrade-1.1.2" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.1.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.1.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.1.1" level="project" />
-    <orderEntry type="library" exported="" name="android-android-21" level="project" />
+    <orderEntry type="library" exported="" name="android-android-22" level="project" />
   </component>
 </module>
