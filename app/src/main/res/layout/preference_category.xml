@@ -16,8 +16,8 @@
                   android:layout_height="wrap_content"
                   android:singleLine="true"
                   android:ellipsize="marquee"
-                  android:textColor="#d55849"
-                  android:textSize="16sp"
+                  android:textColor="#E46C62"
+                  android:textSize="14sp"
                   android:fadingEdge="horizontal"/>
     </RelativeLayout>
 </LinearLayout>

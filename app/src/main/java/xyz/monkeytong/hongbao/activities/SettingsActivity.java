@@ -74,7 +74,7 @@ public class SettingsActivity extends FragmentActivity {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        window.setStatusBarColor(0xffd84e43);
+        window.setStatusBarColor(0xffE46C62);
     }
 
     @Override
