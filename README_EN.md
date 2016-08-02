@@ -1,7 +1,5 @@
 # WeChat Lucky Money
 
-[![forthebadge](http://forthebadge.com/images/badges/designed-in-ms-paint.svg)](http://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/built-by-codebabes.svg)](http://forthebadge.com) [![forthebadge](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com) 
-
 <a href="https://play.google.com/store/apps/details?id=xyz.monkeytong.hongbao"><img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="48"></a>
 
 [![Gitter](https://badges.gitter.im/geeeeeeeeek/WeChatLuckyMoney.svg)](https://gitter.im/geeeeeeeeek/WeChatLuckyMoney?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)  [![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)   [**中文 README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README.md)
@@ -13,19 +11,19 @@ Please goto the [**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/re
 ### Spotlights
 
 - **What to watch is at your choice**[[?]](https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues/48)
-  
+
   Three levels of watch options: `notification`/`chat list`/`chat page`. Whatever a coutious man or an ambitious one you wanna be, the choice is at yours.
-  
+
 - **More intelligent algorithm**
-  
+
   Multiple features used to identify a red envelope. No more repeated clickings. Anti-anti-plugin strategies are protecting the app from disability.
-  
+
 - **Auto update checking**
-  
+
   Work with the latest version of WeChat. Update available inside your app.
-  
+
 - **Light, safe, and trustful**
-  
+
   Tha package is as light as 1Mb. With code open sourced, active community discussions, tens of thousands of downloads, it's worth your trust.
 
 ### How to use
