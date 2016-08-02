@@ -54,7 +54,7 @@
         <Preference
                 android:key="pref_etc_issue"
                 android:title="帮助与反馈"
-                android:summary="前往Github项目主页提交issue"
+                android:summary="前往GitHub项目主页提交issue"
                 android:layout="@layout/preference_checkbox"/>
     </PreferenceCategory>
     <PreferenceCategory

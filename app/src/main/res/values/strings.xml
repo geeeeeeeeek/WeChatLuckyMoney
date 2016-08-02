@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">微信红包</string>
-    <string name="app_version">稳定版 v2.3.1</string>
-    <string name="app_description">∠( ᐛ 」∠)_使用指南∠( ᐛ 」∠)_\n\n ○ 狠戳插件开关\n ○ 回到微信聊天\n ○ 坐等红包进账\n\n 遇到问题, 欢迎通过Github issue反馈~\n https://github.com/geeeeeeeeek/WeChatLuckyMoney</string>
+    <string name="app_version">测试版 v3.0</string>
+    <string name="app_description">∠( ᐛ 」∠)_使用指南∠( ᐛ 」∠)_\n\n ○ 狠戳插件开关\n ○ 回到微信聊天\n ○ 坐等红包进账\n\n 遇到问题, 欢迎通过 GitHub Issue 反馈~\n https://github.com/geeeeeeeeek/WeChatLuckyMoney</string>
     <string name="service_status">当前辅助服务状态:</string>
     <string name="service_name">设置抢红包辅助服务</string>
     <string name="preference">偏好设置</string>
-    <string name="update_error">遇到一些问题,请前往Github手动更新喵(ฅ´ω`ฅ)</string>
+    <string name="update_error">遇到一些问题,请前往GitHub手动更新喵(ฅ´ω`ฅ)</string>
     <string name="update_new_seg1">发现新版本(</string>
     <string name="update_new_seg2">),正在为您准备下载( /) V (\\ )</string>
     <string name="update_new_seg3">),请进入设置完成更新(ฅ´ω`ฅ)</string>

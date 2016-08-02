@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -14,11 +15,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.Button;
+import android.widget.*;
 
 import java.util.List;
 
-import android.widget.Toast;
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.fragments.GeneralSettingsFragment;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
@@ -30,7 +30,8 @@ import com.tencent.bugly.crashreport.CrashReport;
 public class MainActivity extends Activity implements AccessibilityManager.AccessibilityStateChangeListener {
 
     //开关切换按钮
-    private Button switchPlugin;
+    private TextView pluginStatusText;
+    private ImageView pluginStatusIcon;
     //AccessibilityService 管理
     private AccessibilityManager accessibilityManager;
 
@@ -39,7 +40,8 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         super.onCreate(savedInstanceState);
         CrashReport.initCrashReport(getApplicationContext(), "900019352", false);
         setContentView(R.layout.activity_main);
-        switchPlugin = (Button) findViewById(R.id.button_accessible);
+        pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
+        pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
 
         handleMaterialStatusBar();
 
@@ -69,7 +71,7 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        window.setStatusBarColor(0xffd84e43);
+        window.setStatusBarColor(0xffE46C62);
 
     }
 
@@ -89,28 +91,29 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         super.onDestroy();
     }
 
-    public void onButtonClicked(View view) {
+    public void openAccessibility(View view) {
         try {
+            Toast.makeText(this, "点击「微信红包」" + pluginStatusText.getText(), Toast.LENGTH_SHORT).show();
             Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             startActivity(accessibleIntent);
         } catch (Exception e) {
-            Toast.makeText(this, "遇到一些问题,请手动打开系统设置>辅助服务>微信红包(ฅ´ω`ฅ)", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "遇到一些问题,请手动打开系统设置>无障碍服务>微信红包(ฅ´ω`ฅ)", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
     }
 
-    public void openGithub(View view) {
+    public void openGitHub(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", "Github项目主页");
+        webViewIntent.putExtra("title", "GitHub 项目主页");
         webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney");
         startActivity(webViewIntent);
     }
 
-    public void openGithubReleaseNotes(View view) {
+    public void openUber(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", "发布日志");
-        webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues?q=is%3Aissue+is%3Aopen+label%3A%22release+notes%22");
+        webViewIntent.putExtra("title", "Uber 优惠乘车机会(优惠码rgk2wue)");
+        webViewIntent.putExtra("url", "https://get.uber.com.cn/invite/rgk2wue");
         startActivity(webViewIntent);
     }
 
@@ -132,9 +135,11 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
      */
     private void updateServiceStatus() {
         if (isServiceEnabled()) {
-            switchPlugin.setText(R.string.service_off);
+            pluginStatusText.setText(R.string.service_off);
+            pluginStatusIcon.setBackgroundResource(R.mipmap.ic_stop);
         } else {
-            switchPlugin.setText(R.string.service_on);
+            pluginStatusText.setText(R.string.service_on);
+            pluginStatusIcon.setBackgroundResource(R.mipmap.ic_start);
         }
     }
 

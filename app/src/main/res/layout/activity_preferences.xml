@@ -8,36 +8,35 @@
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#d84e43"
+                    android:background="#E46C62"
                     tools:context=".SettingsActivity"
     >
-        <TextView android:layout_width="wrap_content" android:layout_height="60dp"
+        <TextView android:layout_width="wrap_content" android:layout_height="54dp"
                   android:id="@+id/settings_bar"
-                  android:text="@string/preference" android:textColor="#fde1b5"
+                  android:text="@string/preference" android:textColor="#fff"
                   android:gravity="left|center_vertical|center_horizontal"
-                  android:elegantTextHeight="false" android:textSize="20sp"
+                  android:elegantTextHeight="false" android:textSize="18sp"
                   android:layout_toRightOf="@+id/preference_back"
         />
         <ImageView
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:id="@+id/preference_back"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
                 android:clickable="true" android:onClick="performBack"
                 android:layout_alignBottom="@+id/settings_bar"
-                android:src="@mipmap/ic_back"/>
+                android:src="@mipmap/ic_back" android:padding="10dp"/>
         <ImageView android:layout_width="40dp" android:layout_height="match_parent" android:id="@+id/imageView3"
                    android:clickable="true"
                    android:onClick="enterAccessibilityPage"
                    android:layout_alignParentRight="true"
                    android:layout_marginRight="10dp" android:layout_marginLeft="8dp"
-                   android:padding="6dp" android:src="@mipmap/ic_refresh"
+                   android:padding="8dp" android:src="@mipmap/ic_refresh"
                    android:layout_alignBottom="@+id/settings_bar"/>
     </RelativeLayout>
-    <fragment android:layout_width="match_parent"
+    <FrameLayout android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:id="@+id/preferences_fragment"
-              tools:layout="@android:layout/simple_list_item_1"
-              class="xyz.monkeytong.hongbao.fragments.GeneralSettingsFragment"/>
+              tools:layout="@android:layout/simple_list_item_1"/>
 </LinearLayout>

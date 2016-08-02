@@ -6,66 +6,125 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:id="@+id/main_action_bar_placeholder" android:layout_alignParentTop="true"
-            android:background="#d65645" android:layout_alignTop="@+id/textView"/>
-       <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/textView" android:background="@mipmap/bg_action_bar" android:text="微信红包" android:textColor="#fee1b4"
-            android:gravity="center_vertical|center_horizontal"
-            android:textSize="26dp" android:autoText="false"/>
-
-    <ImageView
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:id="@+id/imageView2"
-            android:src="@mipmap/ic_settings"
-            android:padding="10dp"
-            android:onClick="openSettings"
-            android:layout_alignRight="@+id/textView" android:layout_below="@+id/main_action_bar_placeholder"
-            android:layout_marginRight="6dp" android:layout_marginTop="6dp"/>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView" android:src="@mipmap/open"
-            android:scaleType="centerInside"
-            android:layout_above="@+id/textView3"
-            android:layout_centerHorizontal="true" android:onClick="openGithub" android:clickable="true"
-    />
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:text="@string/app_version"
-            android:id="@+id/textView3"
-            android:gravity="center" android:onClick="openGithub"
-            android:clickable="true" android:layout_centerInParent="true" android:textColor="#c5a45e"
-            android:paddingTop="6dp" android:paddingBottom="1dp"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="查看最新版本功能介绍"
-            android:id="@+id/textView2" android:layout_below="@+id/textView3"
-            android:layout_centerHorizontal="true" android:clickable="true" android:onClick="openGithubReleaseNotes"
-            android:layout_marginTop="3dp" android:textColor="#999999"/>
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="https://github.com/geeeeeeeeek/WeChatLuckyMoney"
-            android:id="@+id/github" android:gravity="center_horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="20dp" android:layout_marginTop="20dp"
-            android:textColor="#5272ae" android:clickable="true" android:onClick="openGithub"/>
-    <Button
-            android:id="@+id/button_accessible"
-            android:text="@string/service_name"
+            android:background="#d65645"/>
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:onClick="onButtonClicked" android:layout_alignParentBottom="false"
-            android:background="#24e2b379" android:textColor="#c5a45e"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_marginRight="16dp" android:layout_marginLeft="16dp" android:layout_above="@+id/github"
-            android:textSize="20dp"/>
+            android:layout_height="fill_parent" android:id="@+id/layout_header"
+            android:layout_above="@+id/layout_control" android:background="#E46C62" android:layout_marginBottom="12dp"
+    >
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView" android:text="微信红包"
+                android:textColor="#fff"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="28dp"
+                android:layout_above="@+id/layout_control"
+                android:layout_alignParentTop="true" android:layout_marginTop="40dp" android:textIsSelectable="false"/>
+        <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/textView5"
+                  android:text="v3.0" android:textColor="#fff" android:gravity="center_vertical|center_horizontal"
+                  android:layout_above="@+id/layout_control" android:layout_alignParentTop="true"
+                  android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/layout_control" android:orientation="horizontal" android:layout_width="match_parent"
+                  android:layout_height="110dp" android:layout_above="@+id/layout_uber" android:layout_marginLeft="16dp"
+                  android:layout_marginRight="16dp" android:layout_marginTop="8dp"
+                  android:layout_marginBottom="8dp">
+        <LinearLayout style="?android:attr/borderlessButtonStyle" android:id="@+id/layout_control_community"
+                      android:layout_width="fill_parent" android:layout_height="fill_parent"
+                      android:background="#fff" android:textColor="#858585"
+                      android:layout_above="@+id/layout_uber" android:textSize="20dp" android:orientation="vertical"
+                      android:layout_weight="0.35" android:layout_marginRight="5dp" android:onClick="openGitHub">
+            <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/imageView" android:src="@mipmap/ic_community" android:layout_margin="10dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="社区"
+                    android:id="@+id/textView2" android:layout_margin="5dp" android:textColor="#858585"/>
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/layout_control_accessibility"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:onClick="openAccessibility"
+                android:background="#fff" android:textColor="#858585"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_above="@+id/layout_uber"
+                android:textSize="20dp" android:orientation="vertical" android:layout_weight="0.3"
+                android:layout_marginRight="5dp" android:layout_marginLeft="5dp">
+            <ImageView android:layout_width="32dp" android:layout_height="32dp" android:id="@+id/layout_control_accessibility_icon"
+                       android:layout_marginBottom="4dp" android:layout_marginTop="4dp"
+                       android:background="@mipmap/ic_start"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="开启插件"
+                      android:id="@+id/layout_control_accessibility_text" android:layout_margin="5dp" android:textColor="#dfaa6a"/>
+        </LinearLayout>
+        <LinearLayout style="?android:attr/borderlessButtonStyle" android:id="@+id/layout_control_settings"
+                      android:layout_width="fill_parent" android:layout_height="fill_parent"
+                      android:background="#fff" android:textColor="#858585"
+                      android:layout_above="@+id/layout_uber" android:textSize="20dp" android:orientation="vertical"
+                      android:layout_weight="0.35" android:layout_marginLeft="5dp" android:onClick="openSettings">
+            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:id="@+id/imageView4"
+                       android:layout_margin="10dp" android:src="@mipmap/ic_settings"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="设置"
+                          android:id="@+id/textView3" android:layout_margin="5dp" android:textColor="#858585"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/layout_uber"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+            android:background="#ffffff" android:layout_marginTop="8dp"
+            android:layout_alignParentBottom="false" android:layout_above="@+id/linearLayout2"
+            android:layout_marginBottom="8dp" android:onClick="openUber">
+        <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/icon_uber" android:src="@mipmap/ic_uber" android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp" android:layout_gravity="center_vertical"
+                android:layout_marginBottom="2dp"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/layout_uber_text"
+                android:layout_gravity="center_vertical">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="前 3 次乘车均可获得 ￥16 优惠"
+                    android:id="@+id/label_uber_text" android:layout_margin="2dp" android:textColor="#858585"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:text="立即获得免费乘车机会" android:id="@+id/label_uber_link" android:layout_margin="2dp"
+                      android:textColor="#dfaa6a"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/linearLayout2" android:orientation="horizontal" android:layout_width="match_parent"
+                  android:layout_height="40dp" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
+                  android:background="#ffffff" android:layout_marginTop="8dp" android:layout_marginBottom="24dp"
+                  android:layout_alignParentBottom="true" android:onClick="openGitHub">
+        <ImageView android:layout_width="20dp" android:layout_height="20dp" android:id="@+id/imageView2"
+                   android:src="@mipmap/ic_github" android:layout_marginLeft="20dp" android:layout_marginRight="10dp"
+                   android:layout_gravity="center_vertical"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="在 GitHub 上" android:id="@+id/textView6" android:layout_margin="2dp"
+                  android:textColor="#858585"
+                  android:layout_gravity="center_vertical"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="★"
+                  android:id="@+id/textView7" android:textColor="#dfaa6a"
+                  android:layout_gravity="center_vertical"
+                  android:paddingBottom="1dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Star"
+                  android:id="@+id/textView8" android:textColor="#dfaa6a"
+                  android:layout_gravity="center_vertical" android:layout_marginLeft="2dp"
+                  android:layout_marginRight="2dp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="本项目，支持应用开源"
+                  android:id="@+id/textView9" android:layout_margin="2dp" android:textColor="#858585"
+                  android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 </RelativeLayout>

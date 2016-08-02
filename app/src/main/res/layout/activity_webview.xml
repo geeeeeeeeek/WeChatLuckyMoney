@@ -8,38 +8,40 @@
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#d84e43"
+                    android:background="#E46C62"
                     tools:context=".WebViewActivity"
     >
-        <TextView android:layout_width="wrap_content" android:layout_height="60dp"
+        <TextView android:layout_width="wrap_content" android:layout_height="54dp"
                   android:id="@+id/webview_bar"
-                  android:text="@string/app_name" android:textColor="#fde1b5"
+                  android:text="@string/app_name"
                   android:gravity="left|center_vertical|center_horizontal"
-                  android:elegantTextHeight="false" android:textSize="20sp"
+                  android:elegantTextHeight="false" android:textSize="18sp"
                   android:layout_toRightOf="@+id/webview_back"
-        />
+                  android:textColor="#fff"/>
         <ImageView
                 android:layout_width="40dp"
-                android:layout_height="match_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/webview_back"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
                 android:clickable="true" android:onClick="performBack"
                 android:layout_alignBottom="@+id/webview_bar"
-                android:src="@mipmap/ic_back"/>
+                android:src="@mipmap/ic_back" android:layout_alignParentBottom="false"
+                android:layout_alignParentTop="false" android:layout_alignParentLeft="true"
+                android:cropToPadding="false" android:padding="10dp"/>
         <ImageView
                 android:layout_width="40dp"
-                android:layout_height="match_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/webview_outlink"
                 android:layout_marginRight="10dp"
                 android:clickable="true" android:onClick="openLink"
                 android:layout_alignBottom="@+id/webview_bar"
                 android:src="@mipmap/ic_open_in_browser" android:layout_alignParentRight="true"
-                android:layout_marginLeft="8dp" android:padding="6dp"/>
+                android:layout_marginLeft="8dp" android:padding="8dp"/>
     </RelativeLayout>
     <WebView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/webView" android:layout_gravity="center_horizontal" android:foreground="#d84e43"/>
+            android:id="@+id/webView" android:layout_gravity="center_horizontal" android:foreground="#E46C62"/>
 
 </LinearLayout>

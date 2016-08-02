@@ -2,14 +2,17 @@ package xyz.monkeytong.hongbao.activities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -20,7 +23,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import xyz.monkeytong.hongbao.R;
+import xyz.monkeytong.hongbao.utils.DownloadUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
 /**
@@ -53,8 +58,14 @@ public class WebViewActivity extends Activity {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
-                    return false;
+                    if (url.indexOf("apk") > 0) {
+                        Toast.makeText(getApplicationContext(), "正在准备下载", Toast.LENGTH_SHORT).show();
+                        (new DownloadUtil()).enqueue(url, getApplicationContext());
+                        return true;
+                    } else {
+                        view.loadUrl(url);
+                        return false;
+                    }
                 }
 
                 @Override
@@ -78,7 +89,7 @@ public class WebViewActivity extends Activity {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        window.setStatusBarColor(0xffd84e43);
+        window.setStatusBarColor(0xffE46C62);
     }
 
     @Override
