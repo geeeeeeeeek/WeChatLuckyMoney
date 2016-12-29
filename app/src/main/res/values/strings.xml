@@ -3,4 +3,8 @@
     <string name="service_status">当前辅助服务状态:</string>
     <string name="service_name">开启插件</string>
     <string name="node_recycled">错误: 当前节点已被重用，将会在下一轮中重新获取.</string>
+    <string name="open_hongbao">拆红包</string>
+    <string name="all_opened">手慢了，红包派完了</string>
+    <string name="hong_detail">红包详情</string>
+    <string name="too_slow">手慢了</string>
 </resources>
