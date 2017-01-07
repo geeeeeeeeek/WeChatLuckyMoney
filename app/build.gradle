@@ -1,18 +1,18 @@
  apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
-
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "xyz.monkeytong.hongbao"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 4
-        versionName "v3.0.1"
+        versionCode 1
+        versionName "test-1"
         ndk {
             //设置支持的SO库架构
-            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi', 'armeabi-v7a' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
 
@@ -34,10 +34,13 @@ android {
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
-    //compile 'com.tencent.bugly:crashreport:latest.release'  //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.8
-    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.0.1
-}
+ dependencies {
+     compile fileTree(include: ['*.jar'], dir: 'libs')
+     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.0.1
+     compile 'com.tencent.bugly:nativecrashreport:latest.release'
+     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+     compile 'com.android.support:support-v4:25.1.0'
+     compile 'com.android.support:appcompat-v7:25.1.0'
+ }
 
