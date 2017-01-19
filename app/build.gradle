@@ -6,7 +6,7 @@ android {
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "xyz.monkeytong.hongbao"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 4
         versionName "v3.0.1"
