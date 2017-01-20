@@ -81,7 +81,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         mUnpackNode = null;
 
         checkNodeInfo(event.getEventType());
-        if(android.os.Build.VERSION.SDK_INT<=23) {
+
         /* 如果已经接收到红包并且还没有戳开 */
             if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
                 mMutex = true;
@@ -91,6 +91,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                 mLuckyMoneyPicked = true;
             }
         /* 如果戳开但还未领取 */
+         if(android.os.Build.VERSION.SDK_INT<=23) {
             if (mUnpackCount == 1 && (mUnpackNode != null)) {
                 int delayFlag = sharedPreferences.getInt("pref_open_delay", 0) * 1000;
                 new android.os.Handler().postDelayed(
