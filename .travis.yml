@@ -4,25 +4,19 @@ jdk: oraclejdk8
 env:
   matrix:
   - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a armeabi
-dependencies:
-  override:
-    - echo y | android update sdk --no-ui --filter "android-25"
-    - echo y | android update sdk --no-ui --filter "build-tools-25.0.2"
-    - echo y | android update sdk --no-ui --filter "tools"
 android:
   components:
   - platform-tools
   - build-tools-25.0.2
-  - android-L
+  - android-N
   - extra
 before_install:
 - openssl aes-256-cbc -K $encrypted_6b42a8524af0_key -iv $encrypted_6b42a8524af0_iv
   -in monkeytong.jks.enc -out monkeytong.jks -d
 before_script:
-- echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-- emulator -avd test -no-skin -no-audio -no-window &
-- adb wait-for-device
-- adb shell input keyevent 82 &
+- echo y | android update sdk --no-ui --filter "android-25"
+- echo y | android update sdk --no-ui --filter "build-tools-25.0.2"
+- echo y | android update sdk --no-ui --filter "tools"
 - gem install fir-cli
 script:
 - ./gradlew assembleRelease
