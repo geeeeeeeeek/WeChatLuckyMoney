@@ -71,8 +71,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     }
 
     private void watchChat(AccessibilityEvent event) {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float dpi = metrics.density;
         this.rootNodeInfo = getRootInActiveWindow();
 
         if (rootNodeInfo == null) return;
@@ -83,38 +81,44 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         checkNodeInfo(event.getEventType());
 
         /* 如果已经接收到红包并且还没有戳开 */
-            if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
-                mMutex = true;
+        if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
+            mMutex = true;
 
-                mReceiveNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                mLuckyMoneyReceived = false;
-                mLuckyMoneyPicked = true;
-            }
+            mReceiveNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            mLuckyMoneyReceived = false;
+            mLuckyMoneyPicked = true;
+        }
         /* 如果戳开但还未领取 */
-         if(android.os.Build.VERSION.SDK_INT<=23) {
-            if (mUnpackCount == 1 && (mUnpackNode != null)) {
-                int delayFlag = sharedPreferences.getInt("pref_open_delay", 0) * 1000;
-                new android.os.Handler().postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                try {
-                                    mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                                } catch (Exception e) {
-                                    mMutex = false;
-                                    mLuckyMoneyPicked = false;
-                                    mUnpackCount = 0;
-                                }
+        if (mUnpackCount == 1 && (mUnpackNode != null)) {
+            int delayFlag = sharedPreferences.getInt("pref_open_delay", 0) * 1000;
+            new android.os.Handler().postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            try {
+                                openPacket();
+                            } catch (Exception e) {
+                                mMutex = false;
+                                mLuckyMoneyPicked = false;
+                                mUnpackCount = 0;
                             }
-                        },
-                        delayFlag);
-            }
-        }else{
-            if(android.os.Build.VERSION.SDK_INT>23){
+                        }
+                    },
+                    delayFlag);
+        }
+    }
+
+    private void openPacket() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float dpi = metrics.density;
+        if (android.os.Build.VERSION.SDK_INT <= 23) {
+            mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+        } else {
+            if (android.os.Build.VERSION.SDK_INT > 23) {
 
                 Path path = new Path();
-                if(640 == dpi) {
+                if (640 == dpi) {
                     path.moveTo(720, 1575);
-                }else {
+                } else {
                     path.moveTo(540, 1060);
                 }
                 GestureDescription.Builder builder = new GestureDescription.Builder();
