@@ -4,6 +4,11 @@ jdk: oraclejdk7
 env:
   matrix:
   - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a armeabi
+dependencies:
+  override:
+    - echo y | android update sdk --no-ui --filter "android-25"
+    - echo y | android update sdk --no-ui --filter "build-tools-25.0.2"
+    - echo y | android update sdk --no-ui --filter "tools"
 android:
   components:
   - platform-tools
