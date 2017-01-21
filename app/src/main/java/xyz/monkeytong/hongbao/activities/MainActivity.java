@@ -5,10 +5,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.View;
@@ -19,8 +17,9 @@ import android.widget.*;
 
 import java.util.List;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import xyz.monkeytong.hongbao.R;
-import xyz.monkeytong.hongbao.fragments.GeneralSettingsFragment;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
 
@@ -35,6 +34,8 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     //AccessibilityService 管理
     private AccessibilityManager accessibilityManager;
 
+    private AdView adView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,10 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         setContentView(R.layout.activity_main);
         pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
         pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
+
+        adView = (AdView) findViewById(R.id.adViewMain);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         handleMaterialStatusBar();
 
@@ -76,8 +81,19 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     }
 
     @Override
+    protected void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
 
         // Check for update when WIFI is connected or on first time.
         if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0)
@@ -86,6 +102,9 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     @Override
     protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
         //移除监听服务
         accessibilityManager.removeAccessibilityStateChangeListener(this);
         super.onDestroy();
@@ -112,8 +131,8 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     public void openUber(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", "Uber 优惠乘车机会(优惠码rgk2wue)");
-        webViewIntent.putExtra("url", "https://get.uber.com.cn/invite/rgk2wue");
+        webViewIntent.putExtra("title", "Uber 优惠乘车");
+        webViewIntent.putExtra("url", "https://dc.tt/oTLtXH2BHsD");
         startActivity(webViewIntent);
     }
 
