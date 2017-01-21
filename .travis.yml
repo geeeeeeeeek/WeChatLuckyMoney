@@ -1,6 +1,6 @@
 language: android
 sudo: false
-jdk: oraclejdk7
+jdk: oraclejdk8
 env:
   matrix:
   - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a armeabi
