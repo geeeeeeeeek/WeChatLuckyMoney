@@ -63,12 +63,12 @@ public class WebViewActivity extends Activity {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     if (url.contains("apk")) {
-                        Toast.makeText(getApplicationContext(), "正在后台下载", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.download_backend), Toast.LENGTH_SHORT).show();
                         (new DownloadUtil()).enqueue(url, getApplicationContext());
                         return true;
                     } else if (!url.contains("http")) {
-                        Toast.makeText(getApplicationContext(), "正在前往下载页面", Toast.LENGTH_LONG).show();
-                        webViewBar.setText("点击\"普通下载\"获取 Uber");
+                        Toast.makeText(getApplicationContext(), getString(R.string.download_redirect), Toast.LENGTH_LONG).show();
+                        webViewBar.setText(getString(R.string.download_hint));
                         return false;
                     } else {
                         view.loadUrl(url);

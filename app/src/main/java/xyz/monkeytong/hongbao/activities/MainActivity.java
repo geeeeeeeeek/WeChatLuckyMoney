@@ -116,11 +116,11 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     public void openAccessibility(View view) {
         try {
-            Toast.makeText(this, "点击「微信红包」" + pluginStatusText.getText(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.turn_on_toast) + pluginStatusText.getText(), Toast.LENGTH_SHORT).show();
             Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             startActivity(accessibleIntent);
         } catch (Exception e) {
-            Toast.makeText(this, "遇到一些问题,请手动打开系统设置>无障碍服务>微信红包(ฅ´ω`ฅ)", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.turn_on_error_toast), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
@@ -128,14 +128,14 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     public void openGitHub(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", "GitHub 项目主页");
+        webViewIntent.putExtra("title", getString(R.string.webview_github_title));
         webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney");
         startActivity(webViewIntent);
     }
 
     public void openUber(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", "Uber 优惠乘车");
+        webViewIntent.putExtra("title", getString(R.string.webview_uber_title));
         String[] couponList = new String[]{"https://dc.tt/oTLtXH2BHsD", "https://dc.tt/ozFJHDnfLky"};
         int index = (int) (Math.random() * 2);
         webViewIntent.putExtra("url", couponList[index]);
@@ -144,7 +144,7 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     public void openSettings(View view) {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
-        settingsIntent.putExtra("title", "偏好设置");
+        settingsIntent.putExtra("title", getString(R.string.preference));
         settingsIntent.putExtra("frag_id", "GeneralSettingsFragment");
         startActivity(settingsIntent);
     }
