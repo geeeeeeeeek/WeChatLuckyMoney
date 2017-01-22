@@ -84,10 +84,7 @@ public class WebViewActivity extends Activity {
             webView.loadUrl(webViewUrl);
         }
 
-
-        adView = (AdView) findViewById(R.id.adViewWebView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        loadAd();
     }
 
     @Override
@@ -112,6 +109,12 @@ public class WebViewActivity extends Activity {
             adView.destroy();
         }
         super.onDestroy();
+    }
+
+    private void loadAd() {
+        adView = (AdView) findViewById(R.id.adViewWebView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

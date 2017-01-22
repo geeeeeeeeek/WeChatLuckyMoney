@@ -44,9 +44,7 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
         pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
 
-        adView = (AdView) findViewById(R.id.adViewMain);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        loadAd();
 
         handleMaterialStatusBar();
 
@@ -78,6 +76,12 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
         window.setStatusBarColor(0xffE46C62);
 
+    }
+
+    private void loadAd() {
+        adView = (AdView) findViewById(R.id.adViewMain);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     @Override
@@ -132,7 +136,9 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     public void openUber(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
         webViewIntent.putExtra("title", "Uber 优惠乘车");
-        webViewIntent.putExtra("url", "https://dc.tt/oTLtXH2BHsD");
+        String[] couponList = new String[]{"https://dc.tt/oTLtXH2BHsD", "https://dc.tt/ozFJHDnfLky"};
+        int index = (int) (Math.random() * 2);
+        webViewIntent.putExtra("url", couponList[index]);
         startActivity(webViewIntent);
     }
 

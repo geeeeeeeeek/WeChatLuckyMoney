@@ -99,7 +99,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="前 3 次乘车均可获得 ￥12 优惠"
+                    android:text="首次乘车可获得 ￥12 优惠"
                     android:id="@+id/label_uber_text" android:layout_margin="2dp" android:textColor="#858585"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                       android:text="立即获得免费乘车机会" android:id="@+id/label_uber_link" android:layout_margin="2dp"
