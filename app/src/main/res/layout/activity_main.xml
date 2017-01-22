@@ -1,18 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
                 android:layout_height="match_parent" tools:context=".MainActivity"
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:background="#faf6f1">
     <ImageView
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:id="@+id/main_action_bar_placeholder" android:layout_alignParentTop="true"
-            android:background="#E46C62"/>
+            android:background="#d65645"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="fill_parent" android:id="@+id/layout_header"
-            android:layout_above="@+id/layout_control" android:background="#E46C62" android:layout_marginBottom="12dp">
+            android:layout_above="@+id/layout_control" android:background="#E46C62" android:layout_marginBottom="12dp"
+    >
         <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -57,13 +57,11 @@
                 android:layout_above="@+id/layout_uber"
                 android:textSize="20dp" android:orientation="vertical" android:layout_weight="0.3"
                 android:layout_marginRight="5dp" android:layout_marginLeft="5dp">
-            <ImageView android:layout_width="32dp" android:layout_height="32dp"
-                       android:id="@+id/layout_control_accessibility_icon"
+            <ImageView android:layout_width="32dp" android:layout_height="32dp" android:id="@+id/layout_control_accessibility_icon"
                        android:layout_marginBottom="4dp" android:layout_marginTop="4dp"
                        android:background="@mipmap/ic_start"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="开启插件"
-                      android:id="@+id/layout_control_accessibility_text" android:layout_margin="5dp"
-                      android:textColor="#dfaa6a"/>
+                      android:id="@+id/layout_control_accessibility_text" android:layout_margin="5dp" android:textColor="#dfaa6a"/>
         </LinearLayout>
         <LinearLayout style="?android:attr/borderlessButtonStyle" android:id="@+id/layout_control_settings"
                       android:layout_width="fill_parent" android:layout_height="fill_parent"
@@ -73,7 +71,7 @@
             <ImageView android:layout_width="24dp" android:layout_height="24dp" android:id="@+id/imageView4"
                        android:layout_margin="10dp" android:src="@mipmap/ic_settings"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="设置"
-                      android:id="@+id/textView3" android:layout_margin="5dp" android:textColor="#858585"/>
+                          android:id="@+id/textView3" android:layout_margin="5dp" android:textColor="#858585"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -99,7 +97,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="首次乘车可获得 ￥12 优惠"
+                    android:text="前 3 次乘车均可获得 ￥16 优惠"
                     android:id="@+id/label_uber_text" android:layout_margin="2dp" android:textColor="#858585"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                       android:text="立即获得免费乘车机会" android:id="@+id/label_uber_link" android:layout_margin="2dp"
@@ -108,9 +106,8 @@
     </LinearLayout>
     <LinearLayout android:id="@+id/linearLayout2" android:orientation="horizontal" android:layout_width="match_parent"
                   android:layout_height="40dp" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"
-                  android:background="#ffffff" android:layout_marginTop="8dp" android:layout_marginBottom="8dp"
-                  android:onClick="openGitHub" android:layout_alignParentBottom="false"
-                  android:layout_above="@+id/layout_admob_main">
+                  android:background="#ffffff" android:layout_marginTop="8dp" android:layout_marginBottom="24dp"
+                  android:layout_alignParentBottom="true" android:onClick="openGitHub">
         <ImageView android:layout_width="20dp" android:layout_height="20dp" android:id="@+id/imageView2"
                    android:src="@mipmap/ic_github" android:layout_marginLeft="20dp" android:layout_marginRight="10dp"
                    android:layout_gravity="center_vertical"/>
@@ -130,18 +127,4 @@
                   android:id="@+id/textView9" android:layout_margin="2dp" android:textColor="#858585"
                   android:layout_gravity="center_vertical"/>
     </LinearLayout>
-    <LinearLayout android:id="@+id/layout_admob_main" android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp" android:layout_marginBottom="0dp"
-                  android:layout_centerHorizontal="true"
-                  android:gravity="center"
-                  android:layout_alignParentBottom="true">
-        <com.google.android.gms.ads.AdView
-                android:id="@+id/adViewMain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                ads:adSize="SMART_BANNER"
-                ads:adUnitId="@string/home_banner_ad_unit_id">
-        </com.google.android.gms.ads.AdView>
-    </LinearLayout>
-
 </RelativeLayout>
