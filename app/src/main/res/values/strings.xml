@@ -15,4 +15,6 @@
     <string name="pref_watch_exclude_words_summary">不拆开包含这些文字的红包(空格间隔)</string>
     <string name="pref_comment_words_summary">随机选择下列感谢语(空格间隔)</string>
     <string name="url_github_issues">https://github.com/geeeeeeeeek/WeChatLuckyMoney/issues</string>
+    <string name="home_banner_ad_unit_id">ca-app-pub-8428619221469478/4736153346</string>
+    <string name="webview_banner_ad_unit_id">ca-app-pub-8428619221469478/4163694548</string>
 </resources>
