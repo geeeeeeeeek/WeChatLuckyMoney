@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              xmlns:ads="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent" tools:context=".activities.WebViewActivity">
@@ -39,9 +40,22 @@
                 android:src="@mipmap/ic_open_in_browser" android:layout_alignParentRight="true"
                 android:layout_marginLeft="8dp" android:padding="8dp"/>
     </RelativeLayout>
-    <WebView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/webView" android:layout_gravity="center_horizontal" android:foreground="#E46C62"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/webView"
+                android:layout_gravity="center_horizontal"
+                android:layout_above="@+id/adViewWebView"
+                android:foreground="#E46C62"/>
+        <com.google.android.gms.ads.AdView
+                android:id="@+id/adViewWebView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                ads:adSize="SMART_BANNER"
+                ads:adUnitId="@string/webview_banner_ad_unit_id">
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>
 
 </LinearLayout>
