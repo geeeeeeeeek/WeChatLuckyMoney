@@ -3,6 +3,7 @@ package xyz.monkeytong.hongbao.activities;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -13,17 +14,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.tencent.bugly.Bugly;
 
 import java.util.List;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import xyz.monkeytong.hongbao.R;
+
+import xyz.monkeytong.hongbao.services.HongbaoService;
+import xyz.monkeytong.hongbao.utils.AccessibilityUtil;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
-
-import com.tencent.bugly.crashreport.CrashReport;
 
 
 public class MainActivity extends Activity implements AccessibilityManager.AccessibilityStateChangeListener {
@@ -39,7 +45,8 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CrashReport.initCrashReport(getApplicationContext(), "900019352", false);
+        //CrashReport.initCrashReport(getApplicationContext(), "900019352", false);
+        Bugly.init(getApplicationContext(), "900019352", false);
         setContentView(R.layout.activity_main);
         pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
         pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
@@ -115,15 +122,22 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     }
 
     public void openAccessibility(View view) {
-        try {
-            Toast.makeText(this, getString(R.string.turn_on_toast) + pluginStatusText.getText(), Toast.LENGTH_SHORT).show();
-            Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-            startActivity(accessibleIntent);
-        } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.turn_on_error_toast), Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+        // 如果有root权限直接打开/关闭设置
+        if (AccessibilityUtil.isRoot()) {
+            Toast.makeText(this, "用户授权申请：请点击允许", Toast.LENGTH_SHORT).show();
+            ComponentName componentName = new ComponentName(getApplicationContext(), HongbaoService.class);
+            AccessibilityUtil.toggleAccessibilityService(getApplicationContext(), componentName);
+        } else {
+            // 否则让用户手动打开/关闭
+            try {
+                Toast.makeText(this, getString(R.string.turn_on_toast) + pluginStatusText.getText(), Toast.LENGTH_SHORT).show();
+                Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(accessibleIntent);
+            } catch (Exception e) {
+                Toast.makeText(this, getString(R.string.turn_on_error_toast), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
         }
-
     }
 
     public void openGitHub(View view) {
@@ -170,14 +184,14 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     /**
      * 获取 HongbaoService 是否启用状态
-     *
-     * @return
      */
     private boolean isServiceEnabled() {
         List<AccessibilityServiceInfo> accessibilityServices =
                 accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+        ComponentName componentName = new ComponentName(getApplicationContext(), HongbaoService.class);
+        String self = componentName.flattenToShortString();
         for (AccessibilityServiceInfo info : accessibilityServices) {
-            if (info.getId().equals(getPackageName() + "/.services.HongbaoService")) {
+            if (info.getId().equals(self)) {
                 return true;
             }
         }
