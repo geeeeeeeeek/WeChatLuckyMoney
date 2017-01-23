@@ -24,6 +24,8 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.utils.DownloadUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
@@ -36,6 +38,8 @@ public class WebViewActivity extends Activity {
     private WebView webView;
     private String webViewUrl, webViewTitle;
 
+    private AdView adView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +51,7 @@ public class WebViewActivity extends Activity {
             webViewTitle = bundle.getString("title");
             webViewUrl = bundle.getString("url");
 
-            TextView webViewBar = (TextView) findViewById(R.id.webview_bar);
+            final TextView webViewBar = (TextView) findViewById(R.id.webview_bar);
             webViewBar.setText(webViewTitle);
 
             webView = (WebView) findViewById(R.id.webView);
@@ -58,10 +62,14 @@ public class WebViewActivity extends Activity {
             webView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    if (url.indexOf("apk") > 0) {
-                        Toast.makeText(getApplicationContext(), "正在准备下载", Toast.LENGTH_SHORT).show();
+                    if (url.contains("apk")) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.download_backend), Toast.LENGTH_SHORT).show();
                         (new DownloadUtil()).enqueue(url, getApplicationContext());
                         return true;
+                    } else if (!url.contains("http")) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.download_redirect), Toast.LENGTH_LONG).show();
+                        webViewBar.setText(getString(R.string.download_hint));
+                        return false;
                     } else {
                         view.loadUrl(url);
                         return false;
@@ -75,6 +83,38 @@ public class WebViewActivity extends Activity {
             });
             webView.loadUrl(webViewUrl);
         }
+
+        loadAd();
+    }
+
+    @Override
+    protected void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    private void loadAd() {
+        adView = (AdView) findViewById(R.id.adViewWebView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -90,11 +130,6 @@ public class WebViewActivity extends Activity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         window.setStatusBarColor(0xffE46C62);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     public void performBack(View view) {

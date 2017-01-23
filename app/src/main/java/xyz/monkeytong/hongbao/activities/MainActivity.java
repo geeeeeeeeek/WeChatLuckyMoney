@@ -22,7 +22,10 @@ import com.tencent.bugly.Bugly;
 
 import java.util.List;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import xyz.monkeytong.hongbao.R;
+
 import xyz.monkeytong.hongbao.services.HongbaoService;
 import xyz.monkeytong.hongbao.utils.AccessibilityUtil;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
@@ -37,6 +40,8 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     //AccessibilityService 管理
     private AccessibilityManager accessibilityManager;
 
+    private AdView adView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,8 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         setContentView(R.layout.activity_main);
         pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
         pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
+
+        loadAd();
 
         handleMaterialStatusBar();
 
@@ -78,9 +85,26 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     }
 
+    private void loadAd() {
+        adView = (AdView) findViewById(R.id.adViewMain);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
 
         // Check for update when WIFI is connected or on first time.
         if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0)
@@ -89,6 +113,9 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     @Override
     protected void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
         //移除监听服务
         accessibilityManager.removeAccessibilityStateChangeListener(this);
         super.onDestroy();
@@ -103,11 +130,11 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         } else {
             // 否则让用户手动打开/关闭
             try {
-                Toast.makeText(this, "点击「微信红包」" + pluginStatusText.getText(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.turn_on_toast) + pluginStatusText.getText(), Toast.LENGTH_SHORT).show();
                 Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
                 startActivity(accessibleIntent);
             } catch (Exception e) {
-                Toast.makeText(this, "遇到一些问题,请手动打开系统设置>无障碍服务>微信红包(ฅ´ω`ฅ)", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.turn_on_error_toast), Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
@@ -115,21 +142,23 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     public void openGitHub(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", "GitHub 项目主页");
+        webViewIntent.putExtra("title", getString(R.string.webview_github_title));
         webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney");
         startActivity(webViewIntent);
     }
 
     public void openUber(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", "Uber 优惠乘车机会(优惠码rgk2wue)");
-        webViewIntent.putExtra("url", "https://get.uber.com.cn/invite/rgk2wue");
+        webViewIntent.putExtra("title", getString(R.string.webview_uber_title));
+        String[] couponList = new String[]{"https://dc.tt/oTLtXH2BHsD", "https://dc.tt/ozFJHDnfLky"};
+        int index = (int) (Math.random() * 2);
+        webViewIntent.putExtra("url", couponList[index]);
         startActivity(webViewIntent);
     }
 
     public void openSettings(View view) {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
-        settingsIntent.putExtra("title", "偏好设置");
+        settingsIntent.putExtra("title", getString(R.string.preference));
         settingsIntent.putExtra("frag_id", "GeneralSettingsFragment");
         startActivity(settingsIntent);
     }
