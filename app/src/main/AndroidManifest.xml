@@ -31,6 +31,9 @@
                   android:theme="@style/Base.Theme.AppCompat.Light"
                   android:launchMode="standard">
         </activity>
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:theme="@android:style/Theme.Translucent" />
         <service
                 android:name=".services.HongbaoService"
                 android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -40,6 +43,16 @@
             <meta-data android:name="android.accessibilityservice"
                        android:resource="@xml/accessible_service_config"/>
         </service>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="xyz.monkeytong.hongbao.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
     </application>
 
 </manifest>

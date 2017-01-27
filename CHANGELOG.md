@@ -1,5 +1,16 @@
 # 更新日志
 
+**[v4.0 (2017.01.27)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v4.0)**
+
+- 新年快乐！
+- 新增 多语言支持，目前支持中文和英文两种语言
+- 新增 适配部分Android 7.0机型（进行中，华为等部分机型仍不可用）
+- 优化 UI
+- 优化 性能改进
+- 修复 Uber与滴滴合并后优惠链接失效的问题
+- 修复 Bugly高优先级的问题
+- 移除 自动回复功能
+
 **[v3.0 (2016.08.02)](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/tag/v3.0.1)**
 
 - 优化 重新设计UI，风格更加简洁明快。提升“社区”和“设置”的视觉优先级，开启插件更顺手。

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 import org.w3c.dom.Text;
 import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.fragments.CommentSettingsFragment;
@@ -46,7 +47,7 @@ public class SettingsActivity extends FragmentActivity {
             title = bundle.getString("title");
             fragId = bundle.getString("frag_id");
         } else {
-            title = "偏好设置";
+            title = getString(R.string.preference);
             fragId = "GeneralSettingsFragment";
         }
 
@@ -87,6 +88,7 @@ public class SettingsActivity extends FragmentActivity {
     }
 
     public void enterAccessibilityPage(View view) {
+        Toast.makeText(this, getString(R.string.turn_on_toast), Toast.LENGTH_SHORT).show();
         Intent mAccessibleIntent =
                 new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
         startActivity(mAccessibleIntent);
