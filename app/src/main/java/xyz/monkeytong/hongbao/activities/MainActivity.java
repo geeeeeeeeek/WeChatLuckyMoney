@@ -34,8 +34,6 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     //AccessibilityService 管理
     private AccessibilityManager accessibilityManager;
 
-    private AdView adView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +41,6 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         setContentView(R.layout.activity_main);
         pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
         pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
-
-        loadAd();
 
         handleMaterialStatusBar();
 
@@ -78,26 +74,14 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     }
 
-    private void loadAd() {
-        adView = (AdView) findViewById(R.id.adViewMain);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-    }
-
     @Override
     protected void onPause() {
-        if (adView != null) {
-            adView.pause();
-        }
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (adView != null) {
-            adView.resume();
-        }
 
         // Check for update when WIFI is connected or on first time.
         if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0)
@@ -106,9 +90,6 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     @Override
     protected void onDestroy() {
-        if (adView != null) {
-            adView.destroy();
-        }
         //移除监听服务
         accessibilityManager.removeAccessibilityStateChangeListener(this);
         super.onDestroy();

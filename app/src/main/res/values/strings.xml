@@ -50,4 +50,9 @@
     <string name="snatch_on_lockscreen_hint">保持30分钟后台活跃,可能会极大增加电量消耗,请谨慎使用</string>
     <string name="auto_reply">拆开红包后自动回复</string>
     <string name="checking_new_version">正在检查新版本……</string>
+    <string name="delay_instantly">立即</string>
+    <string name="delay_delay">延迟</string>
+    <string name="delay_open">拆开红包</string>
+    <string name="delay_sec">秒</string>
+    <string name="delay_then">然后</string>
 </resources>

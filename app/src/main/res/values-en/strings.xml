@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeChat Lucky Money</string>
+    <string name="app_name">Lucky Money</string>
     <string name="app_version">v3.0</string>
     <string name="app_description">∠( ᐛ 」∠)_ Instructions ∠( ᐛ 」∠)_\n\n ○ Turn on the Accessibility switch\n ○ Go back to WeChat\n ○ Wait for money comes in\n\n Please submit your feedback on GitHub Issues Page~\n https://github.com/geeeeeeeeek/WeChatLuckyMoney</string>
     <string name="preference">Preferences</string>
@@ -23,7 +23,7 @@
     <string name="github_2">this app on GitHub to support us</string>
     <string name="star_2">Star</string>
     <string name="star_1">★</string>
-    <string name="turn_on_toast">Click 「WeChat Lucky Money」 To </string>
+    <string name="turn_on_toast">Click 「WeChat Lucky Money」&#160;</string>
     <string name="turn_on_error_toast">An error occurred. Please manually open System Settings > Accessibility > WeChat Lucky Money. (ฅ´ω`ฅ)</string>
     <string name="webview_github_title">Project Homepage on GitHub</string>
     <string name="webview_uber_title">Uber Free Trip</string>
@@ -37,7 +37,7 @@
     <string name="watch_list_hint">Enter chat when a red packet is detected from chat list</string>
     <string name="anti_block_options">Anti-block Options</string>
     <string name="auto_open_packets">Open red packets automatically</string>
-    <string name="open_with_delay">Open red packets with delay</string>
+    <string name="open_with_delay">Open red packets with a delay</string>
     <string name="open_self">Open red packets I gave out</string>
     <string name="skip_phrases">Skip red packets by words in the message</string>
     <string name="about">About</string>
@@ -49,4 +49,9 @@
     <string name="snatch_on_lockscreen_hint">Will keep the app active in backend for 30 min. Please proceed with caution, since this might greatly increase your battery usage.</string>
     <string name="auto_reply">Auto reply</string>
     <string name="checking_new_version">Checking for updates…</string>
+    <string name="delay_instantly">Instantly&#160;</string>
+    <string name="delay_delay">Delay for&#160;</string>
+    <string name="delay_open">open red packets.</string>
+    <string name="delay_sec">&#160;seconds&#160;</string>
+    <string name="delay_then">and then&#160;</string>
 </resources>

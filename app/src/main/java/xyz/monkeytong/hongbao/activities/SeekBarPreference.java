@@ -5,10 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import org.w3c.dom.Text;
 import xyz.monkeytong.hongbao.R;
 
 /**
@@ -31,7 +29,7 @@ public class SeekBarPreference extends DialogPreference {
             }
         }
         if (prefKind.equals("pref_open_delay")) {
-            hintText = "拆开红包";
+            hintText = getContext().getString(R.string.delay_open);
         } else if (prefKind.equals("pref_comment_delay")) {
             hintText = "发送回复(暂不支持延时)";
         }
@@ -52,20 +50,12 @@ public class SeekBarPreference extends DialogPreference {
         }
 
         this.textView = (TextView) view.findViewById(R.id.pref_seekbar_textview);
-        if (delay == 0) {
-            this.textView.setText("立即" + hintText);
-        } else {
-            this.textView.setText("延迟" + delay + "秒" + hintText);
-        }
+        setHintText(0);
 
         this.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (i == 0) {
-                    textView.setText("立即" + hintText);
-                } else {
-                    textView.setText("延迟" + i + "秒" + hintText);
-                }
+                setHintText(i);
             }
 
             @Override
@@ -88,5 +78,13 @@ public class SeekBarPreference extends DialogPreference {
             editor.commit();
         }
         super.onDialogClosed(positiveResult);
+    }
+
+    private void setHintText(int delay) {
+        if (delay == 0) {
+            this.textView.setText(getContext().getString(R.string.delay_instantly) + hintText);
+        } else {
+            this.textView.setText(getContext().getString(R.string.delay_delay) + delay + getContext().getString(R.string.delay_sec) + getContext().getString(R.string.delay_then) + hintText);
+        }
     }
 }
