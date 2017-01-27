@@ -47,7 +47,7 @@ public class SettingsActivity extends FragmentActivity {
             title = bundle.getString("title");
             fragId = bundle.getString("frag_id");
         } else {
-            title = "偏好设置";
+            title = getString(R.string.preference);
             fragId = "GeneralSettingsFragment";
         }
 

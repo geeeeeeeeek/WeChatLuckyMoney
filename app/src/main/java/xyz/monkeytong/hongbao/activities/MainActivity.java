@@ -83,6 +83,7 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     protected void onResume() {
         super.onResume();
 
+        updateServiceStatus();
         // Check for update when WIFI is connected or on first time.
         if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0)
             new UpdateTask(this, false).update();
