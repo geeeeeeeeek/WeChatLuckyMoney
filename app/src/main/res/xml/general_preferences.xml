@@ -4,78 +4,67 @@
                   tools:context=".SettingsActivity"
                   android:icon="@null">
     <PreferenceCategory
-            android:title="监视选项"
+            android:title="@string/watch_options"
             android:layout="@layout/preference_category">
         <CheckBoxPreference
                 android:key="pref_watch_notification"
-                android:title="监视系统通知"
-                android:summary="读取新消息通知中的红包提示并进入聊天页"
+                android:title="@string/watch_notifications"
+                android:summary="@string/watch_notifications_hint"
                 android:defaultValue="true"
                 android:layout="@layout/preference_checkbox"/>
         <CheckBoxPreference
                 android:key="pref_watch_list"
-                android:title="监视聊天列表"
-                android:summary="读取聊天列表中的红包提示并进入聊天页"
+                android:title="@string/watch_list"
+                android:summary="@string/watch_list_hint"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
     </PreferenceCategory>
     <PreferenceCategory
-            android:title="防封号选项"
+            android:title="@string/anti_block_options"
             android:layout="@layout/preference_category">
         <CheckBoxPreference
                 android:key="pref_watch_chat"
-                android:title="自动拆开红包"
+                android:title="@string/auto_open_packets"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
         <xyz.monkeytong.hongbao.activities.SeekBarPreference
                 android:key="pref_open_delay"
-                android:title="延时拆开红包"
+                android:title="@string/open_with_delay"
                 pref_kind="pref_open_delay"
                 android:layout="@layout/preference_checkbox"/>
         <CheckBoxPreference
                 android:key="pref_watch_self"
-                android:title="拆开自己发的红包"
+                android:title="@string/open_self"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
         <EditTextPreference
                 android:key="pref_watch_exclude_words"
-                android:title="屏蔽红包文字"
+                android:title="@string/skip_phrases"
                 android:summary="@string/pref_watch_exclude_words_summary"
                 android:layout="@layout/preference_checkbox"/>
     </PreferenceCategory>
     <PreferenceCategory
-            android:title="关于应用"
+            android:title="@string/about"
             android:layout="@layout/preference_category">
         <Preference
                 android:key="pref_etc_check_update"
-                android:title="检查新版本"
+                android:title="@string/check_new_version"
                 android:summary="http://dwz.cn/WeChatLuckyMoney"
                 android:layout="@layout/preference_checkbox"/>
         <Preference
                 android:key="pref_etc_issue"
-                android:title="帮助与反馈"
-                android:summary="前往GitHub项目主页提交issue"
+                android:title="@string/help_and_feedback"
+                android:summary="@string/help_hint"
                 android:layout="@layout/preference_checkbox"/>
     </PreferenceCategory>
     <PreferenceCategory
-            android:title="实验功能"
+            android:title="@string/labs"
             android:layout="@layout/preference_category">
         <CheckBoxPreference
                 android:key="pref_watch_on_lock"
-                android:title="息屏抢红包"
-                android:summary="保持30分钟后台活跃,可能会极大增加电量消耗,请谨慎使用"
+                android:title="@string/snatch_on_lockscreen"
+                android:summary="@string/snatch_on_lockscreen_hint"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
-        <PreferenceScreen
-                android:key="pref_auto_comment"
-                android:title="拆开红包后自动回复"
-                android:layout="@layout/preference_checkbox">
-            <intent android:action="android.intent.action.VIEW"
-                    android:targetPackage="xyz.monkeytong.hongbao"
-                    android:targetClass="xyz.monkeytong.hongbao.activities.SettingsActivity">
-                <extra android:name="title" android:value="自动回复设置"/>
-                <extra android:name="frag_id" android:value="CommentSettingsFragment"/>
-            </intent>
-        </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

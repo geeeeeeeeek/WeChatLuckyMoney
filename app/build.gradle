@@ -43,4 +43,3 @@ android {
      compile 'com.android.support:support-v4:25.1.0'
      compile 'com.android.support:appcompat-v7:25.1.0'
  }
-
