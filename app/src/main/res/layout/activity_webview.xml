@@ -46,16 +46,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/webView"
                 android:layout_gravity="center_horizontal"
-                android:layout_above="@+id/adViewWebView"
                 android:foreground="#E46C62"/>
-        <com.google.android.gms.ads.AdView
-                android:id="@+id/adViewWebView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                ads:adSize="SMART_BANNER"
-                ads:adUnitId="@string/webview_banner_ad_unit_id">
-        </com.google.android.gms.ads.AdView>
     </RelativeLayout>
 
 </LinearLayout>

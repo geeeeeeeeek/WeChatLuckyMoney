@@ -38,8 +38,6 @@ public class WebViewActivity extends Activity {
     private WebView webView;
     private String webViewUrl, webViewTitle;
 
-    private AdView adView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,38 +81,21 @@ public class WebViewActivity extends Activity {
             });
             webView.loadUrl(webViewUrl);
         }
-
-        loadAd();
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
-            adView.pause();
-        }
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (adView != null) {
-            adView.resume();
-        }
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null) {
-            adView.destroy();
-        }
         super.onDestroy();
-    }
-
-    private void loadAd() {
-        adView = (AdView) findViewById(R.id.adViewWebView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

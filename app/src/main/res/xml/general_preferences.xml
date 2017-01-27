@@ -66,16 +66,5 @@
                 android:summary="@string/snatch_on_lockscreen_hint"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="false"/>
-        <PreferenceScreen
-                android:key="pref_auto_comment"
-                android:title="@string/auto_reply"
-                android:layout="@layout/preference_checkbox">
-            <intent android:action="android.intent.action.VIEW"
-                    android:targetPackage="xyz.monkeytong.hongbao"
-                    android:targetClass="xyz.monkeytong.hongbao.activities.SettingsActivity">
-                <extra android:name="title" android:value="自动回复设置"/>
-                <extra android:name="frag_id" android:value="CommentSettingsFragment"/>
-            </intent>
-        </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>
