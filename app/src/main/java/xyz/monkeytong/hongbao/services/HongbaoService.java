@@ -1,6 +1,7 @@
 package xyz.monkeytong.hongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.GestureDescription;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -9,10 +10,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.graphics.Path;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.util.DisplayMetrics;
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 import xyz.monkeytong.hongbao.utils.PowerUtil;
 
@@ -92,7 +95,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                     new Runnable() {
                         public void run() {
                             try {
-                                mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                                openPacket();
                             } catch (Exception e) {
                                 mMutex = false;
                                 mLuckyMoneyPicked = false;
@@ -101,6 +104,42 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                         }
                     },
                     delayFlag);
+        }
+    }
+
+    private void openPacket() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float dpi = metrics.density;
+        if (android.os.Build.VERSION.SDK_INT <= 23) {
+            mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+        } else {
+            if (android.os.Build.VERSION.SDK_INT > 23) {
+
+                Path path = new Path();
+                if (640 == dpi) {
+                    path.moveTo(720, 1575);
+                } else {
+                    path.moveTo(540, 1060);
+                }
+                GestureDescription.Builder builder = new GestureDescription.Builder();
+                GestureDescription gestureDescription = builder.addStroke(new GestureDescription.StrokeDescription(path, 450, 50)).build();
+                dispatchGesture(gestureDescription, new GestureResultCallback() {
+                    @Override
+                    public void onCompleted(GestureDescription gestureDescription) {
+                        Log.d("test", "onCompleted");
+                        mMutex = false;
+                        super.onCompleted(gestureDescription);
+                    }
+
+                    @Override
+                    public void onCancelled(GestureDescription gestureDescription) {
+                        Log.d("test", "onCancelled");
+                        mMutex = false;
+                        super.onCancelled(gestureDescription);
+                    }
+                }, null);
+
+            }
         }
     }
 
