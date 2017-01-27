@@ -1,12 +1,10 @@
 # WeChat Lucky Money
 
-<a href="https://play.google.com/store/apps/details?id=xyz.monkeytong.hongbao"><img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="48"></a>
-
 [![Gitter](https://badges.gitter.im/geeeeeeeeek/WeChatLuckyMoney.svg)](https://gitter.im/geeeeeeeeek/WeChatLuckyMoney?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)  [![Build Status](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney.svg?branch=stable)](https://travis-ci.org/geeeeeeeeek/WeChatLuckyMoney)   [**中文 README**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/README.md)
 
 This Android app helps you snatch red envelopes in WeChat. It detects red envelopes automatically, and clicks to open them faster than your imagination.
 
-Please goto the [**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/) page to download the latest version. 
+Available in English and Chinese. Please goto the [**Release**](https://github.com/geeeeeeeeek/WeChatLuckyMoney/releases/) page to download the latest version. 
 
 ### Spotlights
 
@@ -47,3 +45,8 @@ The project was heavily inspired by the [app](https://github.com/XiaoMi/LuckyMon
 This app might alter the natural way of interactions with WeChat. When you are using the code and its accessories, you are fully responsible for any possible consequences.
 
 The project is licensed to the [MIT](https://github.com/geeeeeeeeek/WeChatLuckyMoney/blob/stable/LICENSE.md).
+
+### Snapshots
+
+![wechatimg157](https://cloud.githubusercontent.com/assets/7262715/22361930/999aecdc-e499-11e6-91f6-c8c44b9ccc55.png)
+![wechatimg158](https://cloud.githubusercontent.com/assets/7262715/22361929/99998126-e499-11e6-93bc-e97ea263db47.jpeg)
