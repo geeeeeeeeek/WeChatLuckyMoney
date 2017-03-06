@@ -36,7 +36,7 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //CrashReport.initCrashReport(getApplicationContext(), "900019352", false);
-        Bugly.init(getApplicationContext(), "900019352", false);
+//        Bugly.init(getApplicationContext(), "900019352", false);
         setContentView(R.layout.activity_main);
         pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
         pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
@@ -84,8 +84,8 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
         updateServiceStatus();
         // Check for update when WIFI is connected or on first time.
-        if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0)
-            new UpdateTask(this, false).update();
+//        if (ConnectivityUtil.isWifi(this) || UpdateTask.count == 0)
+//            new UpdateTask(this, false).update();
     }
 
     @Override
