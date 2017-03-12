@@ -54,4 +54,5 @@
     <string name="delay_open">拆开红包</string>
     <string name="delay_sec">秒</string>
     <string name="delay_then">然后</string>
+    <string name="auto_open_private_packets">自动拆开私聊红包</string>
 </resources>

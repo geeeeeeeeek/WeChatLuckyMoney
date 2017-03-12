@@ -16,10 +16,13 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.util.DisplayMetrics;
+import android.widget.TextView;
+
 import xyz.monkeytong.hongbao.utils.HongbaoSignature;
 import xyz.monkeytong.hongbao.utils.PowerUtil;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String WECHAT_DETAILS_EN = "Details";
@@ -35,6 +38,11 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private static final String WECHAT_LUCKMONEY_GENERAL_ACTIVITY = "LauncherUI";
     private static final String WECHAT_LUCKMONEY_CHATTING_ACTIVITY = "ChattingUI";
     private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
+
+    /***
+     * 群聊界面标题: "Android 开发交流(1024)" 以后面的 "(1024)" 作为识别特征
+     */
+    private static final Pattern chatroomTitlePattern = Pattern.compile(".*\\(\\d+\\)");
 
     private AccessibilityNodeInfo rootNodeInfo, mReceiveNode, mUnpackNode;
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived;
@@ -53,7 +61,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (sharedPreferences == null) return;
-
         setCurrentActivityName(event);
 
         /* 检测通知消息 */
@@ -65,7 +72,15 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
 
         if (!mChatMutex) {
             mChatMutex = true;
-            if (sharedPreferences.getBoolean("pref_watch_chat", false)) watchChat(event);
+            if (sharedPreferences.getBoolean("pref_watch_chat", false)){
+                if(isChatroom()){
+                    watchChat(event);
+                }else{
+                    if(sharedPreferences.getBoolean("pref_watch_private_chat", false)) {
+                        watchChat(event);
+                    }
+                }
+            }
             mChatMutex = false;
         }
     }
@@ -74,7 +89,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         this.rootNodeInfo = getRootInActiveWindow();
 
         if (rootNodeInfo == null) return;
-
         mReceiveNode = null;
         mUnpackNode = null;
 
@@ -147,7 +161,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             return;
         }
-
         try {
             ComponentName componentName = new ComponentName(
                     event.getPackageName().toString(),
@@ -212,6 +225,34 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     @Override
     public void onInterrupt() {
 
+    }
+
+
+    /**
+     * 判断聊天界面是群聊界面 ,还是私聊界面
+     * @precondition 已经确定是聊天界面
+     * @return 群聊界面返回 true
+     *
+     *
+     * 判断逻辑说明:
+     * 1. 群聊和私聊从界面标题上可以区别不同, 群聊后面有 `(45)` 指示人数.
+     * 所以获得聊天标题,然后再判断是否是以 `(\d+)` 结尾即可.
+     *
+     * 2. 要确定聊天标题, 先找到返回按钮,再根据它跟标题的关系来找到.
+     */
+    private boolean isChatroom(){
+        AccessibilityNodeInfo rootNode = getRootInActiveWindow();
+        AccessibilityNodeInfo backNode = NodeQuery.queryByContentDescription(rootNode,"返回");
+        if(backNode == null){
+            return false;
+        }
+        AccessibilityNodeInfo parentNode = backNode.getParent().getParent();
+        AccessibilityNodeInfo titleNode = NodeQuery.query(parentNode, TextView.class.getName());
+        CharSequence title = titleNode.getText();
+        if(title == null){
+            return false;
+        }
+        return chatroomTitlePattern.matcher(title).matches();
     }
 
     private AccessibilityNodeInfo findOpenButton(AccessibilityNodeInfo node) {

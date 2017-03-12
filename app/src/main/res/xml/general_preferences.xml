@@ -27,6 +27,12 @@
                 android:title="@string/auto_open_packets"
                 android:layout="@layout/preference_checkbox"
                 android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="pref_watch_private_chat"
+            android:title="@string/auto_open_private_packets"
+            android:dependency="pref_watch_chat"
+            android:layout="@layout/preference_checkbox"
+            android:defaultValue="false"/>
         <xyz.monkeytong.hongbao.activities.SeekBarPreference
                 android:key="pref_open_delay"
                 android:title="@string/open_with_delay"
