@@ -3,12 +3,12 @@ sudo: false
 jdk: oraclejdk8
 env:
   matrix:
-  - ANDROID_TARGET=android-25  ANDROID_ABI=armeabi-v7a armeabi
+  - ANDROID_TARGET=android-26  ANDROID_ABI=armeabi-v7a armeabi
 android:
   components:
   - platform-tools
   - tools
-  - build-tools-25.0.2
+  - build-tools-26.0.2
   - android-N
   - extra
 licenses:
@@ -16,7 +16,7 @@ licenses:
   - '.+'
 before_install:
 - openssl aes-256-cbc -K $encrypted_6b42a8524af0_key -iv $encrypted_6b42a8524af0_iv
-  -in monkeytong.jks.enc -out monkeytong.jks -d
+-in monkeytong.jks.enc -out monkeytong.jks -d
 before_script:
 - mkdir "$ANDROID_HOME/licenses" || true
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"

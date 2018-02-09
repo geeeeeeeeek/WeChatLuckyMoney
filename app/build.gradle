@@ -2,12 +2,12 @@
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.2"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "xyz.monkeytong.hongbao"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 5
         versionName "v4.0.1"
         ndk {
