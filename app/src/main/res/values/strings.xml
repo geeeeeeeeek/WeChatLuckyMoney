@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">微信红包</string>
-    <string name="app_version">v4.0</string>
+    <string name="app_version">v5.0</string>
     <string name="app_description">∠( ᐛ 」∠)_使用指南∠( ᐛ 」∠)_\n\n ○ 狠戳插件开关\n ○ 回到微信聊天\n ○ 坐等红包进账\n\n 遇到问题, 欢迎通过 GitHub Issue 反馈~\n https://github.com/geeeeeeeeek/WeChatLuckyMoney</string>
     <string name="preference">偏好设置</string>
     <string name="update_error">遇到一些问题,请前往GitHub手动更新喵(ฅ´ω`ฅ)</string>
@@ -17,8 +17,7 @@
     <string name="webview_banner_ad_unit_id">ca-app-pub-8428619221469478/4163694548</string>
     <string name="community">社区</string>
     <string name="settings">设置</string>
-    <string name="uber_ad_title">首次乘车可获得 ￥12 优惠</string>
-    <string name="uber_ad_text">立即获得免费乘车机会</string>
+    <string name="alipay_ad_text">立即获得红包！人人可领！天天可领！</string>
     <string name="github_1">在 GitHub 上</string>
     <string name="github_2">本项目，支持应用开源</string>
     <string name="star_2">Star</string>
@@ -26,7 +25,7 @@
     <string name="turn_on_toast">点击「微信红包」</string>
     <string name="turn_on_error_toast">遇到一些问题,请手动打开系统设置>无障碍服务>微信红包(ฅ´ω`ฅ)</string>
     <string name="webview_github_title">GitHub 项目主页</string>
-    <string name="webview_uber_title">Uber 优惠乘车</string>
+    <string name="webview_alipay_title">支付宝红包</string>
     <string name="download_backend">正在后台下载</string>
     <string name="download_redirect">正在前往下载页面</string>
     <string name="download_hint">点击\"普通下载\"获取 Uber</string>
@@ -54,4 +53,6 @@
     <string name="delay_open">拆开红包</string>
     <string name="delay_sec">秒</string>
     <string name="delay_then">然后</string>
+    <string name="d">延迟0秒拆开红包</string>
+    <string name="todo">TODO</string>
 </resources>

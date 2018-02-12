@@ -16,7 +16,7 @@
                   android:text="@string/preference" android:textColor="#fff"
                   android:gravity="left|center_vertical|center_horizontal"
                   android:elegantTextHeight="false" android:textSize="18sp"
-                  android:layout_toRightOf="@+id/preference_back"
+                  android:layout_toEndOf="@+id/preference_back"
         />
         <ImageView
                 android:layout_width="40dp"
@@ -26,14 +26,14 @@
                 android:layout_marginRight="4dp"
                 android:clickable="true" android:onClick="performBack"
                 android:layout_alignBottom="@+id/settings_bar"
-                android:src="@mipmap/ic_back" android:padding="10dp"/>
+                android:src="@mipmap/ic_back" android:padding="10dp" android:focusable="true" android:contentDescription="TODO" />
         <ImageView android:layout_width="40dp" android:layout_height="match_parent" android:id="@+id/imageView3"
                    android:clickable="true"
                    android:onClick="enterAccessibilityPage"
-                   android:layout_alignParentRight="true"
-                   android:layout_marginRight="10dp" android:layout_marginStart="8dp"
+                   android:layout_alignParentEnd="true"
+                   android:layout_marginEnd="10dp" android:layout_marginStart="8dp"
                    android:padding="8dp" android:src="@mipmap/ic_refresh"
-                   android:layout_alignBottom="@+id/settings_bar"/>
+                   android:layout_alignBottom="@+id/settings_bar" android:focusable="true" android:contentDescription="@string/todo" />
     </RelativeLayout>
     <FrameLayout android:layout_width="match_parent"
               android:layout_height="match_parent"

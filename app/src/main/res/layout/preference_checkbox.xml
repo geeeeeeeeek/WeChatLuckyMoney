@@ -3,15 +3,15 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center_vertical"
-              android:paddingLeft="16dp"
-              android:paddingRight="?android:attr/scrollbarSize">
+              android:paddingStart="16dp"
+              android:paddingEnd="?android:attr/scrollbarSize" android:baselineAligned="false">
 
 
 
     <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:layout_weight="1">
@@ -29,7 +29,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_below="@android:id/title"
-                  android:layout_alignLeft="@android:id/title"
+                  android:layout_alignStart="@android:id/title"
                   android:textColor="#999"
                   android:textSize="14sp"
                   android:maxLines="4" />
@@ -40,7 +40,7 @@
     <LinearLayout android:id="@+android:id/widget_frame"
                   android:layout_width="wrap_content"
                   android:layout_height="match_parent"
-                  android:layout_marginRight="6dp"
+                  android:layout_marginEnd="6dp"
                   android:gravity="center"
                   android:orientation="vertical" />
 

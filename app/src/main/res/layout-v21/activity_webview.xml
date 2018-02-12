@@ -17,7 +17,7 @@
                   android:gravity="left|center_vertical|center_horizontal"
                   android:elegantTextHeight="false" android:textSize="18sp"
                   android:layout_toEndOf="@+id/webview_back"
-                  android:textColor="#fff" tools:targetApi="lollipop"/>
+                  android:textColor="#fff"/>
         <ImageView
                 android:layout_width="40dp"
                 android:layout_height="fill_parent"

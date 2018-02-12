@@ -2,14 +2,13 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".MainActivity"
                 android:background="#fff">
     <ImageView
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:id="@+id/main_action_bar_placeholder"
             android:layout_alignParentTop="true"
-            android:background="#E46C62"/>
+            android:background="#E46C62" android:contentDescription="@string/todo" />
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -25,7 +24,7 @@
                 android:text="@string/app_name"
                 android:textColor="#fff"
                 android:gravity="center_vertical|center_horizontal"
-                android:textSize="28dp"
+                android:textSize="28sp"
                 android:layout_marginTop="40dp"
                 android:textIsSelectable="false"/>
         <TextView android:layout_width="fill_parent"
@@ -41,34 +40,33 @@
             android:layout_height="wrap_content"
             android:background="@mipmap/bg_snow"
             android:id="@+id/main_bg_snow"
-            android:layout_alignBottom="@id/layout_header"/>
+            android:layout_alignBottom="@id/layout_header" android:contentDescription="@string/todo" />
     <LinearLayout android:id="@+id/layout_control"
                   android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="110dp"
-                  android:layout_above="@+id/layout_uber"
+                  android:layout_above="@+id/layout_alipay"
                   android:layout_marginLeft="12dp"
                   android:layout_marginRight="12dp"
                   android:layout_marginTop="8dp"
-                  android:layout_marginBottom="8dp">
+                  android:layout_marginBottom="8dp" android:baselineAligned="false">
         <LinearLayout style="?android:attr/borderlessButtonStyle"
                       android:id="@+id/layout_control_community"
                       android:layout_width="fill_parent"
                       android:layout_height="fill_parent"
                       android:background="#ffffff"
                       android:textColor="#858585"
-                      android:layout_above="@+id/layout_uber"
-                      android:textSize="20dp"
+                      android:textSize="20sp"
                       android:orientation="vertical"
                       android:layout_weight="0.35"
-                      android:layout_marginRight="5dp"
+                      android:layout_marginEnd="5dp"
                       android:onClick="openGitHub">
             <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:id="@+id/imageView"
                     android:src="@mipmap/ic_community"
-                    android:layout_margin="10dp"/>
+                    android:layout_margin="10dp" android:contentDescription="@string/todo" />
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -85,8 +83,7 @@
                 android:background="#ffffff"
                 android:textColor="#858585"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_above="@+id/layout_uber"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:orientation="vertical"
                 android:layout_weight="0.3"
                 android:layout_marginRight="5dp"
@@ -96,7 +93,7 @@
                        android:id="@+id/layout_control_accessibility_icon"
                        android:layout_marginBottom="6dp"
                        android:layout_marginTop="6dp"
-                       android:background="@mipmap/ic_start"/>
+                       android:background="@mipmap/ic_start" android:contentDescription="@string/todo" />
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="@string/service_on"
@@ -110,17 +107,16 @@
                       android:layout_height="fill_parent"
                       android:background="#ffffff"
                       android:textColor="#858585"
-                      android:layout_above="@+id/layout_uber"
-                      android:textSize="20dp"
+                      android:textSize="20sp"
                       android:orientation="vertical"
                       android:layout_weight="0.35"
-                      android:layout_marginLeft="5dp"
+                      android:layout_marginStart="5dp"
                       android:onClick="openSettings">
             <ImageView android:layout_width="24dp"
                        android:layout_height="24dp"
                        android:id="@+id/imageView4"
                        android:layout_margin="10dp"
-                       android:src="@mipmap/ic_settings"/>
+                       android:src="@mipmap/ic_settings" android:contentDescription="@string/todo" />
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="@string/settings"
@@ -129,47 +125,48 @@
                       android:textColor="#858585" android:textSize="16sp" android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
-            android:id="@+id/layout_uber"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:background="#ffffff"
-            android:layout_marginTop="8dp"
-            android:layout_alignParentBottom="false"
-            android:layout_above="@+id/linearLayout2"
-            android:layout_marginBottom="8dp"
-            android:onClick="openUber">
+        android:id="@+id/layout_alipay"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_above="@+id/linearLayout2"
+        android:layout_alignParentBottom="false"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="8dp"
+        android:background="#ffffff"
+        android:onClick="openUber"
+        android:orientation="horizontal">
+
         <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:id="@+id/icon_uber"
-                android:src="@mipmap/ic_uber"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="2dp"/>
+            android:id="@+id/icon_uber"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/todo"
+            android:src="@mipmap/icon_alipay" />
+
         <LinearLayout
-                android:orientation="vertical"
+            android:id="@+id/layout_uber_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/label_uber_link"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/layout_uber_text"
-                android:layout_gravity="center_vertical">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/uber_ad_title"
-                    android:id="@+id/label_uber_text"
-                    android:layout_margin="2dp"
-                    android:textColor="#858585"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="@string/uber_ad_text"
-                      android:id="@+id/label_uber_link"
-                      android:layout_margin="2dp"
-                      android:textColor="#dfaa6a" android:textStyle="bold"/>
+                android:layout_margin="7dp"
+                android:text="@string/alipay_ad_text"
+                android:textColor="#e46c62"
+                android:textStyle="bold"
+                android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout android:id="@+id/linearLayout2"
@@ -187,9 +184,9 @@
                    android:layout_height="20dp"
                    android:id="@+id/imageView2"
                    android:src="@mipmap/ic_github"
-                   android:layout_marginLeft="15dp"
-                   android:layout_marginRight="5dp"
-                   android:layout_gravity="center_vertical"/>
+                   android:layout_marginStart="15dp"
+                   android:layout_marginEnd="5dp"
+                   android:layout_gravity="center_vertical" android:contentDescription="@string/todo" />
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="@string/github_1"
