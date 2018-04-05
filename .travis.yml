@@ -22,7 +22,7 @@ before_script:
 - gem install fir-cli
 script:
 - ./gradlew assembleRelease
-after_deploy:
+after_script:
 - fir p app/build/outputs/apk/app-release.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
 notifications:
   webhooks:
