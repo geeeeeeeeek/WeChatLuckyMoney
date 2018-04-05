@@ -116,10 +116,8 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     public void openUber(View view) {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
-        webViewIntent.putExtra("title", getString(R.string.webview_uber_title));
-        String[] couponList = new String[]{"https://dc.tt/oTLtXH2BHsD", "https://dc.tt/ozFJHDnfLky"};
-        int index = (int) (Math.random() * 2);
-        webViewIntent.putExtra("url", couponList[index]);
+        webViewIntent.putExtra("title", getString(R.string.webview_alipay_title));
+        String[] couponList = new String[]{"https://render.alipay.com/p/f/fd-j6lzqrgm/guiderofmklvtvw.html?shareId=2088422430692204&campStr=p1j%2BdzkZl018zOczaHT4Z5CLdPVCgrEXq89JsWOx1gdt05SIDMPg3PTxZbdPw9dL&sign=DEqbE64SUB0qjRQGtu%2F0BPXN9YsSXM2zqLHT1X2ufDs%3D&scene=offlinePaymentNewSns"};
         startActivity(webViewIntent);
     }
 

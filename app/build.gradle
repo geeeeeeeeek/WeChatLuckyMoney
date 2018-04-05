@@ -2,14 +2,14 @@
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.2"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "xyz.monkeytong.hongbao"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 5
-        versionName "v4.0.1"
+        versionCode 7
+        versionName "v5.0.0"
         ndk {
             //设置支持的SO库架构
             abiFilters 'armeabi', 'armeabi-v7a' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
@@ -40,6 +40,6 @@ android {
      //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.0.1
      compile 'com.tencent.bugly:nativecrashreport:latest.release'
      //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
-     compile 'com.android.support:support-v4:25.1.0'
-     compile 'com.android.support:appcompat-v7:25.1.0'
+     compile 'com.android.support:support-v4:25.4.0'
+     compile 'com.android.support:appcompat-v7:25.4.0'
  }

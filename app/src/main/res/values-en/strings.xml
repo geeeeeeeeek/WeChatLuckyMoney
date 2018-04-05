@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Lucky Money</string>
-    <string name="app_version">v4.0</string>
+    <string name="app_version">v5.0</string>
     <string name="app_description">∠( ᐛ 」∠)_ Instructions ∠( ᐛ 」∠)_\n\n ○ Turn on the Accessibility switch\n ○ Go back to WeChat\n ○ Wait for money comes in\n\n Please submit your feedback on GitHub Issues Page~\n https://github.com/geeeeeeeeek/WeChatLuckyMoney</string>
     <string name="preference">Preferences</string>
     <string name="update_error">An error occurred. Please manually update from GitHub Release Page. (ฅ´ω`ฅ)</string>
@@ -17,8 +17,7 @@
     <string name="webview_banner_ad_unit_id">ca-app-pub-8428619221469478/4163694548</string>
     <string name="community">Community</string>
     <string name="settings">Settings</string>
-    <string name="uber_ad_title">Your first trip is free up to ￥12</string>
-    <string name="uber_ad_text">Get Free Ride Now</string>
+    <string name="alipay_ad_text">Get Luckymoney Now</string>
     <string name="github_1"/>
     <string name="github_2">this app on GitHub to support us</string>
     <string name="star_2">Star</string>
@@ -26,7 +25,7 @@
     <string name="turn_on_toast">Click 「WeChat Lucky Money」&#160;</string>
     <string name="turn_on_error_toast">An error occurred. Please manually open System Settings > Accessibility > WeChat Lucky Money. (ฅ´ω`ฅ)</string>
     <string name="webview_github_title">Project Homepage on GitHub</string>
-    <string name="webview_uber_title">Uber Free Trip</string>
+    <string name="webview_alipay_title">Get Luckymoney</string>
     <string name="download_backend">Downloading…</string>
     <string name="download_redirect">Redirecting to download page…</string>
     <string name="download_hint">Download Uber by clicking \"普通下载\"</string>
@@ -54,4 +53,6 @@
     <string name="delay_open">open red packets.</string>
     <string name="delay_sec">&#160;seconds&#160;</string>
     <string name="delay_then">and then&#160;</string>
+    <string name="d">延迟0秒拆开红包</string>
+    <string name="todo">TODO</string>
 </resources>
