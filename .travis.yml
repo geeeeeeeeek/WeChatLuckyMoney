@@ -19,21 +19,9 @@ before_install:
  -in monkeytong.jks.enc -out monkeytong.jks -d
 before_script:
 - mkdir "$ANDROID_HOME/licenses" || true
-- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-- echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 - gem install fir-cli
 script:
 - ./gradlew assembleRelease
-deploy:
-  provider: releases
-  api_key:
-    secure: d3LLAX3Ro4ICSbPIn88kKsbVMb/rTKPCXcDQveQlmYHoqRt2F4tDQw+fOdcukgfx/tPsyCNkKTUEFF1gd0LUGfI4S2cBW3RcYPFWhPMfWSMOsEIvcD/sT3462YiyFH7ZF7ZApdtHdxU9Xo862Ze2amPAle/AbAw1VMQsRHqSex8QMgdKxDhlxzmGit8BVZ1q7cew2/9F9PVPnMCSY42vRtbltKmwedt0p5e9AJ/dEL526rxsAEXIu5UPHQgt7+YW5KDDabKW9EjWBIA6GqBxRQwT3x9CdJJ6hX7NIcOrkabWTSsakvnoT8t7LXuKMyBzJdZnTg1v52ych4MOIszJOF4jn3x5v3xzM13w7LB05w4MyCuPtLfss9+gduU2KGxHtxdRcs5J2OCN2PgHOwlksisERy3xZNxqQNxlJ/S19k4K7oOGzvK+17FnT8QqBG1wago2BCK29WgorLAT63ERusDaVgzxBvsTMfF+vFcX4E5B6BvXmGgM7Hl1eCika2hKcCUjes2kc/0+bCFEiKRImxmuukEIvA84cPhYb+ppr9lqcgw95FXOJg7P/ELmjBiOAx1hI3lOfh1A3Jj7X5LNVsKVKc6LMGaNxVuIRNJcR4uCWgGVNC7P5PZy+4DTwCP0xVJghSj1yABgQBOZz2ChSeTZMEvKzY8kuDzCa/CtSdU=
-  file: app/build/outputs/apk/app-release.apk
-  skip_cleanup: true
-  on:
-    repo: geeeeeeeeek/WeChatLuckyMoney
-    branch: stable
-    tags: true
 after_deploy:
 - fir p app/build/outputs/apk/app-release.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
 notifications:
