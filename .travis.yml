@@ -12,22 +12,32 @@ android:
   - android-N
   - extra
 licenses:
-  - android-sdk-license-.+
-  - '.+'
+- android-sdk-license-.+
+- ".+"
 before_install:
 - openssl aes-256-cbc -K $encrypted_6b42a8524af0_key -iv $encrypted_6b42a8524af0_iv
  -in monkeytong.jks.enc -out monkeytong.jks -d
 before_script:
 - mkdir "$ANDROID_HOME/licenses" || true
+- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+- echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 - gem install fir-cli
 script:
-- ./gradlew assembleRelease
-after_script:
-- fir p app/build/outputs/apk/app-release.apk -T $FIR_TOKEN -c "`git cat-file tag $TRAVIS_TAG`"
+- "./gradlew assembleRelease"
+deploy:
+  provider: releases
+  api_key:
+    secure: Ookr5Qba+FjvrnlHfA2Gp+9QSua/UhkAq+OtYtLagdC7i1Drd7CANi4zfhCf95xSPDNE8MNJQu2qTR4EkHqno6dBFYbV/+35Ph+3Xnv1GehJmdyVDQSfNwlxzKbCw6rfyoeiMrSORADznRlEx7EfK3b7w2esWS/OAvepbqmUzWlPEA8Xyl1CBiMZacqZJTwyhCCO5dNpXE/+pP4yPrUx32Ts0tYQ5HmsijndbWh/YX2SGeekdAWTXBMr/zUpTEcpk8JYukfuTG3qaNZnUk0OEYHv8/icdaTO+wUuj44m9y/0uoir7iToAjEQP+tEnfUAQYke5Di2N2Pa9dpuc2kvmHi2l4wpPDhwrSSAPkI73r1eM8AAl7U2d2G/qG7UGAmXoI4NnDozkCGrHDH4VLH/uSpoJPdsVSOPRZX7lWPIM6xBoz+3AW0mtZbRsduvwvqR24B/xEs9jy02RJin3VQw1qlVYATUvThrNqMUz45AgVvjx00llX6i5As7xkWwLjZSEpr6FWEjOtPg1ZHWBxD/dCHWpcL7nnGAWi2INTUT6NgN9ZpuU0tgHMMMx/7bfUM1EVEpJKjKLyaX8XmsRmztPUYOhRN/m2uEoiiOu54QoD9oszszIlEqT5jneu8LQ1Ie9ICaGF1Mj2CgbWB0hTvKSTPTP1hXF0FHtwmaTDwKKVE=
+  file: app/build/outputs/apk/app-release.apk
+  skip_cleanup: true
+    on:
+      repo: geeeeeeeeek/WeChatLuckyMoney
+      branch: stable
+      tags: true
 notifications:
   webhooks:
     urls:
-      - https://webhooks.gitter.im/e/d83cc8365de0abdd097e
-    on_success: always  # options: [always|never|change] default: always
-    on_failure: always  # options: [always|never|change] default: always
-    on_start: always     # options: [always|never|change] default: always
+    - https://webhooks.gitter.im/e/d83cc8365de0abdd097e
+    on_success: always
+    on_failure: always
+    on_start: always
