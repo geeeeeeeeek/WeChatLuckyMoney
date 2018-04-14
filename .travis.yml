@@ -12,8 +12,8 @@ android:
   - android-N
   - extra
 licenses:
-  - android-sdk-license-.+
-  - '.+'
+- android-sdk-license-.+
+- .+
 before_install:
 - openssl aes-256-cbc -K $encrypted_6b42a8524af0_key -iv $encrypted_6b42a8524af0_iv
  -in monkeytong.jks.enc -out monkeytong.jks -d
@@ -27,7 +27,7 @@ script:
 deploy:
   provider: releases
   api_key:
-    secure: d3LLAX3Ro4ICSbPIn88kKsbVMb/rTKPCXcDQveQlmYHoqRt2F4tDQw+fOdcukgfx/tPsyCNkKTUEFF1gd0LUGfI4S2cBW3RcYPFWhPMfWSMOsEIvcD/sT3462YiyFH7ZF7ZApdtHdxU9Xo862Ze2amPAle/AbAw1VMQsRHqSex8QMgdKxDhlxzmGit8BVZ1q7cew2/9F9PVPnMCSY42vRtbltKmwedt0p5e9AJ/dEL526rxsAEXIu5UPHQgt7+YW5KDDabKW9EjWBIA6GqBxRQwT3x9CdJJ6hX7NIcOrkabWTSsakvnoT8t7LXuKMyBzJdZnTg1v52ych4MOIszJOF4jn3x5v3xzM13w7LB05w4MyCuPtLfss9+gduU2KGxHtxdRcs5J2OCN2PgHOwlksisERy3xZNxqQNxlJ/S19k4K7oOGzvK+17FnT8QqBG1wago2BCK29WgorLAT63ERusDaVgzxBvsTMfF+vFcX4E5B6BvXmGgM7Hl1eCika2hKcCUjes2kc/0+bCFEiKRImxmuukEIvA84cPhYb+ppr9lqcgw95FXOJg7P/ELmjBiOAx1hI3lOfh1A3Jj7X5LNVsKVKc6LMGaNxVuIRNJcR4uCWgGVNC7P5PZy+4DTwCP0xVJghSj1yABgQBOZz2ChSeTZMEvKzY8kuDzCa/CtSdU=
+    secure: Ookr5Qba+FjvrnlHfA2Gp+9QSua/UhkAq+OtYtLagdC7i1Drd7CANi4zfhCf95xSPDNE8MNJQu2qTR4EkHqno6dBFYbV/+35Ph+3Xnv1GehJmdyVDQSfNwlxzKbCw6rfyoeiMrSORADznRlEx7EfK3b7w2esWS/OAvepbqmUzWlPEA8Xyl1CBiMZacqZJTwyhCCO5dNpXE/+pP4yPrUx32Ts0tYQ5HmsijndbWh/YX2SGeekdAWTXBMr/zUpTEcpk8JYukfuTG3qaNZnUk0OEYHv8/icdaTO+wUuj44m9y/0uoir7iToAjEQP+tEnfUAQYke5Di2N2Pa9dpuc2kvmHi2l4wpPDhwrSSAPkI73r1eM8AAl7U2d2G/qG7UGAmXoI4NnDozkCGrHDH4VLH/uSpoJPdsVSOPRZX7lWPIM6xBoz+3AW0mtZbRsduvwvqR24B/xEs9jy02RJin3VQw1qlVYATUvThrNqMUz45AgVvjx00llX6i5As7xkWwLjZSEpr6FWEjOtPg1ZHWBxD/dCHWpcL7nnGAWi2INTUT6NgN9ZpuU0tgHMMMx/7bfUM1EVEpJKjKLyaX8XmsRmztPUYOhRN/m2uEoiiOu54QoD9oszszIlEqT5jneu8LQ1Ie9ICaGF1Mj2CgbWB0hTvKSTPTP1hXF0FHtwmaTDwKKVE=
   file: app/build/outputs/apk/app-release.apk
   skip_cleanup: true
   on:
@@ -37,7 +37,7 @@ deploy:
 notifications:
   webhooks:
     urls:
-      - https://webhooks.gitter.im/e/d83cc8365de0abdd097e
-    on_success: always  # options: [always|never|change] default: always
-    on_failure: always  # options: [always|never|change] default: always
-    on_start: always     # options: [always|never|change] default: always
+    - https://webhooks.gitter.im/e/d83cc8365de0abdd097e
+    on_success: always
+    on_failure: always
+    on_start: always
