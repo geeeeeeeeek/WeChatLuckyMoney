@@ -2,24 +2,26 @@ package xyz.monkeytong.hongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.graphics.Path;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.util.DisplayMetrics;
-import xyz.monkeytong.hongbao.utils.HongbaoSignature;
-import xyz.monkeytong.hongbao.utils.PowerUtil;
 
 import java.util.List;
+
+import xyz.monkeytong.hongbao.utils.HongbaoSignature;
+import xyz.monkeytong.hongbao.utils.PowerUtil;
 
 public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "HongbaoService";
@@ -35,6 +37,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private static final String WECHAT_LUCKMONEY_DETAIL_ACTIVITY = "LuckyMoneyDetailUI";
     private static final String WECHAT_LUCKMONEY_GENERAL_ACTIVITY = "LauncherUI";
     private static final String WECHAT_LUCKMONEY_CHATTING_ACTIVITY = "ChattingUI";
+    private static final String WECHAT_LUCKMONEY_RECEIVE_UI_ACTIVITY = "LuckyMoneyReceiveUI";
     private String currentActivityName = WECHAT_LUCKMONEY_GENERAL_ACTIVITY;
 
     private AccessibilityNodeInfo rootNodeInfo, mReceiveNode, mUnpackNode;
@@ -74,8 +77,6 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private void watchChat(AccessibilityEvent event) {
         this.rootNodeInfo = getRootInActiveWindow();
 
-        if (rootNodeInfo == null) return;
-
         mReceiveNode = null;
         mUnpackNode = null;
 
@@ -92,7 +93,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         }
         /* 如果戳开但还未领取 */
         Log.d(TAG, "戳开红包！" + " mUnpackCount: " + mUnpackCount + " mUnpackNode: " + mUnpackNode);
-        if (mUnpackCount >= 1 && (mUnpackNode != null)) {
+        if (canOpen(event)) {
             int delayFlag = sharedPreferences.getInt("pref_open_delay", 0) * 1000;
             new android.os.Handler().postDelayed(
                     new Runnable() {
@@ -110,41 +111,41 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         }
     }
 
+    private boolean canOpen(AccessibilityEvent event) {
+        return event.getClassName() != null
+                && event.getClassName().toString().contains(WECHAT_LUCKMONEY_RECEIVE_UI_ACTIVITY)
+                && event.isFullScreen()
+                && event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+    }
+
     private void openPacket() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float dpi = metrics.densityDpi;
-        Log.d(TAG, "openPacket！" +  dpi);
         if (android.os.Build.VERSION.SDK_INT <= 23) {
-            mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-        } else {
-            if (android.os.Build.VERSION.SDK_INT > 23) {
-                Path path = new Path();
-                if (640 == dpi) { //1440
-                    path.moveTo(720, 1575);
-                } else if(320 == dpi){//720p
-                    path.moveTo(355, 780);
-                }else if(480 == dpi){//1080p
-                    path.moveTo(533, 1115);
-                }
-                GestureDescription.Builder builder = new GestureDescription.Builder();
-                GestureDescription gestureDescription = builder.addStroke(new GestureDescription.StrokeDescription(path, 450, 50)).build();
-                dispatchGesture(gestureDescription, new GestureResultCallback() {
-                    @Override
-                    public void onCompleted(GestureDescription gestureDescription) {
-                        Log.d(TAG, "onCompleted");
-                        mMutex = false;
-                        super.onCompleted(gestureDescription);
-                    }
-
-                    @Override
-                    public void onCancelled(GestureDescription gestureDescription) {
-                        Log.d(TAG, "onCancelled");
-                        mMutex = false;
-                        super.onCancelled(gestureDescription);
-                    }
-                }, null);
-
+            if (mUnpackCount >= 1 && (mUnpackNode != null)) {
+                mUnpackNode.performAction(AccessibilityNodeInfo.ACTION_CLICK);
             }
+        }else{
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            float dpi = metrics.densityDpi;
+            Log.d(TAG, "openPacket！" + dpi);
+            Path path = new Path();
+            path.moveTo(metrics.widthPixels * 0.5f, metrics.heightPixels * 0.6f);
+            GestureDescription.Builder builder = new GestureDescription.Builder();
+            GestureDescription gestureDescription = builder.addStroke(new GestureDescription.StrokeDescription(path, 450, 50)).build();
+            dispatchGesture(gestureDescription, new GestureResultCallback() {
+                @Override
+                public void onCompleted(GestureDescription gestureDescription) {
+                    Log.d(TAG, "onCompleted");
+                    mMutex = false;
+                    super.onCompleted(gestureDescription);
+                }
+
+                @Override
+                public void onCancelled(GestureDescription gestureDescription) {
+                    Log.d(TAG, "onCancelled");
+                    mMutex = false;
+                    super.onCancelled(gestureDescription);
+                }
+            }, null);
         }
     }
 
