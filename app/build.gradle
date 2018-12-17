@@ -1,15 +1,15 @@
  apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "xyz.monkeytong.hongbao"
         minSdkVersion 19
-        targetSdkVersion 25
-        versionCode 7
-        versionName "v5.0.0"
+        targetSdkVersion 26
+        versionCode 8
+        versionName "v5.0.1"
         ndk {
             //设置支持的SO库架构
             abiFilters 'armeabi', 'armeabi-v7a' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
@@ -40,6 +40,6 @@ android {
      //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.0.1
      compile 'com.tencent.bugly:nativecrashreport:latest.release'
      //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
-     compile 'com.android.support:support-v4:25.4.0'
-     compile 'com.android.support:appcompat-v7:25.4.0'
+     compile 'com.android.support:support-v4:26.1.0'
+     compile 'com.android.support:appcompat-v7:26.1.0'
  }
