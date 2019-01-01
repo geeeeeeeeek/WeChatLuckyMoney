@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="xyz.monkeytong.hongbao">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="xyz.monkeytong.hongbao">
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
             android:allowBackup="true"
@@ -31,9 +33,6 @@
                   android:theme="@style/Base.Theme.AppCompat.Light"
                   android:launchMode="standard">
         </activity>
-        <activity
-            android:name="com.tencent.bugly.beta.ui.BetaActivity"
-            android:theme="@android:style/Theme.Translucent" />
         <service
                 android:name=".services.HongbaoService"
                 android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
