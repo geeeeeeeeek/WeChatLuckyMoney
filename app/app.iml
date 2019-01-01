@@ -127,6 +127,7 @@
     <orderEntry type="library" name="Gradle: com.android.support:customview-28.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:localbroadcastmanager-28.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-vector-drawable-28.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.5@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:interpolator-28.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-core-utils-28.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.tencent.bugly:crashreport-2.8.6.0" level="project" />
@@ -155,7 +156,9 @@
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:livedata-core-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-compat-28.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable-28.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.15.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7-28.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.12.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.tencent.bugly:nativecrashreport-3.6.0.1" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:runtime-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.http.legacy-android-28" level="project" />
