@@ -14,9 +14,9 @@ android:
 licenses:
 - android-sdk-license-.+
 - .+
-before_install:
-- openssl aes-256-cbc -K $encrypted_6b42a8524af0_key -iv $encrypted_6b42a8524af0_iv
- -in monkeytong.jks.enc -out monkeytong.jks -d
+#before_install:
+#- openssl aes-256-cbc -K $encrypted_6b42a8524af0_key -iv $encrypted_6b42a8524af0_iv
+# -in monkeytong.jks.enc -out monkeytong.jks -d
 before_script:
 - mkdir "$ANDROID_HOME/licenses" || true
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
